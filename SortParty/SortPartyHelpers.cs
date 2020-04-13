@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
@@ -54,7 +52,7 @@ namespace SortParty
         {
             var inputList = input.ToList();
 
-            var flattenedOrder = input.ToFlattenedRoster().Where(x => !x.Troop.IsHero).OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+            var flattenedOrder = CreateFlattenedRoster(input);
 
             for (int i = 0; i < inputList.Count; i++)
             {
@@ -65,6 +63,63 @@ namespace SortParty
             }
 
             input.Add(flattenedOrder);
+        }
+
+        public static List<FlattenedTroopRosterElement> CreateFlattenedRoster(TroopRoster roster)
+        {
+            var flattenedRoster = roster.ToFlattenedRoster().Where(x => !x.Troop.IsHero);
+
+            string sortType = "TierDesc";
+
+            switch (sortType)
+            {
+                case "TierDesc":
+                    return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    break;
+                case "TierAsc":
+                    return flattenedRoster.OrderBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    break;
+                case "TierDescType":
+                    return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    break;
+                case "TierAscType":
+                    return flattenedRoster.OrderBy(x => x.Troop.Tier).ThenBy(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    break;
+                case "MountRangeTierDesc":
+                    return flattenedRoster.OrderByDescending(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    break;
+                case "MountRangeTierAsc":
+                    return flattenedRoster.OrderBy(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    break;
+            }
+
+            return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+        }
+
+        public static bool IsRangedUnit(CharacterObject troop)
+        {
+            var result = false;
+
+            var battleEquipments = troop.BattleEquipments.ToList();
+
+            if (battleEquipments.Count > 0)
+            {
+                var primaryWeaponType = battleEquipments[0].GetEquipmentFromSlot(EquipmentIndex.WeaponItemBeginSlot).Item.ItemType;
+                result = primaryWeaponType == ItemObject.ItemTypeEnum.Bow || primaryWeaponType == ItemObject.ItemTypeEnum.Crossbow || primaryWeaponType == ItemObject.ItemTypeEnum.Thrown;
+            }
+            return result;
+        }
+
+        public static bool IsMountedUnit(CharacterObject troop)
+        {
+            var result = false;
+            var battleEquipments = troop.BattleEquipments.ToList();
+            if (battleEquipments.Count > 0)
+            {
+                result = !battleEquipments[0].Horse.IsEmpty;
+            }
+
+            return result;
         }
 
     }

@@ -7,6 +7,8 @@ using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Library.EventSystem;
 using HarmonyLib;
+using TaleWorlds.Engine.GauntletUI;
+using TaleWorlds.InputSystem;
 
 namespace SortParty
 {
@@ -24,6 +26,6 @@ namespace SortParty
                 InformationManager.DisplayMessage(new InformationMessage($"Patch Failed {ex.Message}"));
 
             }
-        }        
+        }
     }
 }

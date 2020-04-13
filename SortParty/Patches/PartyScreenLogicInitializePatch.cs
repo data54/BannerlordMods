@@ -25,6 +25,7 @@ namespace SortParty.Patches
       TextObject header = null)
         {
             SortPartyHelpers.SortPartyScreen(__instance);
+            
         }
 
 

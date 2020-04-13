@@ -72,6 +72,7 @@
     <Reference Include="System.Core">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
       <Private>False</Private>
     </Reference>
@@ -178,6 +179,7 @@
     <Compile Include="Patches\PartyVMUpdatePatch.cs" />
     <Compile Include="Patches\PartyScreenLogicProcessCommandPatch.cs" />
     <Compile Include="Patches\PartyScreenLogicInitializePatch.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SortPartyHelpers.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
