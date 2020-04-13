@@ -18,20 +18,32 @@ namespace SortParty
 {
     public class SubModule : MBSubModuleBase
     {
+        bool enableHotkey = false;
+        bool enableAutoSort = false;
+
+        protected override void OnBeforeInitialModuleScreenSetAsRoot()
+        {
+            base.OnBeforeInitialModuleScreenSetAsRoot();
+
+            InformationManager.DisplayMessage(new InformationMessage("Loaded SortParty. Press CTRL+SHIFT+S in Party Screen to sort", Color.FromUint(4282569842U)));
+            //Just here to trigger file generation if needed
+            enableHotkey = SortPartySettings.Settings.EnableHotkey;
+            enableAutoSort = SortPartySettings.Settings.EnableAutoSort;
+        }
+
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
-            try
+            if (enableAutoSort)
             {
-                new Harmony("mod.sortparty").PatchAll();
-                InformationManager.DisplayMessage(new InformationMessage("Loaded SortParty. Press CTRL+SHIFT+S in Party Screen to sort", Color.FromUint(4282569842U)));
-                
-                //Just here to trigger file generation if needed
-                var test = SortPartySettings.Settings;
-            }
-            catch (Exception ex)
-            {
-                InformationManager.DisplayMessage(new InformationMessage($"Patch Failed {ex.Message}"));
+                try
+                {
+                    new Harmony("mod.sortparty").PatchAll();
+                }
+                catch (Exception ex)
+                {
+                    InformationManager.DisplayMessage(new InformationMessage($"Patch Failed {ex.Message}"));
+                }
             }
         }
 
@@ -40,24 +52,27 @@ namespace SortParty
         protected override void OnApplicationTick(float dt)
         {
             base.OnApplicationTick(dt);
-            try
+            if (enableHotkey)
             {
-                if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || !InputKey.LeftShift.IsDown()) || !InputKey.LeftControl.IsDown() || !InputKey.S.IsPressed())
+                try
                 {
-                    return;
+                    if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || !InputKey.LeftShift.IsDown()) || !InputKey.LeftControl.IsDown() || !InputKey.S.IsPressed())
+                    {
+                        return;
+                    }
+
+                    var partyScreen = (GauntletPartyScreen)ScreenManager.TopScreen;
+                    partyVM = partyScreen.GetPartyVM();
+
+                    if (partyVM != null)
+                    {
+                        SortUnits();
+                    }
                 }
-
-                var partyScreen = (GauntletPartyScreen)ScreenManager.TopScreen;
-                partyVM = partyScreen.GetPartyVM();
-
-                if (partyVM != null)
+                catch (Exception ex)
                 {
-                    SortUnits();
+                    SortPartyHelpers.LogException("Tick", ex);
                 }
-            }
-            catch (Exception ex)
-            {
-                SortPartyHelpers.LogException("Tick", ex);
             }
         }
 
