@@ -10,6 +10,11 @@ namespace SortParty
 {
     public class SortPartySettings
     {
+        public int? Version { get; set; }
+
+        public SortType SortOrder { get; set; }
+
+
         const string filePath = "..\\..\\Modules\\SortParty\\ModuleData\\SortPartySettings.xml";
         const int version = 1;
 
@@ -56,9 +61,11 @@ namespace SortParty
 
         private static SortPartySettings CreateUpdateFile(SortPartySettings settings = null)
         {
+            var newFileGenerated = false;
             if (settings == null)
             {
                 settings = new SortPartySettings() { Version = version, SortOrder = SortType.TierDesc };
+                newFileGenerated = true;
             }
             else
             {
@@ -80,12 +87,6 @@ namespace SortParty
             }
             return settings;
         }
-
-        public int? Version { get; set; }
-
-        public SortType SortOrder { get; set; }
-
-
     }
 
     public enum SortType

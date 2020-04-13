@@ -176,6 +176,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Patches\PartyVMUpdatePatch.cs" />
     <Compile Include="Patches\PartyScreenLogicProcessCommandPatch.cs" />
     <Compile Include="Patches\PartyScreenLogicInitializePatch.cs" />

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 
 namespace SortParty
 {
@@ -91,15 +93,69 @@ namespace SortParty
                     return flattenedRoster.OrderByDescending(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
                 case SortType.CultureTierDesc:
-                    return flattenedRoster.OrderBy(x => x.Troop.Culture.ToString()).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    return flattenedRoster.OrderBy(x => x.Troop.Culture.Name.ToString()).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
                 case SortType.CultureTierAsc:
-                    return flattenedRoster.OrderBy(x => x.Troop.Culture.ToString()).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    return flattenedRoster.OrderBy(x => x.Troop.Culture.Name.ToString()).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
             }
 
             return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
         }
+
+        public static MBBindingList<PartyCharacterVM> SortVMTroops(MBBindingList<PartyCharacterVM> input, bool isPrisoners=false)
+        {
+            var order = SortType.TierDesc;
+            List<PartyCharacterVM> sortedList=null;
+            switch (order)
+            {
+                case SortType.TierDesc:
+                    sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                    break;
+                case SortType.TierAsc:
+                    sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                    break;
+                case SortType.TierDescType:
+                    sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.Character.Tier).ThenBy(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Name.ToString()).ToList();
+                    break;
+                case SortType.TierAscType:
+                    sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Tier).ThenBy(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Name.ToString()).ToList();
+                    break;
+                case SortType.MountRangeTierDesc:
+                    sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                    break;
+                case SortType.MountRangeTierAsc:
+                    sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                    break;
+                case SortType.CultureTierDesc:
+                    sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Culture.Name.ToString()).ThenByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                    break;
+                case SortType.CultureTierAsc:
+                    sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Culture.Name.ToString()).ThenBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                    break;
+            }
+
+            if (sortedList != null)
+            {
+                var output = new MBBindingList<PartyCharacterVM>();
+
+                foreach(var hero in input.Where(x=>x.IsHero))
+                {
+                    output.Add(hero);
+                }
+
+                foreach(var troop in sortedList)
+                {
+                    output.Add(troop);
+                }
+
+                return output;
+            }
+
+
+            return input;
+        }
+
 
         public static bool IsRangedUnit(CharacterObject troop)
         {
@@ -127,5 +183,10 @@ namespace SortParty
             return result;
         }
 
+
+        public static void LogException(string method, Exception ex)
+        {
+            InformationManager.DisplayMessage(new InformationMessage($"SortParty {method} exception: {ex.Message}"));
+        }
     }
 }

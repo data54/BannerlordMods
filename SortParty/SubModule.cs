@@ -11,23 +11,27 @@ using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
 using System.Collections.Generic;
+using System.Reflection;
+using TaleWorlds.Library;
 
 namespace SortParty
 {
     public class SubModule : MBSubModuleBase
     {
-
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
             try
             {
                 new Harmony("mod.sortparty").PatchAll();
+                InformationManager.DisplayMessage(new InformationMessage("Loaded SortParty. Press CTRL+SHIFT+S in Party Screen to sort", Color.FromUint(4282569842U)));
+                
+                //Just here to trigger file generation if needed
+                var test = SortPartySettings.Settings;
             }
             catch (Exception ex)
             {
                 InformationManager.DisplayMessage(new InformationMessage($"Patch Failed {ex.Message}"));
-
             }
         }
 
@@ -42,42 +46,31 @@ namespace SortParty
                 {
                     return;
                 }
-                partyVM = GetPartyVM();
 
-                if(partyVM!=null)
+                var partyScreen = (GauntletPartyScreen)ScreenManager.TopScreen;
+                partyVM = partyScreen.GetPartyVM();
+
+                if (partyVM != null)
                 {
                     SortUnits();
                 }
             }
             catch (Exception ex)
             {
-                InformationManager.DisplayMessage(new InformationMessage($"SortParty Tick exception: {ex.Message}"));
+                SortPartyHelpers.LogException("Tick", ex);
             }
         }
 
-        private PartyVM GetPartyVM()
-        {
-            try
-            {
-
-            }
-            catch(Exception ex)
-            {
-
-            }
-
-            return null;
-        }
 
         private void SortUnits()
         {
             try
             {
-
+                partyVM.SortTroops();
             }
             catch (Exception ex)
             {
-                InformationManager.DisplayMessage(new InformationMessage($"SortPartyModule.SortUnits exception: {ex.Message}"));
+                SortPartyHelpers.LogException("SortUnits", ex);
             }
         }
     }
