@@ -8,6 +8,7 @@ namespace SortParty
 {
     public class SortPartyHelpers
     {
+        private static SortPartySettings Settings;
 
         public static void SortPartyScreen(PartyScreenLogic partyScreen)
         {
@@ -69,27 +70,25 @@ namespace SortParty
         {
             var flattenedRoster = roster.ToFlattenedRoster().Where(x => !x.Troop.IsHero);
 
-            string sortType = "TierDesc";
-
-            switch (sortType)
+            switch (SortPartySettings.Settings.SortOrder)
             {
-                case "TierDesc":
+                case SortType.TierDesc:
                     return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
-                case "TierAsc":
+                case SortType.TierAsc:
                     return flattenedRoster.OrderBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
-                case "TierDescType":
+                case SortType.TierDescType:
                     return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
-                case "TierAscType":
+                case SortType.TierAscType:
                     return flattenedRoster.OrderBy(x => x.Troop.Tier).ThenBy(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
-                case "MountRangeTierDesc":
+                case SortType.MountRangeTierDesc:
                     return flattenedRoster.OrderByDescending(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
-                case "MountRangeTierAsc":
-                    return flattenedRoster.OrderBy(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                case SortType.MountRangeTierAsc:
+                    return flattenedRoster.OrderByDescending(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
             }
 
