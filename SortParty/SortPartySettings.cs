@@ -95,7 +95,9 @@ namespace SortParty
         TierDescType,
         TierAscType,
         MountRangeTierDesc,
-        MountRangeTierAsc
+        MountRangeTierAsc,
+        CultureTierDesc,
+        CultureTierAsc
     }
 }
 

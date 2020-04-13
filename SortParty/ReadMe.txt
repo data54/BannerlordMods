@@ -13,4 +13,4 @@ TierAscType 		- Ordered by Tier ascending followed by mounted/foot and then rang
 MountRangeTierDesc 	- Ordered by mounted/foot followed by ranged/melee then Tier descending
 MountRangeTierAsc 	- Ordered by mounted/foot followed by ranged/melee then Tier ascending
 CultureTierDesc 	- Ordered by culture then Tier descending
-CultureTierAsc 	- Ordered by culture then Tier ascending
+CultureTierAsc 		- Ordered by culture then Tier ascending
