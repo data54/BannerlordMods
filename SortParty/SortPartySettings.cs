@@ -11,7 +11,7 @@ namespace SortParty
     public class SortPartySettings
     {
         const string filePath = "..\\..\\Modules\\SortParty\\ModuleData\\SortPartySettings.xml";
-        const int version = 2;
+        const int version = 1;
 
         private static SortPartySettings _settings;
         public static SortPartySettings Settings
