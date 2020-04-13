@@ -1,0 +1,1 @@
+﻿The mod executes whenever the party screen is opened, no user interaction required past installing it.
