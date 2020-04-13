@@ -90,6 +90,12 @@ namespace SortParty
                 case SortType.MountRangeTierAsc:
                     return flattenedRoster.OrderByDescending(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
+                case SortType.CultureTierDesc:
+                    return flattenedRoster.OrderByDescending(x => x.Troop.Culture.ToString()).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    break;
+                case SortType.CultureTierAsc:
+                    return flattenedRoster.OrderBy(x => x.Troop.Culture.ToString()).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    break;
             }
 
             return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
