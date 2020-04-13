@@ -93,7 +93,7 @@ namespace SortParty
                 case SortType.CultureTierDesc:
                     return flattenedRoster.OrderByDescending(x => x.Troop.Culture.ToString()).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
-                case SortType.CultureTierDesc:
+                case SortType.CultureTierAsc:
                     return flattenedRoster.OrderBy(x => x.Troop.Culture.ToString()).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
             }
