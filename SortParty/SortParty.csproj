@@ -160,7 +160,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Patches\InitializePartyScreenPatch.cs" />
+    <Compile Include="Patches\PartyVMUpdatePatch.cs" />
+    <Compile Include="Patches\PartyScreenLogicProcessCommandPatch.cs" />
+    <Compile Include="Patches\PartyScreenLogicInitializePatch.cs" />
     <Compile Include="SortPartyHelpers.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
