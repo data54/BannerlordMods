@@ -3,7 +3,7 @@
 In order to avoid overwriting user changes during updates the config file won't exist until after the first execution, quickest way to get it is load the game and open the party screen (P key).
 
 Config file located at:
-Modules\SortParty\ModuleData\SortPartySettings.xml
+(steam install location)\Modules\SortParty\ModuleData\SortPartySettings.xml
 
 The following are available sort options for the config SortOrder node, all will have companions at the top:
 TierDesc 			- (default option) Ordered by Tier descending
@@ -14,3 +14,7 @@ MountRangeTierDesc 	- Ordered by mounted/foot followed by ranged/melee then Tier
 MountRangeTierAsc 	- Ordered by mounted/foot followed by ranged/melee then Tier ascending
 CultureTierDesc 	- Ordered by culture then Tier descending
 CultureTierAsc 		- Ordered by culture then Tier ascending
+
+
+EnableAutoSort setting node turns the autosort when you open/close the party screen on/off value should be true or false
+EnableHotkey setting node turns the CTRL-SHIFT-S hotkey that will sort your party on/off so it can be disabled if it conflicts with another mod, value should be true or false
