@@ -14,6 +14,8 @@ MountRangeTierDesc 	- Ordered by mounted/foot followed by ranged/melee then Tier
 MountRangeTierAsc 	- Ordered by mounted/foot followed by ranged/melee then Tier ascending
 CultureTierDesc 	- Ordered by culture then Tier descending
 CultureTierAsc 		- Ordered by culture then Tier ascending
+RangeMountTierDesc	- Melee/Ranged then by mounted then tier desc
+RangeMountTierAsc	- Melee/Ranged then by mounted then tier Asc
 
 
 The following settings should have a value of either true or false:

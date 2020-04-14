@@ -71,14 +71,14 @@ namespace SortParty
         private int? sortModulus;
         public void CycleSortType()
         {
-            if(!sortModulus.HasValue)
+            if (!sortModulus.HasValue)
             {
-                sortModulus = (int) Enum.GetValues(typeof(SortType)).Cast<SortType>().Max() + 1;
+                sortModulus = (int)Enum.GetValues(typeof(SortType)).Cast<SortType>().Max() + 1;
             }
 
             var intValue = (int)SortOrder;
 
-            SortOrder = (SortType) ((intValue + 1) % sortModulus);
+            SortOrder = (SortType)((intValue + 1) % sortModulus);
 
             CreateUpdateFile(this);
 
@@ -129,53 +129,60 @@ namespace SortParty
 
         private static SortPartySettings CreateUpdateFile(SortPartySettings settings = null)
         {
-            var newFileGenerated = false;
-            if (settings == null)
+            try
             {
-                settings = new SortPartySettings();
-                newFileGenerated = true;
-            }
-            else
-            {
-                for (int i = settings.Version.Value; i < version; i++)
+                var newFileGenerated = false;
+                if (settings == null)
                 {
-                    switch (i)
+                    settings = new SortPartySettings();
+                    newFileGenerated = true;
+                }
+                else
+                {
+                    for (int i = settings.Version.Value; i < version; i++)
                     {
-                        case 1:
-                            settings.EnableHotkey = true;
-                            settings.EnableAutoSort = true;
-                            break;
-                        case 2:
-                            settings.EnableSortTypeCycleHotkey = true;
-                            settings.EnableRecruitUpgradeSortHotkey = true;
-                            break;
-                        case 3:
-                            settings.CavalryAboveFootmen = true;
-                            settings.MeleeAboveArchers = true;
-                            break;
+                        switch (i)
+                        {
+                            case 1:
+                                settings.EnableHotkey = true;
+                                settings.EnableAutoSort = true;
+                                break;
+                            case 2:
+                                settings.EnableSortTypeCycleHotkey = true;
+                                settings.EnableRecruitUpgradeSortHotkey = true;
+                                break;
+                            case 3:
+                                settings.CavalryAboveFootmen = true;
+                                settings.MeleeAboveArchers = true;
+                                break;
+                        }
                     }
+
+                    settings.Version = version;
                 }
 
-                settings.Version = version;
+
+                var saveDirectory = Path.GetDirectoryName(filePath);
+                if (!Directory.Exists(saveDirectory))
+                {
+                    Directory.CreateDirectory(saveDirectory);
+                }
+
+
+                using (var fs = new FileStream(filePath, FileMode.Create))
+                {
+                    Serializer.Serialize(fs, settings);
+                }
+
+                if (newFileGenerated)
+                {
+                    var fullPath = Path.GetFullPath(filePath);
+                    settings.NewFileMessage = $"SortParty config generated at {fullPath}";
+                }
             }
-
-
-            var saveDirectory = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(saveDirectory))
+            catch (Exception ex)
             {
-                Directory.CreateDirectory(saveDirectory);
-            }
-
-
-            using (var fs = new FileStream(filePath, FileMode.Create))
-            {
-                Serializer.Serialize(fs, settings);
-            }
-
-            if (newFileGenerated)
-            {
-                var fullPath = Path.GetFullPath(filePath);
-                settings.NewFileMessage = $"SortParty config generated at {fullPath}";
+                SortPartyHelpers.LogException("SortPartySettings.CreateUpdateFile", ex);
             }
 
             return settings;
