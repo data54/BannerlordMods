@@ -2,7 +2,7 @@
 <Module>
 	<Name value="SortParty"/>
 	<Id value="SortParty"/>
-	<Version value="v1.3.1"/>
+	<Version value="v1.4.1"/>
 	<SingleplayerModule value="true"/>
 	<MultiplayerModule value="false"/>
     <Official value="false" />
