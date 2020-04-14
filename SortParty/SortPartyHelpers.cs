@@ -128,34 +128,6 @@ namespace SortParty
             return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
         }
 
-        public static bool IsRangedUnit(CharacterObject troop)
-        {
-            var result = false;
-
-            var battleEquipments = troop.BattleEquipments.ToList();
-
-            if (battleEquipments.Count > 0)
-            {
-                var primaryWeaponType = battleEquipments[0].GetEquipmentFromSlot(EquipmentIndex.WeaponItemBeginSlot).Item.ItemType;
-                result = primaryWeaponType == ItemObject.ItemTypeEnum.Bow || primaryWeaponType == ItemObject.ItemTypeEnum.Crossbow || primaryWeaponType == ItemObject.ItemTypeEnum.Thrown;
-            }
-            return result;
-        }
-
-        public static bool IsMountedUnit(CharacterObject troop)
-        {
-
-            var result = false;
-            var battleEquipments = troop.BattleEquipments.ToList();
-            if (battleEquipments.Count > 0)
-            {
-                result = !battleEquipments[0].Horse.IsEmpty;
-            }
-
-            return result;
-        }
-
-
         public static void LogException(string method, Exception ex)
         {
             InformationManager.DisplayMessage(new InformationMessage($"SortParty {method} exception: {ex.Message}"));
