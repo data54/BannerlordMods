@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Core;
@@ -12,50 +13,61 @@ namespace SortParty
     {
         private static SortPartySettings Settings;
 
-        public static void SortPartyScreen(PartyScreenLogic partyScreen)
-        {
-            SortPartyScreen(partyScreen, true, true, true, true);
-        }
 
-        public static void SortPartyScreen(PartyScreenLogic partyScreen, bool right, bool left, bool troops, bool prisoners)
+        public static void SortPartyScreen(PartyVM partyVm, bool sortRecruitUpgrade = false)
         {
             try
             {
-                if (left)
-                {
-                    if (troops)
-                    {
-                        SortUnits(partyScreen.MemberRosters[0]);
-                    }
-                    if (prisoners)
-                    {
-                        SortUnits(partyScreen.PrisonerRosters[0]);
-                    }
-                }
+                var refreshPartyCall = partyVm.GetType().GetMethod("RefreshPartyInformation", BindingFlags.Instance | BindingFlags.NonPublic);
+                var initializeTroopListsCall = partyVm.GetType().GetMethod("InitializeTroopLists", BindingFlags.Instance | BindingFlags.NonPublic);
+                var partyLogicField = partyVm.GetType().GetField("_partyScreenLogic", BindingFlags.Instance | BindingFlags.NonPublic);
 
-                if (right)
-                {
-                    if (troops)
-                    {
-                        SortUnits(partyScreen.MemberRosters[1]);
-                    }
-                    if (prisoners)
-                    {
-                        SortUnits(partyScreen.PrisonerRosters[1]);
-                    }
-                }
+                if (refreshPartyCall == null || initializeTroopListsCall == null || partyLogicField == null) return;
+
+                var partyLogic = partyLogicField.GetValue(partyVm) as PartyScreenLogic;
+
+                //Left Side
+                SortUnits(partyLogic.MemberRosters[0], sortRecruitUpgrade, partyVm.OtherPartyTroops);
+                SortUnits(partyLogic.PrisonerRosters[0], sortRecruitUpgrade, partyVm.OtherPartyPrisoners);
+                //Right Side
+                SortUnits(partyLogic.MemberRosters[1], sortRecruitUpgrade, partyVm.MainPartyTroops);
+                SortUnits(partyLogic.PrisonerRosters[1], sortRecruitUpgrade, partyVm.MainPartyPrisoners);
+
+                initializeTroopListsCall.Invoke(partyVm, new object[0] { });
             }
             catch (Exception ex)
             {
-                InformationManager.DisplayMessage(new InformationMessage($"Error in SortParty: {ex.Message}"));
+                LogException("SortPartyScreen", ex);
             }
         }
 
-        public static void SortUnits(TroopRoster input)
+
+        public static void SortPartyScreen(PartyScreenLogic partyScreen, bool sortRecruitUpgrade = false)
         {
+            try
+            {
+                //Left Side
+                SortUnits(partyScreen.MemberRosters[0]);
+                SortUnits(partyScreen.PrisonerRosters[0]);
+                //Right Side
+                SortUnits(partyScreen.MemberRosters[1]);
+                SortUnits(partyScreen.PrisonerRosters[1]);
+            }
+            catch (Exception ex)
+            {
+                LogException("SortPartyScreen", ex);
+            }
+        }
+        public static void SortUnits(TroopRoster input, bool sortRecruitUpgrade = false, MBBindingList<PartyCharacterVM> partyVmUnits = null)
+        {
+            if (input == null || input.Count == 0)
+            {
+                return;
+            }
+
             var inputList = input.ToList();
 
-            var flattenedOrder = CreateFlattenedRoster(input);
+            var flattenedOrder = CreateFlattenedRoster(input, sortRecruitUpgrade, partyVmUnits);
 
             for (int i = 0; i < inputList.Count; i++)
             {
@@ -68,9 +80,22 @@ namespace SortParty
             input.Add(flattenedOrder);
         }
 
-        public static List<FlattenedTroopRosterElement> CreateFlattenedRoster(TroopRoster roster)
+        public static List<FlattenedTroopRosterElement> CreateFlattenedRoster(TroopRoster roster, bool sortRecruitUpgrade, MBBindingList<PartyCharacterVM> partyVmUnits = null)
         {
             var flattenedRoster = roster.ToFlattenedRoster().Where(x => !x.Troop.IsHero);
+
+            if (sortRecruitUpgrade && partyVmUnits != null)
+            {
+                //Units that can be upgraded
+                var recruitUpgradeUnitTypes = partyVmUnits
+                    .Where(x => !x.IsHero && (x.IsTroopRecruitable || (x.IsUpgrade1Available && !x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && !x.IsUpgrade2Insufficient)))
+                    .Select(x => x.Name).Distinct().ToList();
+                //Units that can be upgraded but are missing materials/skills
+                var insufficientUpgrades = partyVmUnits
+                    .Where(x => !x.IsHero && ((x.IsUpgrade1Available && x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && x.IsUpgrade2Insufficient)))
+                    .Select(x => x.Name).Distinct().ToList();
+                return flattenedRoster.OrderByDescending(x => recruitUpgradeUnitTypes.Contains(x.Troop.Name.ToString())).ThenByDescending(x => insufficientUpgrades.Contains(x.Troop.Name.ToString())).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+            }
 
             switch (SortPartySettings.Settings.SortOrder)
             {
@@ -81,16 +106,16 @@ namespace SortParty
                     return flattenedRoster.OrderBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
                 case SortType.TierDescType:
-                    return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.IsMounted).ThenBy(x => x.Troop.IsArcher).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
                 case SortType.TierAscType:
-                    return flattenedRoster.OrderBy(x => x.Troop.Tier).ThenBy(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    return flattenedRoster.OrderBy(x => x.Troop.Tier).ThenBy(x => x.Troop.IsMounted).ThenBy(x => x.Troop.IsArcher).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
                 case SortType.MountRangeTierDesc:
-                    return flattenedRoster.OrderByDescending(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    return flattenedRoster.OrderByDescending(x => x.Troop.IsMounted).ThenBy(x => x.Troop.IsArcher).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
                 case SortType.MountRangeTierAsc:
-                    return flattenedRoster.OrderByDescending(x => IsMountedUnit(x.Troop)).ThenBy(x => IsRangedUnit(x.Troop)).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
+                    return flattenedRoster.OrderByDescending(x => x.Troop.IsMounted).ThenBy(x => x.Troop.IsArcher).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
                     break;
                 case SortType.CultureTierDesc:
                     return flattenedRoster.OrderBy(x => x.Troop.Culture.Name.ToString()).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
@@ -102,67 +127,6 @@ namespace SortParty
 
             return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
         }
-
-        public static MBBindingList<PartyCharacterVM> SortVMTroops(MBBindingList<PartyCharacterVM> input, bool sortRecruitUpgrade = false)
-        {
-            List<PartyCharacterVM> sortedList = null;
-
-            if (sortRecruitUpgrade)
-            {
-                sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.IsTroopRecruitable || (x.IsUpgrade1Available && !x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && !x.IsUpgrade2Insufficient)).ThenByDescending(x=>(x.IsUpgrade1Available && x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && x.IsUpgrade2Insufficient)).ThenByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-            }
-            else
-            {
-                switch (SortPartySettings.Settings.SortOrder)
-                {
-                    case SortType.TierDesc:
-                        sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                        break;
-                    case SortType.TierAsc:
-                        sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                        break;
-                    case SortType.TierDescType:
-                        sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.Character.Tier).ThenBy(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Name.ToString()).ToList();
-                        break;
-                    case SortType.TierAscType:
-                        sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Tier).ThenBy(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Name.ToString()).ToList();
-                        break;
-                    case SortType.MountRangeTierDesc:
-                        sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                        break;
-                    case SortType.MountRangeTierAsc:
-                        sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                        break;
-                    case SortType.CultureTierDesc:
-                        sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Culture.Name.ToString()).ThenByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                        break;
-                    case SortType.CultureTierAsc:
-                        sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Culture.Name.ToString()).ThenBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                        break;
-                }
-            }
-
-            if (sortedList != null)
-            {
-                var output = new MBBindingList<PartyCharacterVM>();
-
-                foreach (var hero in input.Where(x => x.IsHero))
-                {
-                    output.Add(hero);
-                }
-
-                foreach (var troop in sortedList)
-                {
-                    output.Add(troop);
-                }
-
-                return output;
-            }
-
-
-            return input;
-        }
-
 
         public static bool IsRangedUnit(CharacterObject troop)
         {
@@ -180,6 +144,7 @@ namespace SortParty
 
         public static bool IsMountedUnit(CharacterObject troop)
         {
+
             var result = false;
             var battleEquipments = troop.BattleEquipments.ToList();
             if (battleEquipments.Count > 0)

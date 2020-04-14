@@ -15,25 +15,7 @@ namespace SortParty
     {
         public static void SortTroops(this PartyVM partyVm, bool sortRecruitUpgrade = false)
         {
-            try
-            {
-                var refreshPartyCall = partyVm.GetType().GetMethod("RefreshPartyInformation", BindingFlags.Instance | BindingFlags.NonPublic);
-
-                if (refreshPartyCall == null) return;
-
-
-                partyVm.MainPartyTroops = SortPartyHelpers.SortVMTroops(partyVm.MainPartyTroops, sortRecruitUpgrade);
-                partyVm.MainPartyPrisoners = SortPartyHelpers.SortVMTroops(partyVm.MainPartyPrisoners, sortRecruitUpgrade);
-
-                partyVm.OtherPartyTroops = SortPartyHelpers.SortVMTroops(partyVm.OtherPartyTroops, sortRecruitUpgrade);
-                partyVm.OtherPartyPrisoners = SortPartyHelpers.SortVMTroops(partyVm.OtherPartyPrisoners, sortRecruitUpgrade);
-
-                refreshPartyCall.Invoke(partyVm, new object[0] { });
-            }
-            catch(Exception ex)
-            {
-                SortPartyHelpers.LogException("ExtensionMethods.SortTroops", ex);
-            }
+            SortPartyHelpers.SortPartyScreen(partyVm, sortRecruitUpgrade);
         }
 
         public static PartyVM GetPartyVM(this GauntletPartyScreen partyScreen)
@@ -45,7 +27,7 @@ namespace SortParty
                 {
                     return null;
                 }
-                return field.GetValue((object)partyScreen) as PartyVM;
+                return field.GetValue(partyScreen) as PartyVM;
             }
             catch (Exception ex)
             {
