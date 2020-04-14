@@ -104,7 +104,12 @@ namespace SortParty
             SortOrder = SortType.TierDesc;
         }
 
-        private static SortPartySettings LoadSettings()
+        public static void ReloadSettings()
+        {
+            _settings = LoadSettings();
+        }
+
+        public static SortPartySettings LoadSettings()
         {
             if (!File.Exists(filePath))
             {

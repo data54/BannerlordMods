@@ -169,6 +169,12 @@ namespace SortParty
                 case CustomSortOrder.MountedAsc:
                 case CustomSortOrder.MountedDesc:
                     return element.Troop.IsMounted ? "1" : "0";
+                case CustomSortOrder.MeleeAsc:
+                case CustomSortOrder.MeleeDesc:
+                    return element.Troop.IsArcher ? "1" : "0";
+                case CustomSortOrder.UnitNameAsc:
+                case CustomSortOrder.UnitNameDesc:
+                    return element.Troop.Name.ToString();
                 default:
                     return "";
             }
