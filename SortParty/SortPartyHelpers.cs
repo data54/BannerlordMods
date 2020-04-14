@@ -105,7 +105,6 @@ namespace SortParty
 
         public static MBBindingList<PartyCharacterVM> SortVMTroops(MBBindingList<PartyCharacterVM> input, bool sortRecruitUpgrade = false)
         {
-            var order = SortType.TierDesc;
             List<PartyCharacterVM> sortedList = null;
 
             if (sortRecruitUpgrade)
@@ -114,7 +113,7 @@ namespace SortParty
             }
             else
             {
-                switch (order)
+                switch (SortPartySettings.Settings.SortOrder)
                 {
                     case SortType.TierDesc:
                         sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();

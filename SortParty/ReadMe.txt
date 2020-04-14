@@ -16,5 +16,8 @@ CultureTierDesc 	- Ordered by culture then Tier descending
 CultureTierAsc 		- Ordered by culture then Tier ascending
 
 
-EnableAutoSort setting node turns the autosort when you open/close the party screen on/off value should be true or false
-EnableHotkey setting node turns the CTRL-SHIFT-S hotkey that will sort your party on/off so it can be disabled if it conflicts with another mod, value should be true or false
+The following settings should have a value of either true or false:
+EnableAutoSort - turns the autosort when you open/close the party screen on/off
+EnableHotkey - turns the CTRL-SHIFT-S hotkey that will sort your party on/off
+EnableRecruitUpgradeSortHotkey - turns the CTRL-SHIFT-R hotkey that will sort with upgradeable/recruitable units at the top on/off
+EnableSortTypeCycleHotkey - turns the CTRL+SHIFT+- hotkey that will cycle sort types on/off

@@ -18,13 +18,15 @@ namespace SortParty
         public int? Version { get; set; }
         public bool EnableHotkey { get; set; }
         public bool EnableRecruitUpgradeSortHotkey { get; set; }
+        public bool EnableSortTypeCycleHotkey { get; set; }
         public bool EnableAutoSort { get; set; }
+
 
         public SortType SortOrder { get; set; }
 
 
         [XmlIgnore]
-        public static XmlSerializer Serializer
+        private static XmlSerializer Serializer
         {
             get
             {
@@ -56,11 +58,28 @@ namespace SortParty
             }
         }
 
+        private int? sortModulus;
+        public void CycleSortType()
+        {
+            if(!sortModulus.HasValue)
+            {
+                sortModulus = (int) Enum.GetValues(typeof(SortType)).Cast<SortType>().Max() + 1;
+            }
+
+            var intValue = (int)SortOrder;
+
+            SortOrder = (SortType) ((intValue + 1) % sortModulus);
+
+            CreateUpdateFile(this);
+            InformationManager.DisplayMessage(new InformationMessage($"SortParty sort changed to {SortOrder.ToString()}", Color.FromUint(4282569842U)));
+        }
+
         public SortPartySettings()
         {
             EnableHotkey = true;
             EnableRecruitUpgradeSortHotkey = true;
             EnableAutoSort = true;
+            EnableSortTypeCycleHotkey = true;
             Version = version;
             SortOrder = SortType.TierDesc;
         }
@@ -98,13 +117,17 @@ namespace SortParty
             }
             else
             {
-                for(int i= settings.Version.Value; i<version; i++)
+                for (int i = settings.Version.Value; i < version; i++)
                 {
-                    switch(i)
+                    switch (i)
                     {
                         case 1:
                             settings.EnableHotkey = true;
                             settings.EnableAutoSort = true;
+                            break;
+                        case 2:
+                            settings.EnableSortTypeCycleHotkey = true;
+                            settings.EnableRecruitUpgradeSortHotkey = true;
                             break;
                     }
                 }
@@ -125,7 +148,7 @@ namespace SortParty
                 Serializer.Serialize(fs, settings);
             }
 
-            if(newFileGenerated)
+            if (newFileGenerated)
             {
                 var fullPath = Path.GetFullPath(filePath);
                 InformationManager.DisplayMessage(new InformationMessage($"SortParty config generated at {fullPath}", Color.FromUint(4282569842U)));
@@ -137,14 +160,14 @@ namespace SortParty
 
     public enum SortType
     {
-        TierDesc,
-        TierAsc,
-        TierDescType,
-        TierAscType,
-        MountRangeTierDesc,
-        MountRangeTierAsc,
-        CultureTierDesc,
-        CultureTierAsc
+        TierDesc = 0,
+        TierAsc = 1,
+        TierDescType = 2,
+        TierAscType = 3,
+        MountRangeTierDesc = 4,
+        MountRangeTierAsc = 5,
+        CultureTierDesc = 6,
+        CultureTierAsc = 7
     }
 }
 

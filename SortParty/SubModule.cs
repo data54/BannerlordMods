@@ -21,6 +21,7 @@ namespace SortParty
         bool enableHotkey = false;
         bool enableRecruitUpgradeSort = false;
         bool enableAutoSort = false;
+        bool enableSortTypeCycleHotkey = false;
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
@@ -31,6 +32,7 @@ namespace SortParty
             enableHotkey = SortPartySettings.Settings.EnableHotkey;
             enableAutoSort = SortPartySettings.Settings.EnableAutoSort;
             enableRecruitUpgradeSort = SortPartySettings.Settings.EnableRecruitUpgradeSortHotkey;
+            enableSortTypeCycleHotkey = SortPartySettings.Settings.EnableSortTypeCycleHotkey;
         }
 
         protected override void OnSubModuleLoad()
@@ -51,21 +53,37 @@ namespace SortParty
 
 
         PartyVM partyVM;
+        long lastHotkeyExecute = 0;
         protected override void OnApplicationTick(float dt)
         {
             base.OnApplicationTick(dt);
-            if (enableHotkey || enableRecruitUpgradeSort)
+            if (enableHotkey || enableRecruitUpgradeSort || enableSortTypeCycleHotkey)
             {
                 string key = "";
                 try
                 {
-                    if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || !InputKey.LeftShift.IsDown()) || !InputKey.LeftControl.IsDown())
+                    if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || (!InputKey.LeftShift.IsDown()) && !InputKey.LeftControl.IsDown() && !InputKey.Minus.IsDown()))
                     {
                         return;
                     }
 
-                    if ((enableHotkey && InputKey.S.IsDown()) || (enableRecruitUpgradeSort && InputKey.R.IsDown()))
+
+                    if ((enableHotkey && InputKey.S.IsDown()) || (enableRecruitUpgradeSort && InputKey.R.IsDown()) || (enableSortTypeCycleHotkey && InputKey.Minus.IsDown()))
                     {
+                        var diff = (DateTime.Now.Ticks - lastHotkeyExecute) / TimeSpan.TicksPerMillisecond;
+
+                        //Prevent the key from triggering more than once per quarter second
+                        if (diff < 100)
+                        {
+                            return;
+                        }
+
+                        if (InputKey.Minus.IsDown() && enableSortTypeCycleHotkey)
+                        {
+                            key = "-";
+                            SortPartySettings.Settings.CycleSortType();
+                        }
+
                         var partyScreen = (GauntletPartyScreen)ScreenManager.TopScreen;
                         partyVM = partyScreen.GetPartyVM();
 
@@ -76,16 +94,18 @@ namespace SortParty
                         {
                             key = "S";
                             SortUnits();
-                        }
+                        }//RecruitSort
                         else if (InputKey.R.IsDown() && enableRecruitUpgradeSort)
                         {
                             key = "R";
                             SortUnits(true);
                         }
+                        lastHotkeyExecute = DateTime.Now.Ticks;
                     }
                 }
                 catch (Exception ex)
                 {
+                    lastHotkeyExecute = DateTime.Now.Ticks;
                     SortPartyHelpers.LogException($"Tick('{key}')", ex);
                 }
             }
