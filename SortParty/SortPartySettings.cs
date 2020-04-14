@@ -39,6 +39,7 @@ namespace SortParty
         }
         static XmlSerializer _serializer;
 
+        public string NewFileMessage = null;
 
         private static SortPartySettings _settings;
         [XmlIgnore]
@@ -151,7 +152,7 @@ namespace SortParty
             if (newFileGenerated)
             {
                 var fullPath = Path.GetFullPath(filePath);
-                InformationManager.DisplayMessage(new InformationMessage($"SortParty config generated at {fullPath}", Color.FromUint(4282569842U)));
+                settings.NewFileMessage = $"SortParty config generated at {fullPath}";
             }
 
             return settings;

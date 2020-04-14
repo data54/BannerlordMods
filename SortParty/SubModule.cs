@@ -27,16 +27,21 @@ namespace SortParty
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
 
-            InformationManager.DisplayMessage(new InformationMessage("Loaded SortParty. Press CTRL+SHIFT+S in Party Screen to sort, CTRL+SHIFT+R to upgrade/recruit sort", Color.FromUint(4282569842U)));
-            //Just here to trigger file generation if needed
+            InformationManager.DisplayMessage(new InformationMessage("Loaded SortParty. Press CTRL+SHIFT+S in Party Screen to sort, CTRL+SHIFT+R to upgrade/recruit sort, CTRL+SHIFT+(Minus) to cycle sort types", Color.FromUint(4282569842U)));
+            if(!string.IsNullOrEmpty(SortPartySettings.Settings.NewFileMessage))
+            {
+                InformationManager.DisplayMessage(new InformationMessage(SortPartySettings.Settings.NewFileMessage, Color.FromUint(4282569842U)));
+            }
+        }
+
+        bool showFileCreateMessage = false;
+        protected override void OnSubModuleLoad()
+        {
             enableHotkey = SortPartySettings.Settings.EnableHotkey;
             enableAutoSort = SortPartySettings.Settings.EnableAutoSort;
             enableRecruitUpgradeSort = SortPartySettings.Settings.EnableRecruitUpgradeSortHotkey;
             enableSortTypeCycleHotkey = SortPartySettings.Settings.EnableSortTypeCycleHotkey;
-        }
 
-        protected override void OnSubModuleLoad()
-        {
             base.OnSubModuleLoad();
             if (enableAutoSort)
             {
