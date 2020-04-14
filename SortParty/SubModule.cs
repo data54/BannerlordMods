@@ -72,7 +72,7 @@ namespace SortParty
                     {
                         var diff = (DateTime.Now.Ticks - lastHotkeyExecute) / TimeSpan.TicksPerMillisecond;
 
-                        //Prevent the key from triggering more than once per quarter second
+                        //Prevent the key from triggering more than once per tenth of a second
                         if (diff < 100)
                         {
                             return;
