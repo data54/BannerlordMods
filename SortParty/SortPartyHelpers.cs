@@ -103,48 +103,56 @@ namespace SortParty
             return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
         }
 
-        public static MBBindingList<PartyCharacterVM> SortVMTroops(MBBindingList<PartyCharacterVM> input, bool isPrisoners=false)
+        public static MBBindingList<PartyCharacterVM> SortVMTroops(MBBindingList<PartyCharacterVM> input, bool sortRecruitUpgrade = false)
         {
             var order = SortType.TierDesc;
-            List<PartyCharacterVM> sortedList=null;
-            switch (order)
+            List<PartyCharacterVM> sortedList = null;
+
+            if (sortRecruitUpgrade)
             {
-                case SortType.TierDesc:
-                    sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                    break;
-                case SortType.TierAsc:
-                    sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                    break;
-                case SortType.TierDescType:
-                    sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.Character.Tier).ThenBy(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Name.ToString()).ToList();
-                    break;
-                case SortType.TierAscType:
-                    sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Tier).ThenBy(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Name.ToString()).ToList();
-                    break;
-                case SortType.MountRangeTierDesc:
-                    sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                    break;
-                case SortType.MountRangeTierAsc:
-                    sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                    break;
-                case SortType.CultureTierDesc:
-                    sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Culture.Name.ToString()).ThenByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                    break;
-                case SortType.CultureTierAsc:
-                    sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Culture.Name.ToString()).ThenBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
-                    break;
+                sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.IsTroopRecruitable || (x.IsUpgrade1Available && !x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && !x.IsUpgrade2Insufficient)).ThenByDescending(x=>(x.IsUpgrade1Available && x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && x.IsUpgrade2Insufficient)).ThenByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+            }
+            else
+            {
+                switch (order)
+                {
+                    case SortType.TierDesc:
+                        sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                        break;
+                    case SortType.TierAsc:
+                        sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                        break;
+                    case SortType.TierDescType:
+                        sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => x.Character.Tier).ThenBy(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Name.ToString()).ToList();
+                        break;
+                    case SortType.TierAscType:
+                        sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Tier).ThenBy(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Name.ToString()).ToList();
+                        break;
+                    case SortType.MountRangeTierDesc:
+                        sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                        break;
+                    case SortType.MountRangeTierAsc:
+                        sortedList = input.Where(x => !x.IsHero).OrderByDescending(x => IsMountedUnit(x.Character)).ThenBy(x => IsRangedUnit(x.Character)).ThenBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                        break;
+                    case SortType.CultureTierDesc:
+                        sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Culture.Name.ToString()).ThenByDescending(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                        break;
+                    case SortType.CultureTierAsc:
+                        sortedList = input.Where(x => !x.IsHero).OrderBy(x => x.Character.Culture.Name.ToString()).ThenBy(x => x.Character.Tier).ThenBy(x => x.Character.Name.ToString()).ToList();
+                        break;
+                }
             }
 
             if (sortedList != null)
             {
                 var output = new MBBindingList<PartyCharacterVM>();
 
-                foreach(var hero in input.Where(x=>x.IsHero))
+                foreach (var hero in input.Where(x => x.IsHero))
                 {
                     output.Add(hero);
                 }
 
-                foreach(var troop in sortedList)
+                foreach (var troop in sortedList)
                 {
                     output.Add(troop);
                 }

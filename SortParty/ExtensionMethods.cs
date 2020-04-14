@@ -13,7 +13,7 @@ namespace SortParty
 {
     internal static class ExtensionMethods
     {
-        public static void SortTroops(this PartyVM partyVm, bool updateUI = false)
+        public static void SortTroops(this PartyVM partyVm, bool sortRecruitUpgrade = false)
         {
             try
             {
@@ -22,23 +22,13 @@ namespace SortParty
                 if (refreshPartyCall == null) return;
 
 
-                partyVm.MainPartyTroops = SortPartyHelpers.SortVMTroops(partyVm.MainPartyTroops);
-                partyVm.MainPartyPrisoners = SortPartyHelpers.SortVMTroops(partyVm.MainPartyPrisoners);
+                partyVm.MainPartyTroops = SortPartyHelpers.SortVMTroops(partyVm.MainPartyTroops, sortRecruitUpgrade);
+                partyVm.MainPartyPrisoners = SortPartyHelpers.SortVMTroops(partyVm.MainPartyPrisoners, sortRecruitUpgrade);
 
-                partyVm.OtherPartyTroops = SortPartyHelpers.SortVMTroops(partyVm.OtherPartyTroops);
-                partyVm.OtherPartyPrisoners = SortPartyHelpers.SortVMTroops(partyVm.OtherPartyPrisoners);
+                partyVm.OtherPartyTroops = SortPartyHelpers.SortVMTroops(partyVm.OtherPartyTroops, sortRecruitUpgrade);
+                partyVm.OtherPartyPrisoners = SortPartyHelpers.SortVMTroops(partyVm.OtherPartyPrisoners, sortRecruitUpgrade);
 
                 refreshPartyCall.Invoke(partyVm, new object[0] { });
-
-
-                //var partyScreenLogicField = partyVm.GetType().GetField("_partyScreenLogic", BindingFlags.Instance | BindingFlags.NonPublic);
-
-                //if(partyScreenLogicField!=null)
-                //{
-                //    var logic = partyScreenLogicField.GetValue(partyVm) as PartyScreenLogic;
-
-
-                //}
             }
             catch(Exception ex)
             {

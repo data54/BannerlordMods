@@ -12,17 +12,34 @@ namespace SortParty
 {
     public class SortPartySettings
     {
+        const string filePath = "..\\..\\Modules\\SortParty\\ModuleData\\SortPartySettings.xml";
+        const int version = 3;
+
         public int? Version { get; set; }
         public bool EnableHotkey { get; set; }
+        public bool EnableRecruitUpgradeSortHotkey { get; set; }
         public bool EnableAutoSort { get; set; }
 
         public SortType SortOrder { get; set; }
 
 
-        const string filePath = "..\\..\\Modules\\SortParty\\ModuleData\\SortPartySettings.xml";
-        const int version = 2;
+        [XmlIgnore]
+        public static XmlSerializer Serializer
+        {
+            get
+            {
+                if (_serializer == null)
+                {
+                    _serializer = new XmlSerializer(typeof(SortPartySettings));
+                }
+                return _serializer;
+            }
+        }
+        static XmlSerializer _serializer;
+
 
         private static SortPartySettings _settings;
+        [XmlIgnore]
         public static SortPartySettings Settings
         {
             get
@@ -42,6 +59,7 @@ namespace SortParty
         public SortPartySettings()
         {
             EnableHotkey = true;
+            EnableRecruitUpgradeSortHotkey = true;
             EnableAutoSort = true;
             Version = version;
             SortOrder = SortType.TierDesc;
@@ -55,12 +73,11 @@ namespace SortParty
             }
             else
             {
-                var serializer = new XmlSerializer(typeof(SortPartySettings));
                 SortPartySettings settings;
 
                 using (FileStream fs = new FileStream(filePath, FileMode.Open))
                 {
-                    settings = serializer.Deserialize(fs) as SortPartySettings;
+                    settings = Serializer.Deserialize(fs) as SortPartySettings;
                 }
 
                 if (settings.Version != version)
@@ -95,7 +112,6 @@ namespace SortParty
                 settings.Version = version;
             }
 
-            var serializer = new XmlSerializer(typeof(SortPartySettings));
 
             var saveDirectory = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(saveDirectory))
@@ -106,7 +122,7 @@ namespace SortParty
 
             using (var fs = new FileStream(filePath, FileMode.Create))
             {
-                serializer.Serialize(fs, settings);
+                Serializer.Serialize(fs, settings);
             }
 
             if(newFileGenerated)
