@@ -143,14 +143,68 @@ namespace SortParty
                         .ThenByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
                         .ThenByDescending(x => x.Troop.Tier)
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
+                case SortType.Custom:
+                    return flattenedRoster
+                        .OrderBy(x => GetSortFieldValue(x, SortPartySettings.Settings.CustomSortOrderField1), new CustomComparer(SortPartySettings.Settings.CustomSortOrderField1))
+                        .ThenBy(x => GetSortFieldValue(x, SortPartySettings.Settings.CustomSortOrderField2), new CustomComparer(SortPartySettings.Settings.CustomSortOrderField2))
+                        .ThenBy(x => GetSortFieldValue(x, SortPartySettings.Settings.CustomSortOrderField3), new CustomComparer(SortPartySettings.Settings.CustomSortOrderField3))
+                        .ThenBy(x => GetSortFieldValue(x, SortPartySettings.Settings.CustomSortOrderField4), new CustomComparer(SortPartySettings.Settings.CustomSortOrderField4))
+                        .ThenBy(x => GetSortFieldValue(x, SortPartySettings.Settings.CustomSortOrderField5), new CustomComparer(SortPartySettings.Settings.CustomSortOrderField5))
+                        .ToList();
             }
 
             return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
         }
 
+        public static string GetSortFieldValue(FlattenedTroopRosterElement element, CustomSortOrder customOrder)
+        {
+            switch (customOrder)
+            {
+                case CustomSortOrder.TierAsc:
+                case CustomSortOrder.TierDesc:
+                    return element.Troop.Tier.ToString();
+                case CustomSortOrder.CultureAsc:
+                case CustomSortOrder.CultureDesc:
+                    return element.Troop.Culture.Name.ToString();
+                case CustomSortOrder.MountedAsc:
+                case CustomSortOrder.MountedDesc:
+                    return element.Troop.IsMounted ? "1" : "0";
+                default:
+                    return "";
+            }
+        }
+
         public static void LogException(string method, Exception ex)
         {
             InformationManager.DisplayMessage(new InformationMessage($"SortParty {method} exception: {ex.Message}"));
+        }
+    }
+
+    public class CustomComparer : IComparer<int>, IComparer<string>, IComparer<bool>
+    {
+        int multiplier = 1;
+
+        public CustomComparer(CustomSortOrder sortOrder)
+        {
+            if (sortOrder.ToString().ToUpper().EndsWith("DESC"))
+            {
+                multiplier = -1;
+            }
+        }
+
+        public int Compare(string x, string y)
+        {
+            return string.Compare(x, y, true) * multiplier;
+        }
+
+        public int Compare(int x, int y)
+        {
+            return x.CompareTo(y) * multiplier;
+        }
+
+        public int Compare(bool x, bool y)
+        {
+            return x.CompareTo(y) * multiplier;
         }
     }
 }

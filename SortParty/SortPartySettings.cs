@@ -22,6 +22,13 @@ namespace SortParty
         public bool EnableAutoSort { get; set; }
         public bool CavalryAboveFootmen { get; set; }
         public bool MeleeAboveArchers { get; set; }
+        public bool Debug { get; set; }
+
+        public CustomSortOrder CustomSortOrderField1 { get; set; }
+        public CustomSortOrder CustomSortOrderField2 { get; set; }
+        public CustomSortOrder CustomSortOrderField3 { get; set; }
+        public CustomSortOrder CustomSortOrderField4 { get; set; }
+        public CustomSortOrder CustomSortOrderField5 { get; set; }
 
 
         public SortType SortOrder { get; set; }
@@ -74,7 +81,15 @@ namespace SortParty
             SortOrder = (SortType) ((intValue + 1) % sortModulus);
 
             CreateUpdateFile(this);
-            InformationManager.DisplayMessage(new InformationMessage($"SortParty sort changed to {SortOrder.ToString()}", Color.FromUint(4282569842U)));
+
+            var newSort = SortOrder.ToString();
+            if(SortOrder== SortType.Custom)
+            {
+                newSort = $"{newSort}({CustomSortOrderField1.ToString()},{CustomSortOrderField2.ToString()},{CustomSortOrderField3.ToString()},{CustomSortOrderField4.ToString()},{CustomSortOrderField5.ToString()})";
+            }
+
+
+            InformationManager.DisplayMessage(new InformationMessage($"SortParty sort changed to {newSort}", Color.FromUint(4282569842U)));
         }
 
         public SortPartySettings()
@@ -178,7 +193,28 @@ namespace SortParty
         CultureTierDesc = 6,
         CultureTierAsc = 7,
         RangeMountTierDesc = 8,
-        RangeMountTierAsc = 9
+        RangeMountTierAsc = 9,
+        Custom = 10
+    }
+
+    public enum CustomSortOrder
+    {
+        None,
+
+        TierAsc,
+        TierDesc,
+
+        MountedAsc,
+        MountedDesc,
+
+        MeleeAsc,
+        MeleeDesc,
+
+        CultureAsc,
+        CultureDesc,
+
+        UnitNameAsc,
+        UnitNameDesc
     }
 }
 
