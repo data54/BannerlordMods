@@ -13,13 +13,15 @@ namespace SortParty
     public class SortPartySettings
     {
         const string filePath = "..\\..\\Modules\\SortParty\\ModuleData\\SortPartySettings.xml";
-        const int version = 3;
+        const int version = 4;
 
         public int? Version { get; set; }
         public bool EnableHotkey { get; set; }
         public bool EnableRecruitUpgradeSortHotkey { get; set; }
         public bool EnableSortTypeCycleHotkey { get; set; }
         public bool EnableAutoSort { get; set; }
+        public bool CavalryAboveFootmen { get; set; }
+        public bool MeleeAboveArchers { get; set; }
 
 
         public SortType SortOrder { get; set; }
@@ -81,6 +83,8 @@ namespace SortParty
             EnableRecruitUpgradeSortHotkey = true;
             EnableAutoSort = true;
             EnableSortTypeCycleHotkey = true;
+            CavalryAboveFootmen = true;
+            MeleeAboveArchers = true;
             Version = version;
             SortOrder = SortType.TierDesc;
         }
@@ -130,6 +134,10 @@ namespace SortParty
                             settings.EnableSortTypeCycleHotkey = true;
                             settings.EnableRecruitUpgradeSortHotkey = true;
                             break;
+                        case 3:
+                            settings.CavalryAboveFootmen = true;
+                            settings.MeleeAboveArchers = true;
+                            break;
                     }
                 }
 
@@ -168,7 +176,9 @@ namespace SortParty
         MountRangeTierDesc = 4,
         MountRangeTierAsc = 5,
         CultureTierDesc = 6,
-        CultureTierAsc = 7
+        CultureTierAsc = 7,
+        RangeMountTierDesc = 8,
+        RangeMountTierAsc = 9
     }
 }
 

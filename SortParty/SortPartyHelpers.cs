@@ -100,29 +100,49 @@ namespace SortParty
             switch (SortPartySettings.Settings.SortOrder)
             {
                 case SortType.TierDesc:
-                    return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
-                    break;
+                    return flattenedRoster.OrderByDescending(x => x.Troop.Tier)
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.TierAsc:
-                    return flattenedRoster.OrderBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
-                    break;
+                    return flattenedRoster.OrderBy(x => x.Troop.Tier)
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.TierDescType:
-                    return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.IsMounted).ThenBy(x => x.Troop.IsArcher).ThenBy(x => x.Troop.Name.ToString()).ToList();
-                    break;
+                    return flattenedRoster.OrderByDescending(x => x.Troop.Tier)
+                        .ThenByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                        .ThenBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.TierAscType:
-                    return flattenedRoster.OrderBy(x => x.Troop.Tier).ThenBy(x => x.Troop.IsMounted).ThenBy(x => x.Troop.IsArcher).ThenBy(x => x.Troop.Name.ToString()).ToList();
-                    break;
+                    return flattenedRoster.OrderBy(x => x.Troop.Tier)
+                        .ThenByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                        .ThenBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.MountRangeTierDesc:
-                    return flattenedRoster.OrderByDescending(x => x.Troop.IsMounted).ThenBy(x => x.Troop.IsArcher).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
-                    break;
+                    return flattenedRoster.OrderByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                        .ThenBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                        .ThenByDescending(x => x.Troop.Tier)
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.MountRangeTierAsc:
-                    return flattenedRoster.OrderByDescending(x => x.Troop.IsMounted).ThenBy(x => x.Troop.IsArcher).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
-                    break;
+                    return flattenedRoster.OrderByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                        .ThenBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                        .ThenBy(x => x.Troop.Tier)
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.CultureTierDesc:
-                    return flattenedRoster.OrderBy(x => x.Troop.Culture.Name.ToString()).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
-                    break;
+                    return flattenedRoster.OrderBy(x => x.Troop.Culture.Name.ToString())
+                        .ThenByDescending(x => x.Troop.Tier)
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.CultureTierAsc:
-                    return flattenedRoster.OrderBy(x => x.Troop.Culture.Name.ToString()).ThenBy(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
-                    break;
+                    return flattenedRoster.OrderBy(x => x.Troop.Culture.Name.ToString())
+                        .ThenBy(x => x.Troop.Tier)
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
+                case SortType.RangeMountTierDesc:
+                    return flattenedRoster.OrderBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                        .ThenByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                        .ThenByDescending(x => x.Troop.Tier)
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
+                case SortType.RangeMountTierAsc:
+                    return flattenedRoster.OrderBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                        .ThenByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                        .ThenByDescending(x => x.Troop.Tier)
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
             }
 
             return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
