@@ -176,12 +176,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomComparer.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Helpers\GenericHelpers.cs" />
+    <Compile Include="PartyController.cs" />
     <Compile Include="Patches\PartyVMUpdatePatch.cs" />
     <Compile Include="Patches\PartyScreenLogicProcessCommandPatch.cs" />
     <Compile Include="Patches\PartyScreenLogicInitializePatch.cs" />
-    <Compile Include="SortPartySettings.cs" />
-    <Compile Include="SortPartyHelpers.cs" />
+    <Compile Include="Settings\SortPartySettings.cs" />
+    <Compile Include="Helpers\SortPartyHelpers.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -195,6 +198,9 @@
     <None Include="SubModule.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Widgets\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

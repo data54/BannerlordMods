@@ -16,10 +16,10 @@ namespace SortParty
 
         public static void SortPartyScreen(PartyVM partyVm, bool sortRecruitUpgrade = false)
         {
-            try
+            try 
             {
-                var refreshPartyCall = partyVm.GetType().GetMethod("RefreshPartyInformation", BindingFlags.Instance | BindingFlags.NonPublic);
-                var initializeTroopListsCall = partyVm.GetType().GetMethod("InitializeTroopLists", BindingFlags.Instance | BindingFlags.NonPublic);
+                var refreshPartyCall = GenericHelpers.GetPrivateMethod("RefreshPartyInformation", partyVm);
+                var initializeTroopListsCall = GenericHelpers.GetPrivateMethod("InitializeTroopLists", partyVm);
                 var partyLogicField = partyVm.GetType().GetField("_partyScreenLogic", BindingFlags.Instance | BindingFlags.NonPublic);
 
                 if (refreshPartyCall == null || initializeTroopListsCall == null || partyLogicField == null) return;
@@ -183,34 +183,6 @@ namespace SortParty
         public static void LogException(string method, Exception ex)
         {
             InformationManager.DisplayMessage(new InformationMessage($"SortParty {method} exception: {ex.Message}"));
-        }
-    }
-
-    public class CustomComparer : IComparer<int>, IComparer<string>, IComparer<bool>
-    {
-        int multiplier = 1;
-
-        public CustomComparer(CustomSortOrder sortOrder)
-        {
-            if (sortOrder.ToString().ToUpper().EndsWith("DESC"))
-            {
-                multiplier = -1;
-            }
-        }
-
-        public int Compare(string x, string y)
-        {
-            return string.Compare(x, y, true) * multiplier;
-        }
-
-        public int Compare(int x, int y)
-        {
-            return x.CompareTo(y) * multiplier;
-        }
-
-        public int Compare(bool x, bool y)
-        {
-            return x.CompareTo(y) * multiplier;
         }
     }
 }
