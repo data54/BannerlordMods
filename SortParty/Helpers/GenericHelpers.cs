@@ -17,7 +17,16 @@ namespace SortParty
 
         public static MethodInfo GetMethod<T>(string methodName, T reflectionObject, BindingFlags bindingFlags)
         {
-            return reflectionObject.GetType().GetMethod(methodName, bindingFlags);
+            if (reflectionObject == null) return null;
+            try
+            {
+                return reflectionObject.GetType()?.GetMethod(methodName, bindingFlags);
+            }
+            catch (Exception ex)
+            {
+                GenericHelpers.LogException($"GetMethod({typeof(T)?.ToString()})", ex);
+            }
+            return null;
         }
 
 
@@ -27,9 +36,10 @@ namespace SortParty
         }
         public static T GetField<T, R>(R reflectionObject, string fieldName, BindingFlags bindingFlags) where T : class
         {
+            if (reflectionObject == null) return null;
             try
             {
-                var fieldInfo = reflectionObject.GetType().GetField(fieldName, bindingFlags);
+                var fieldInfo = reflectionObject?.GetType().GetField(fieldName, bindingFlags);
                 return fieldInfo?.GetValue(reflectionObject) as T;
             }
             catch (Exception ex)

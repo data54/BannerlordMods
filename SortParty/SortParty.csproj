@@ -180,9 +180,7 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Helpers\GenericHelpers.cs" />
     <Compile Include="PartyController.cs" />
-    <Compile Include="Patches\PartyVMUpdatePatch.cs" />
-    <Compile Include="Patches\PartyScreenLogicProcessCommandPatch.cs" />
-    <Compile Include="Patches\PartyScreenLogicInitializePatch.cs" />
+    <Compile Include="Patches\PartyVMRefreshValuesPatch.cs" />
     <Compile Include="Settings\SortPartySettings.cs" />
     <Compile Include="Helpers\SortPartyHelpers.cs" />
     <Compile Include="SubModule.cs" />

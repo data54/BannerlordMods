@@ -11,22 +11,16 @@ namespace SortParty
 {
     public class SortPartyHelpers
     {
-        public static void SortPartyScreen(PartyScreenLogic partyScreen, bool sortRecruitUpgrade = false)
+        public static void SortPartyLogic(PartyScreenLogic PartyScreenLogic, PartyVM PartyVM, bool sortRecruitUpgrade, bool rightTroops, bool rightPrisoners, bool leftTroops, bool leftPrisoners)
         {
-            try
-            {
-                //Left Side
-                SortUnits(partyScreen.MemberRosters[0]);
-                SortUnits(partyScreen.PrisonerRosters[0]);
-                //Right Side
-                SortUnits(partyScreen.MemberRosters[1]);
-                SortUnits(partyScreen.PrisonerRosters[1]);
-            }
-            catch (Exception ex)
-            {
-                GenericHelpers.LogException("SortPartyScreen", ex);
-            }
+            //Left Side
+            if (leftTroops) SortPartyHelpers.SortUnits(PartyScreenLogic.MemberRosters[0], sortRecruitUpgrade, PartyVM?.OtherPartyTroops);
+            if (leftPrisoners) SortUnits(PartyScreenLogic.PrisonerRosters[0], sortRecruitUpgrade, PartyVM?.OtherPartyPrisoners);
+            //Right Side
+            if (rightTroops) SortUnits(PartyScreenLogic.MemberRosters[1], sortRecruitUpgrade, PartyVM?.MainPartyTroops);
+            if (rightPrisoners) SortPartyHelpers.SortUnits(PartyScreenLogic.PrisonerRosters[1], sortRecruitUpgrade, PartyVM?.MainPartyPrisoners);
         }
+
         public static void SortUnits(TroopRoster input, bool sortRecruitUpgrade = false, MBBindingList<PartyCharacterVM> partyVmUnits = null)
         {
             if (input == null || input.Count == 0)

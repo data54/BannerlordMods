@@ -18,7 +18,7 @@ namespace SortParty
         {
             get
             {
-                if (_partyController == null)
+                if (_partyController == null || _partyController?.PartyScreen?.IsActive != true)
                 {
                     _partyController = new PartyController();
                 }
@@ -26,49 +26,110 @@ namespace SortParty
             }
         }
 
-        public GauntletPartyScreen PartyScreen { get; set; }
-        public PartyVM PartyVM { get; set; }
-        public PartyScreenLogic PartyScreenLogic { get; set; }
+        private GauntletPartyScreen _partyScreen;
+        private GauntletPartyScreen PartyScreen
+        {
+            get
+            {
+                if (_partyScreen == null)
+                {
+                    _partyScreen = ScreenManager.TopScreen as GauntletPartyScreen;
+                }
+                return _partyScreen;
+            }
+        }
+
+        private PartyVM _partyVM;
+        public PartyVM PartyVM
+        {
+            get
+            {
+                if (_partyVM == null)
+                {
+                    _partyVM = PartyScreen?.GetPartyVM();
+                }
+                return _partyVM;
+            }
+            set
+            {
+                _partyVM = value;
+            }
+        }
+
+        private PartyScreenLogic _partyScreenLogic;
+        private PartyScreenLogic PartyScreenLogic
+        {
+            get
+            {
+                if (_partyScreenLogic == null)
+                {
+                    _partyScreenLogic = PartyVM?.GetPartyScreenLogic();
+                }
+                return _partyScreenLogic;
+            }
+        }
+
         #region Methods
-        private MethodInfo RefreshPartyInformationMethod { get; set; }
-        private MethodInfo InitializeTroopListsMethod { get; set; }
+
+        private MethodInfo _refreshPartyInformationMethod;
+        private MethodInfo RefreshPartyInformationMethod
+        {
+            get
+            {
+                if (_refreshPartyInformationMethod == null)
+                {
+                    _refreshPartyInformationMethod= PartyVM?.GetRefreshPartyInformationMethod();
+                }
+                return _refreshPartyInformationMethod;
+            }
+        }
+
+
+        private MethodInfo _initializeTroopListsMethod;
+        private MethodInfo InitializeTroopListsMethod
+        {
+            get
+            {
+                if (_initializeTroopListsMethod == null)
+                {
+                    _initializeTroopListsMethod = PartyVM?.GetInitializeTroopListsMethod();
+                }
+                return _initializeTroopListsMethod;
+            }
+        }
+
         #endregion Methods
 
-        public bool Validate()
+        public bool Validate(bool includeUI)
         {
-            return !( PartyScreen == null 
-                || PartyVM == null 
-                || PartyScreenLogic == null 
-                || RefreshPartyInformationMethod == null 
-                || InitializeTroopListsMethod == null);
+            return !(PartyScreen == null
+                || PartyVM == null
+                || PartyScreenLogic == null
+                || (includeUI && (RefreshPartyInformationMethod == null || InitializeTroopListsMethod == null)));
         }
 
 
         public PartyController()
         {
-            PartyScreen = ScreenManager.TopScreen as GauntletPartyScreen;
-
-            PartyVM = PartyScreen?.GetPartyVM();
-            PartyScreenLogic = PartyVM?.GetPartyScreenLogic();
-            RefreshPartyInformationMethod = PartyVM?.GetRefreshPartyInformationMethod();
-            InitializeTroopListsMethod = PartyVM.GetInitializeTroopListsMethod();
-
+            GenericHelpers.LogDebug("PartyController.Constructor", "Party Screen Generated");
         }
 
-        public void SortPartyScreen(bool sortRecruitUpgrade = false)
+        public void SortPartyScreen(bool sortRecruitUpgrade = false,
+            bool updateUI = true, bool rightTroops = true,
+            bool rightPrisoners = true, bool leftTroops = true, bool leftPrisoners = true)
         {
             try
             {
-                if (!Validate()) return;
+                if (!Validate(updateUI))
+                {
+                    GenericHelpers.LogDebug("SortPartyScreen", "Sort validation failed");
+                    return;
+                }
+                GenericHelpers.LogDebug("SortPartyScreen", "Sort Called");
 
-                //Left Side
-                SortPartyHelpers.SortUnits(PartyScreenLogic.MemberRosters[0], sortRecruitUpgrade, PartyVM.OtherPartyTroops);
-                SortPartyHelpers.SortUnits(PartyScreenLogic.PrisonerRosters[0], sortRecruitUpgrade, PartyVM.OtherPartyPrisoners);
-                //Right Side
-                SortPartyHelpers.SortUnits(PartyScreenLogic.MemberRosters[1], sortRecruitUpgrade, PartyVM.MainPartyTroops);
-                SortPartyHelpers.SortUnits(PartyScreenLogic.PrisonerRosters[1], sortRecruitUpgrade, PartyVM.MainPartyPrisoners);
+                SortPartyHelpers.SortPartyLogic(PartyScreenLogic, PartyVM, sortRecruitUpgrade, rightTroops, rightPrisoners, leftTroops, leftPrisoners);
 
-                InitializeTroopLists();
+                if (updateUI) InitializeTroopLists();
             }
             catch (Exception ex)
             {

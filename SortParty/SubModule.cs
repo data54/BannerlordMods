@@ -89,11 +89,6 @@ namespace SortParty
                             SortPartySettings.Settings.CycleSortType();
                         }
 
-                        var partyScreen = (GauntletPartyScreen)ScreenManager.TopScreen;
-                        partyVM = partyScreen.GetPartyVM();
-
-                        if (partyVM == null) return;
-
                         //SortHotkey
                         if (InputKey.S.IsDown() && enableHotkey)
                         {
