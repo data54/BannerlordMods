@@ -9,6 +9,8 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Engine.Screens;
+using TaleWorlds.GauntletUI;
+using TaleWorlds.GauntletUI.Data;
 
 namespace SortParty
 {
@@ -40,6 +42,16 @@ namespace SortParty
             return GenericHelpers.GetPrivateMethod("InitializeTroopLists", partyVM);
         }
 
-
+        public static void UpdateBrushesPublic(this Widget widget, float dt)
+        {
+            try
+            {
+                GenericHelpers.GetPrivateMethod<Widget>("UpdateBrushes", widget)?.Invoke(widget, new object[] { dt });
+            }
+            catch (Exception ex)
+            {
+                GenericHelpers.LogException("UpdateBrushesPublic", ex);
+            }
+        }
     }
 }

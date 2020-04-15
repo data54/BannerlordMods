@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using TaleWorlds.Core;
+using TaleWorlds.GauntletUI;
+using TaleWorlds.GauntletUI.Data;
 
 namespace SortParty
 {
@@ -61,5 +65,76 @@ namespace SortParty
                 InformationManager.DisplayMessage(new InformationMessage($"SortParty({method}) Debug: {message}"));
             }
         }
+
+
+        public static GauntletView CreateGauntletView(GauntletMovie gauntletMovie, GauntletView parent, Widget target)
+        {
+            try
+            {
+                var flags = BindingFlags.NonPublic | BindingFlags.Instance;
+                var contructor = typeof(GauntletView).GetConstructors(flags)?.First();
+                var view = contructor?.Invoke(new object[] { gauntletMovie, parent, target }) as GauntletView;
+
+
+                return view;
+            }
+            catch (Exception ex)
+            {
+                LogException("CreateGauntletView", ex);
+            }
+            return null;
+        }
+
+        public static string ConvertObjectToXML<T>(T obj)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+
+            using (StringWriter sr = new StringWriter())
+            {
+                serializer.Serialize(sr, obj);
+                return sr.ToString();
+            }
+            return null;
+        }
+
+
+
+        public static void RecursiveCompareObjects<T>(T object1, T object2)
+        {
+            List<string> results = CompareObjects(object1, object2);
+
+        }
+
+        private static List<string> CompareObjects<T>(T object1, T object2, string property = "root")
+        {
+            List<string> results = new List<string>();
+            if (object1 == null || object2 == null)
+            {
+                return results;
+            }
+            var properties = object1.GetType().GetProperties();
+            foreach (var prop in properties)
+            {
+                var p1 = prop.GetValue(object1);
+                var p2 = prop.GetValue(object2);
+                if ((p1==null && p2!=null)|| (p1 != null && p2 == null) || !p1.Equals(p2))
+                {
+                    var propertyString = $"{property}.{prop.Name}";
+                    results.Add($"{propertyString} not equal: {p1.ToString()} vs {p2.ToString()}");
+
+                    if (object1 != null && object2 != null)
+                    {
+                        results.AddRange(CompareObjects(p1, p2, propertyString));
+                    }
+                }
+
+            }
+
+
+            return results;
+        }
+
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using SandBox.GauntletUI;
+﻿using SandBox;
+using SandBox.GauntletUI;
 using SortParty.Widgets;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,9 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Engine.Screens;
+using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
+using TaleWorlds.GauntletUI.PrefabSystem;
 
 namespace SortParty
 {
@@ -131,22 +134,31 @@ namespace SortParty
             GenericHelpers.LogDebug("PartyController.Constructor", "Party Controller Generated");
         }
 
+        static GauntletView testView;
         public static void AddPartyWidgets(GauntletLayer layer)
         {
             try
             {
-                var currentScreenInfo = layer._moviesAndDatasources.FirstOrDefault();
+                //var currentScreenInfo = layer._moviesAndDatasources.FirstOrDefault();
+                //var movie = currentScreenInfo?.Item1;
 
-                var mainPartyPanel = currentScreenInfo?.Item1?.RootView.Children.Where(x => x?.Target?.Id == "MainPartyPanel").First();
+                //var mainPartyPanel = movie?.RootView?.Children?.Where(x => x?.Target?.Id == "MainPartyPanel").FirstOrDefault();
 
-                var upgradeButton = mainPartyPanel?.Children?.Where(x => x?.Target?.Id == "UpgradeAllTroopsButton").First();
+                //if (currentScreenInfo.Item1 != null && currentScreenInfo.Item2 != null)
+                //{
+                //    var upgradeWidget = new UpgradeAllTroopsWidget(layer._gauntletUIContext, movie);
+                //    upgradeWidget.UpdateBrushesPublic(SubModule.lastTick);
+                //    //upgradeWidget.BrushRenderer = mainPartyPanel.Target.BrushRenderer;
 
-                if (currentScreenInfo.Item1 != null && currentScreenInfo.Item2 != null)
-                {
+                //    var gView = GenericHelpers.CreateGauntletView(currentScreenInfo.Item1, mainPartyPanel, upgradeWidget);
+                //    mainPartyPanel.AddChild(gView);
 
-                    //var widgetView = new GauntletView(currentScreenInfo.Item1, mainPartyPanel, new UpgradeAllTroopsWidget());
+                //    testView = mainPartyPanel.Children[1].Children[3].Children.FirstOrDefault();
 
-                }
+
+                //    movie.RootView.RefreshBindingWithChildren();
+                //    layer._gauntletUIContext.LateUpdate(DateTime.Now.Ticks);
+                //}
 
             }
             catch (Exception ex)
@@ -161,12 +173,18 @@ namespace SortParty
         {
             try
             {
+
                 if (!Validate(updateUI))
                 {
                     GenericHelpers.LogDebug("SortPartyScreen", "Sort validation failed");
                     return;
                 }
                 GenericHelpers.LogDebug("SortPartyScreen", "Sort Called");
+
+                var movie = GauntletLayer._moviesAndDatasources.First().Item1;
+                var mainPartyPanel = movie?.RootView?.Children?.Where(x => x?.Target?.Id == "MainPartyPanel").FirstOrDefault();
+                var upgradeallbutton = mainPartyPanel.Children.Where(x => x.Target.Id == "UpgradeAllTroopsButton").FirstOrDefault();
+                var upgradeallbutton2 = mainPartyPanel.Children.Where(x => x.Target.Id == "UpgradeAllTroopsButton2").FirstOrDefault();
 
                 SortPartyHelpers.SortPartyLogic(PartyScreenLogic, PartyVM, sortRecruitUpgrade, rightTroops, rightPrisoners, leftTroops, leftPrisoners);
 
@@ -180,7 +198,29 @@ namespace SortParty
 
         public void UpgradeAllTroops()
         {
+            var upgrades = PartyVM.MainPartyTroops
+                    .Where(x => !x.IsHero
+                    && !(x.IsUpgrade1Exists && x.IsUpgrade2Exists)
+                    && ((x.IsUpgrade1Available && !x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && !x.IsUpgrade2Insufficient))).ToList();
 
+            //var partyScreenLogicTroops = PartyScreenLogic.MemberRosters[(int)PartyScreenLogic.PartyRosterSide.Right].ToList();
+
+
+            foreach (var troop in upgrades)
+            {
+                PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
+                if (troop.NumOfTarget1UpgradesAvailable > 0)
+                {
+                    command.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, troop.NumOfTarget1UpgradesAvailable, PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1);
+                }
+                else
+                {
+                    command.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, troop.NumOfTarget2UpgradesAvailable, PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget2);
+                }
+                PartyScreenLogic.AddCommand(command);
+            }
+
+            SortPartyScreen();
         }
 
         public void InitializeTroopLists()
@@ -191,6 +231,13 @@ namespace SortParty
         public void RefreshPartyInformation()
         {
             RefreshPartyInformationMethod.Invoke(PartyVM, new object[0] { });
+        }
+
+
+        public void TriggerGauntletViewOnEventFired(GauntletView view)
+        {
+            //var refreshCall = GenericHelpers.GetPrivateMethod("OnEventFired", view);
+            //refreshCall.Invoke(view, new[] { view.Target });
         }
 
     }
