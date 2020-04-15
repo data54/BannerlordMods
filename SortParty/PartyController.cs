@@ -203,9 +203,6 @@ namespace SortParty
                     && !(x.IsUpgrade1Exists && x.IsUpgrade2Exists)
                     && ((x.IsUpgrade1Available && !x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && !x.IsUpgrade2Insufficient))).ToList();
 
-            //var partyScreenLogicTroops = PartyScreenLogic.MemberRosters[(int)PartyScreenLogic.PartyRosterSide.Right].ToList();
-
-
             foreach (var troop in upgrades)
             {
                 PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
