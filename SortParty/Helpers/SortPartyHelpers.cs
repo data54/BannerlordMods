@@ -11,36 +11,6 @@ namespace SortParty
 {
     public class SortPartyHelpers
     {
-        private static SortPartySettings Settings;
-
-
-        public static void SortPartyScreen(PartyVM partyVm, bool sortRecruitUpgrade = false)
-        {
-            try 
-            {
-                var refreshPartyCall = partyVm.GetRefreshPartyInformationMethod();
-                var initializeTroopListsCall = partyVm.GetInitializeTroopListsMethod();
-                var partyLogic = partyVm.GetPartyScreenLogic();
-
-                if (refreshPartyCall == null || initializeTroopListsCall == null || partyLogic == null) return;
-
-
-                //Left Side
-                SortUnits(partyLogic.MemberRosters[0], sortRecruitUpgrade, partyVm.OtherPartyTroops);
-                SortUnits(partyLogic.PrisonerRosters[0], sortRecruitUpgrade, partyVm.OtherPartyPrisoners);
-                //Right Side
-                SortUnits(partyLogic.MemberRosters[1], sortRecruitUpgrade, partyVm.MainPartyTroops);
-                SortUnits(partyLogic.PrisonerRosters[1], sortRecruitUpgrade, partyVm.MainPartyPrisoners);
-
-                initializeTroopListsCall.Invoke(partyVm, new object[0] { });
-            }
-            catch (Exception ex)
-            {
-                GenericHelpers.LogException("SortPartyScreen", ex);
-            }
-        }
-
-
         public static void SortPartyScreen(PartyScreenLogic partyScreen, bool sortRecruitUpgrade = false)
         {
             try

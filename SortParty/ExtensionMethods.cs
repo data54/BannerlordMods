@@ -13,11 +13,6 @@ namespace SortParty
 {
     internal static class ExtensionMethods
     {
-        public static void SortTroops(this PartyVM partyVm, bool sortRecruitUpgrade = false)
-        {
-            SortPartyHelpers.SortPartyScreen(partyVm, sortRecruitUpgrade);
-        }
-
         public static PartyVM GetPartyVM(this GauntletPartyScreen partyScreen)
         {
             return GenericHelpers.GetPrivateField<PartyVM, GauntletPartyScreen>(partyScreen, "_dataSource");

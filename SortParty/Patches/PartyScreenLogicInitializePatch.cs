@@ -24,8 +24,10 @@ namespace SortParty.Patches
       int lefPartySizeLimit,
       TextObject header = null)
         {
-            SortPartyHelpers.SortPartyScreen(__instance);
-            
+            if (SortPartySettings.Settings.EnableAutoSort) //makes testing in debug easier since it won't require you restart the program, won't be patched otherwise
+            {
+                SortPartyHelpers.SortPartyScreen(__instance);
+            }            
         }
 
 

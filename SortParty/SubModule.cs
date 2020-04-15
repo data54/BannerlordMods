@@ -43,7 +43,7 @@ namespace SortParty
             enableSortTypeCycleHotkey = SortPartySettings.Settings.EnableSortTypeCycleHotkey;
 
             base.OnSubModuleLoad();
-            if (enableAutoSort)
+            if (enableAutoSort && SortPartySettings.Settings.Debug)
             {
                 try
                 {
@@ -98,12 +98,12 @@ namespace SortParty
                         if (InputKey.S.IsDown() && enableHotkey)
                         {
                             key = "S";
-                            SortUnits();
+                            PartyController.CurrentInstance.SortPartyScreen();
                         }//RecruitSort
                         else if (InputKey.R.IsDown() && enableRecruitUpgradeSort)
                         {
                             key = "R";
-                            SortUnits(true);
+                            PartyController.CurrentInstance.SortPartyScreen(true);
                         }
                         lastHotkeyExecute = DateTime.Now.Ticks;
                     }
@@ -113,19 +113,6 @@ namespace SortParty
                     lastHotkeyExecute = DateTime.Now.Ticks;
                     GenericHelpers.LogException($"Tick('{key}')", ex);
                 }
-            }
-        }
-
-
-        private void SortUnits(bool recruitUpgradeSort = false)
-        {
-            try
-            {
-                partyVM.SortTroops(recruitUpgradeSort);
-            }
-            catch (Exception ex)
-            {
-                GenericHelpers.LogException("SortUnits", ex);
             }
         }
     }
