@@ -22,6 +22,7 @@ namespace SortParty
         public bool EnableAutoSort { get; set; }
         public bool CavalryAboveFootmen { get; set; }
         public bool MeleeAboveArchers { get; set; }
+        public bool EnableUIChanges { get; set; }
         public bool Debug { get; set; }
 
         public CustomSortOrder CustomSortOrderField1 { get; set; }

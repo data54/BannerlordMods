@@ -27,7 +27,7 @@ namespace SortParty
         }
 
         private GauntletPartyScreen _partyScreen;
-        private GauntletPartyScreen PartyScreen
+        public GauntletPartyScreen PartyScreen
         {
             get
             {
@@ -111,7 +111,7 @@ namespace SortParty
 
         public PartyController()
         {
-            GenericHelpers.LogDebug("PartyController.Constructor", "Party Screen Generated");
+            GenericHelpers.LogDebug("PartyController.Constructor", "Party Controller Generated");
         }
 
         public void SortPartyScreen(bool sortRecruitUpgrade = false,
@@ -135,6 +135,11 @@ namespace SortParty
             {
                 GenericHelpers.LogException("SortPartyScreen", ex);
             }
+        }
+
+        public void UpgradeAllTroops()
+        {
+
         }
 
         public void InitializeTroopLists()
