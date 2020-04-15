@@ -20,21 +20,23 @@ namespace SortParty
 
         public static PartyVM GetPartyVM(this GauntletPartyScreen partyScreen)
         {
-            try
-            {
-                var field = partyScreen.GetType().GetField("_dataSource", BindingFlags.Instance | BindingFlags.NonPublic);
-                if (field == null)
-                {
-                    return null;
-                }
-                return field.GetValue(partyScreen) as PartyVM;
-            }
-            catch (Exception ex)
-            {
-                SortPartyHelpers.LogException("GetPartyVM", ex);
-            }
+            return GenericHelpers.GetPrivateField<PartyVM, GauntletPartyScreen>(partyScreen, "_dataSource");
+        }
 
-            return null;
+        //PartyVM calls
+        public static PartyScreenLogic GetPartyScreenLogic(this PartyVM partyVM)
+        {
+            return GenericHelpers.GetPrivateField<PartyScreenLogic, PartyVM>(partyVM, "_partyScreenLogic");
+        }
+
+        public static MethodInfo GetRefreshPartyInformationMethod(this PartyVM partyVM)
+        {
+            return GenericHelpers.GetPrivateMethod("RefreshPartyInformation", partyVM);
+        }
+
+        public static MethodInfo GetInitializeTroopListsMethod(this PartyVM partyVM)
+        {
+            return GenericHelpers.GetPrivateMethod("InitializeTroopLists", partyVM);
         }
 
 

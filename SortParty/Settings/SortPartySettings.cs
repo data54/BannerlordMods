@@ -187,7 +187,7 @@ namespace SortParty
             }
             catch (Exception ex)
             {
-                SortPartyHelpers.LogException("SortPartySettings.CreateUpdateFile", ex);
+                GenericHelpers.LogException("SortPartySettings.CreateUpdateFile", ex);
             }
 
             return settings;

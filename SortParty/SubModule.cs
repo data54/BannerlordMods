@@ -111,7 +111,7 @@ namespace SortParty
                 catch (Exception ex)
                 {
                     lastHotkeyExecute = DateTime.Now.Ticks;
-                    SortPartyHelpers.LogException($"Tick('{key}')", ex);
+                    GenericHelpers.LogException($"Tick('{key}')", ex);
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace SortParty
             }
             catch (Exception ex)
             {
-                SortPartyHelpers.LogException("SortUnits", ex);
+                GenericHelpers.LogException("SortUnits", ex);
             }
         }
     }

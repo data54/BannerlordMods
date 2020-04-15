@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Engine.Screens;
 
 namespace SortParty
@@ -13,11 +14,11 @@ namespace SortParty
     public class PartyController
     {
         static PartyController _partyController;
-        public static PartyController CurrentInstance 
-        { 
+        public static PartyController CurrentInstance
+        {
             get
             {
-                if(_partyController==null)
+                if (_partyController == null)
                 {
                     _partyController = new PartyController();
                 }
@@ -26,6 +27,7 @@ namespace SortParty
         }
 
         public GauntletPartyScreen PartyScreen { get; set; }
+        public PartyVM PartyVM { get; set; }
         public PartyScreenLogic PartyScreenLogic { get; set; }
         #region Methods
         public MethodInfo RefreshPartyInformation { get; set; }
@@ -36,10 +38,9 @@ namespace SortParty
         public PartyController()
         {
             PartyScreen = ScreenManager.TopScreen as GauntletPartyScreen;
-            if(PartyScreen==null)
-            {
 
-            }
+            PartyVM = PartyScreen?.GetPartyVM();
+
 
         }
 

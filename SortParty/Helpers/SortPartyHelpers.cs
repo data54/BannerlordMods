@@ -18,13 +18,12 @@ namespace SortParty
         {
             try 
             {
-                var refreshPartyCall = GenericHelpers.GetPrivateMethod("RefreshPartyInformation", partyVm);
-                var initializeTroopListsCall = GenericHelpers.GetPrivateMethod("InitializeTroopLists", partyVm);
-                var partyLogicField = partyVm.GetType().GetField("_partyScreenLogic", BindingFlags.Instance | BindingFlags.NonPublic);
+                var refreshPartyCall = partyVm.GetRefreshPartyInformationMethod();
+                var initializeTroopListsCall = partyVm.GetInitializeTroopListsMethod();
+                var partyLogic = partyVm.GetPartyScreenLogic();
 
-                if (refreshPartyCall == null || initializeTroopListsCall == null || partyLogicField == null) return;
+                if (refreshPartyCall == null || initializeTroopListsCall == null || partyLogic == null) return;
 
-                var partyLogic = partyLogicField.GetValue(partyVm) as PartyScreenLogic;
 
                 //Left Side
                 SortUnits(partyLogic.MemberRosters[0], sortRecruitUpgrade, partyVm.OtherPartyTroops);
@@ -37,7 +36,7 @@ namespace SortParty
             }
             catch (Exception ex)
             {
-                LogException("SortPartyScreen", ex);
+                GenericHelpers.LogException("SortPartyScreen", ex);
             }
         }
 
@@ -55,7 +54,7 @@ namespace SortParty
             }
             catch (Exception ex)
             {
-                LogException("SortPartyScreen", ex);
+                GenericHelpers.LogException("SortPartyScreen", ex);
             }
         }
         public static void SortUnits(TroopRoster input, bool sortRecruitUpgrade = false, MBBindingList<PartyCharacterVM> partyVmUnits = null)
@@ -141,7 +140,7 @@ namespace SortParty
                 case SortType.RangeMountTierAsc:
                     return flattenedRoster.OrderBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
                         .ThenByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
-                        .ThenByDescending(x => x.Troop.Tier)
+                        .ThenBy(x => x.Troop.Tier)
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.Custom:
                     return flattenedRoster
@@ -180,9 +179,5 @@ namespace SortParty
             }
         }
 
-        public static void LogException(string method, Exception ex)
-        {
-            InformationManager.DisplayMessage(new InformationMessage($"SortParty {method} exception: {ex.Message}"));
-        }
     }
 }
