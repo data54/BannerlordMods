@@ -13,6 +13,7 @@ using TaleWorlds.CampaignSystem.ViewModelCollection;
 using System.Collections.Generic;
 using System.Reflection;
 using TaleWorlds.Library;
+using System.Linq;
 
 namespace SortParty
 {
@@ -28,7 +29,7 @@ namespace SortParty
             base.OnBeforeInitialModuleScreenSetAsRoot();
 
             InformationManager.DisplayMessage(new InformationMessage("Loaded SortParty. Press CTRL+SHIFT+S in Party Screen to sort, CTRL+SHIFT+R to upgrade/recruit sort, CTRL+SHIFT+(Minus) to cycle sort types", Color.FromUint(4282569842U)));
-            if(!string.IsNullOrEmpty(SortPartySettings.Settings.NewFileMessage))
+            if (!string.IsNullOrEmpty(SortPartySettings.Settings.NewFileMessage))
             {
                 InformationManager.DisplayMessage(new InformationMessage(SortPartySettings.Settings.NewFileMessage, Color.FromUint(4282569842U)));
             }
@@ -43,19 +44,16 @@ namespace SortParty
             enableSortTypeCycleHotkey = SortPartySettings.Settings.EnableSortTypeCycleHotkey;
 
             base.OnSubModuleLoad();
-            if (enableAutoSort && SortPartySettings.Settings.Debug)
+            try
             {
-                try
-                {
-                    new Harmony("mod.sortparty").PatchAll();
-                }
-                catch (Exception ex)
-                {
-                    InformationManager.DisplayMessage(new InformationMessage($"Patch Failed {ex.Message}"));
-                }
+                new Harmony("mod.sortparty").PatchAll();
             }
-        }
+            catch (Exception ex)
+            {
+                InformationManager.DisplayMessage(new InformationMessage($"Patch Failed {ex.Message}"));
+            }
 
+        }
 
         PartyVM partyVM;
         long lastHotkeyExecute = 0;

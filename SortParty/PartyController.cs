@@ -1,4 +1,5 @@
 ﻿using SandBox.GauntletUI;
+using SortParty.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
+using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Engine.Screens;
+using TaleWorlds.GauntletUI.Data;
 
 namespace SortParty
 {
@@ -23,6 +26,20 @@ namespace SortParty
                     _partyController = new PartyController();
                 }
                 return _partyController;
+            }
+        }
+
+
+        private GauntletLayer _gauntletLayer;
+        private GauntletLayer GauntletLayer
+        {
+            get
+            {
+                if (_gauntletLayer == null)
+                {
+                    _gauntletLayer = PartyScreen?.GetGauntletLayer();
+                }
+                return _gauntletLayer;
             }
         }
 
@@ -78,7 +95,7 @@ namespace SortParty
             {
                 if (_refreshPartyInformationMethod == null)
                 {
-                    _refreshPartyInformationMethod= PartyVM?.GetRefreshPartyInformationMethod();
+                    _refreshPartyInformationMethod = PartyVM?.GetRefreshPartyInformationMethod();
                 }
                 return _refreshPartyInformationMethod;
             }
@@ -112,6 +129,30 @@ namespace SortParty
         public PartyController()
         {
             GenericHelpers.LogDebug("PartyController.Constructor", "Party Controller Generated");
+        }
+
+        public static void AddPartyWidgets(GauntletLayer layer)
+        {
+            try
+            {
+                var currentScreenInfo = layer._moviesAndDatasources.FirstOrDefault();
+
+                var mainPartyPanel = currentScreenInfo?.Item1?.RootView.Children.Where(x => x?.Target?.Id == "MainPartyPanel").First();
+
+                var upgradeButton = mainPartyPanel?.Children?.Where(x => x?.Target?.Id == "UpgradeAllTroopsButton").First();
+
+                if (currentScreenInfo.Item1 != null && currentScreenInfo.Item2 != null)
+                {
+
+                    //var widgetView = new GauntletView(currentScreenInfo.Item1, mainPartyPanel, new UpgradeAllTroopsWidget());
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public void SortPartyScreen(bool sortRecruitUpgrade = false,

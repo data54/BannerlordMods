@@ -183,6 +183,7 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Helpers\GenericHelpers.cs" />
     <Compile Include="PartyController.cs" />
+    <Compile Include="Patches\Party\GauntletPartyScreenAddWidgetsPatch.cs" />
     <Compile Include="Patches\Party\PartyVMRefreshValuesPatch.cs" />
     <Compile Include="Patches\ScreenBaseAddLayerPatch.cs" />
     <Compile Include="Settings\SortPartySettings.cs" />
@@ -202,9 +203,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="GUI\Brushes\PartyManagerBrush.xml" />
     <Content Include="GUI\Prefabs\Party\PartyScreen.xml" />

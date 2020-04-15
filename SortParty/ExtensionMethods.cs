@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
+using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Engine.Screens;
 
 namespace SortParty
@@ -16,6 +17,11 @@ namespace SortParty
         public static PartyVM GetPartyVM(this GauntletPartyScreen partyScreen)
         {
             return GenericHelpers.GetPrivateField<PartyVM, GauntletPartyScreen>(partyScreen, "_dataSource");
+        }
+
+        public static GauntletLayer GetGauntletLayer(this GauntletPartyScreen partyScreen)
+        {
+            return GenericHelpers.GetPrivateField<GauntletLayer, GauntletPartyScreen>(partyScreen, "_gauntletLayer");
         }
 
         //PartyVM calls
