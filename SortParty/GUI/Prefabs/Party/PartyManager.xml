@@ -4,8 +4,8 @@
     <Constant Name="ButtonGroup.SuggestedHeight" Value="70" />
     <Constant Name="ButtonGroup.RightMargin" Value="0" />
     <Constant Name="ButtonGroup.TopMargin" Value="18" />
-	
-	
+
+
     <Constant Name="Buttons.Margin" Value="5" />
     <Constant Name="Buttons.Width" Value="40" />
     <Constant Name="Buttons.Size" Value="35" />
@@ -15,12 +15,13 @@
 
 
 
-	
-    <Constant Name="UpgradeAllTroopsButtonRightMargin" Value="140" />
-    <Constant Name="RecruitAllButtonRightMargin" Value="100" />
-    <Constant Name="SortButtonRightMargin" Value="60" />
-    <Constant Name="CycleSortButtonRightMargin" Value="20" />
-	
+
+    <Constant Name="SortButtonRightMargin" Value="140" />
+    <Constant Name="CycleSortButtonRightMargin" Value="100" />
+    <Constant Name="UpgradeAllTroopsButtonRightMargin" Value="60" />
+    <Constant Name="RecruitAllButtonRightMargin" Value="20" />
+
+
     <Constant Name="ReloadSettingsButton.Size" Value="20" />
     <Constant Name="ReloadSettingsButton.TopMargin" Value="0" />
     <Constant Name="ReloadSettingsButton.RightMargin" Value="5" />
@@ -61,7 +62,7 @@
         <SortUnitsWidget Id="SortUnitsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                 HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Width"
                                 SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
-                                VerticalAlignment="Center" 
+                                VerticalAlignment="Center"
 								MarginLeft="!Buttons.Margin"
 								MarginRight="!SortButtonRightMargin"
                                 MarginTop="!Buttons.TopMargin" Brush="PartyManager.SortUnits">
@@ -70,7 +71,7 @@
         <CycleUnitSortWidget Id="CycleSortButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                 HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Width"
                                 SuggestedHeight="!Buttons.Height" HorizontalAlignment="Right"
-                                VerticalAlignment="Center" 
+                                VerticalAlignment="Center"
 								MarginLeft="!Buttons.Margin"
 								MarginRight="!CycleSortButtonRightMargin"
                                 MarginTop="!Buttons.TopMargin" Brush="PartyManager.CycleSort">
@@ -79,7 +80,7 @@
         <ReloadSettingsWidget Id="ReloadSettingsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                 HeightSizePolicy="Fixed" SuggestedWidth="!ReloadSettingsButton.Size"
                                 SuggestedHeight="!ReloadSettingsButton.Size" HorizontalAlignment="Right"
-                                VerticalAlignment="Top" 
+                                VerticalAlignment="Top"
 								MarginRight="!ReloadSettingsButton.RightMargin"
                                 MarginTop="!ReloadSettingsButton.TopMargin" Brush="PartyManager.ReloadSettings">
 

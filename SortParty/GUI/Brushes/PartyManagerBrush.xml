@@ -62,10 +62,10 @@
     </Layers>
     <Styles>
       <Style Name="Default">
-        <BrushLayer Name="Default" ColorFactor=".70"/>
+        <BrushLayer Name="Default" ColorFactor=".60"/>
       </Style>
       <Style Name="Hovered">
-        <BrushLayer Name="Default" ColorFactor="1.2" />
+        <BrushLayer Name="Default" ColorFactor="1.0" />
       </Style>
       <Style Name="Pressed">
         <BrushLayer Name="Default" ColorFactor="0.8" />
@@ -84,7 +84,7 @@
         <BrushLayer Name="Default" ColorFactor="1.0"/>
       </Style>
       <Style Name="Hovered">
-        <BrushLayer Name="Default" ColorFactor="1.2" />
+        <BrushLayer Name="Default" ColorFactor="1.9" />
       </Style>
       <Style Name="Pressed">
         <BrushLayer Name="Default" ColorFactor="0.8" />
