@@ -90,7 +90,7 @@ namespace PartyManager
             }
 
 
-            InformationManager.DisplayMessage(new InformationMessage($"SortParty sort changed to {newSort}", Color.FromUint(4282569842U)));
+            InformationManager.DisplayMessage(new InformationMessage($"PartyManager sort changed to {newSort}", Color.FromUint(4282569842U)));
         }
 
         public PartyManagerSettings()
@@ -129,8 +129,8 @@ namespace PartyManager
                     catch(Exception ex)
                     {
                         GenericHelpers.LogException("LoadSettings", ex);
+                        settings = new PartyManagerSettings();
                     }
-                    settings = new PartyManagerSettings();
                 }
 
                 if (settings.Version != version)
@@ -191,12 +191,12 @@ namespace PartyManager
                 if (newFileGenerated)
                 {
                     var fullPath = Path.GetFullPath(filePath);
-                    settings.NewFileMessage = $"SortParty config generated at {fullPath}";
+                    settings.NewFileMessage = $"PartyManager config generated at {fullPath}";
                 }
             }
             catch (Exception ex)
             {
-                GenericHelpers.LogException("SortPartySettings.CreateUpdateFile", ex);
+                GenericHelpers.LogException("PartyManagerSettings.CreateUpdateFile", ex);
             }
 
             return settings;
