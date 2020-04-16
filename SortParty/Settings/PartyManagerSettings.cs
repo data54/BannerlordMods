@@ -127,6 +127,7 @@ namespace PartyManager
         public static void ReloadSettings()
         {
             _settings = LoadSettings();
+            GenericHelpers.LogMessage("Settings Reloaded");
         }
 
         public static PartyManagerSettings LoadSettings()
