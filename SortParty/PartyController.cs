@@ -19,6 +19,7 @@ namespace PartyManager
 {
     public class PartyController
     {
+        public bool WidgetsAdded { get; set; }
         static PartyController _partyController;
         public static PartyController CurrentInstance
         {
@@ -134,32 +135,17 @@ namespace PartyManager
             GenericHelpers.LogDebug("PartyController.Constructor", "Party Controller Generated");
         }
 
-        static GauntletView testView;
-        public static void AddPartyWidgets(GauntletLayer layer)
+        
+        public  static void AddPartyWidgets(GauntletPartyScreen partyScreen)
         {
             try
             {
-                //var currentScreenInfo = layer._moviesAndDatasources.FirstOrDefault();
-                //var movie = currentScreenInfo?.Item1;
+                var newLayer = new GauntletLayer(1, "GauntletLayer");
+                var partyVM = partyScreen.GetPartyVM();
 
-                //var mainPartyPanel = movie?.RootView?.Children?.Where(x => x?.Target?.Id == "MainPartyPanel").FirstOrDefault();
-
-                //if (currentScreenInfo.Item1 != null && currentScreenInfo.Item2 != null)
-                //{
-                //    var upgradeWidget = new UpgradeAllTroopsWidget(layer._gauntletUIContext, movie);
-                //    upgradeWidget.UpdateBrushesPublic(SubModule.lastTick);
-                //    //upgradeWidget.BrushRenderer = mainPartyPanel.Target.BrushRenderer;
-
-                //    var gView = GenericHelpers.CreateGauntletView(currentScreenInfo.Item1, mainPartyPanel, upgradeWidget);
-                //    mainPartyPanel.AddChild(gView);
-
-                //    testView = mainPartyPanel.Children[1].Children[3].Children.FirstOrDefault();
-
-
-                //    movie.RootView.RefreshBindingWithChildren();
-                //    layer._gauntletUIContext.LateUpdate(DateTime.Now.Ticks);
-                //}
-
+                newLayer?.LoadMovie("PartyManager", partyScreen.GetPartyVM());
+                CurrentInstance.WidgetsAdded = true;
+                partyScreen.AddLayer(newLayer);
             }
             catch (Exception ex)
             {

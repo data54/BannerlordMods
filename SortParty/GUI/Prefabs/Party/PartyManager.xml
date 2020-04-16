@@ -1,0 +1,23 @@
+﻿<Prefab>
+  <Constants>
+  </Constants>
+  <Variables>
+
+  </Variables>
+  <VisualDefinitions>
+    <VisualDefinition Name="TopMenu" DelayOnBegin="0.2" TransitionDuration="0.4">
+      <VisualState PositionYOffset="0" State="Default" />
+    </VisualDefinition>
+  </VisualDefinitions>
+  <Window>
+    <Widget Id ="PartyManager" VisualDefinition="TopMenu" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+            SuggestedWidth="200" SuggestedHeight="150" HorizontalAlignment="Right" VerticalAlignment="Top" MarginTop="10" MarginRight="20" >
+      <UpgradeAllTroopsWidget Id="UpgradeAllTroopsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                              HeightSizePolicy="Fixed" SuggestedWidth="!TransferAllButton.Width"
+                              SuggestedHeight="!TransferAllButton.Height" HorizontalAlignment="Right"
+                              VerticalAlignment="Top" MarginLeft="!TransferAllButton.Margin" MarginRight="80"
+                              MarginTop="15" Brush="PartyManager.UpgradeAll" />
+    </Widget>
+
+  </Window>
+</Prefab>

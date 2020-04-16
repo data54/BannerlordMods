@@ -53,6 +53,15 @@ namespace PartyManager
                 GenericHelpers.LogException("Patch Failed", ex);
             }
 
+            ScreenManager.OnPushScreen += ScreenManager_OnPushScreen;
+        }
+
+        private void ScreenManager_OnPushScreen(ScreenBase pushedScreen)
+        {
+            if (pushedScreen is GauntletPartyScreen screen)
+            {
+                //PartyController.AddPartyWidgets(screen);
+            }
         }
 
         PartyVM partyVM;
