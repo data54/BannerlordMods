@@ -35,11 +35,14 @@ namespace PartyManager
 
 
         public SortType SortOrder { get; set; }
-        
-        public string SortOrderString => SortOrder.ToString();
 
+        [XmlIgnore]
+        public string SortOrderString => GetSortTypeString(SortOrder);
+
+        [XmlIgnore]
         public string NextSortOrderString => GetCycledSortType(false).ToString();
 
+        [XmlIgnore]
         public string PreviousSortOrderString => GetCycledSortType(true).ToString();
         
         [XmlIgnore]
@@ -81,7 +84,7 @@ namespace PartyManager
             CycleSortType(false);
 
 
-            InformationManager.DisplayMessage(new InformationMessage($"PartyManager sort changed to {SortOrderString}", Color.FromUint(4282569842U)));
+            InformationManager.DisplayMessage(new InformationMessage($"PartyManager sort changed to {GetSortTypeString(SortOrder)}", Color.FromUint(4282569842U)));
         }
 
         public void CycleSortType(bool backward)
@@ -89,7 +92,7 @@ namespace PartyManager
             SortOrder = GetCycledSortType(backward);
             CreateUpdateFile(this);
         }
-
+        
         private int? sortModulus;
         public SortType GetCycledSortType(bool backward=false)
         {
@@ -110,6 +113,15 @@ namespace PartyManager
             }
 
             return (SortType) intResult;
+        }
+
+        public string GetSortTypeString(SortType type)
+        {
+            if (type == SortType.Custom)
+            {
+                return $"Custom({CustomSortOrderField1},{CustomSortOrderField2},{CustomSortOrderField3},{CustomSortOrderField4},{CustomSortOrderField5})";
+            }
+            return type.ToString();
         }
 
         public PartyManagerSettings()

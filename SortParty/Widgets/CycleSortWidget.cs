@@ -39,7 +39,7 @@ namespace PartyManager.Widgets
         {
             if (on)
             {
-                InformationManager.AddHintInformation($"Cycle Sort Order\nRight click to cycle backwards\nCurrent:{PartyManagerSettings.Settings.SortOrderString}\nNext:{PartyManagerSettings.Settings.NextSortOrderString}\nPrevious:{PartyManagerSettings.Settings.PreviousSortOrderString}");
+                InformationManager.AddHintInformation($"Cycle Sort Order\nRight click to cycle backwards\nNext:\n{PartyManagerSettings.Settings.NextSortOrderString}\nPrevious:\n{PartyManagerSettings.Settings.PreviousSortOrderString}\nCurrent:\n{PartyManagerSettings.Settings.SortOrderString}");
             }
             else
             {
