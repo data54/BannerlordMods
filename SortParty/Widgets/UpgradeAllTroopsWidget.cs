@@ -51,7 +51,7 @@ namespace PartyManager.Widgets
             {
                 if (eventName == "HoverBegin")
                 {
-                    InformationManager.AddHintInformation("Upgrade All Troops, Right click to sort all recruits to the top");
+                    InformationManager.AddHintInformation("Upgrade All Troops, Right click to sort all recruits/upgrades to the top");
                 }
                 if (eventName == "HoverEnd")
                 {
