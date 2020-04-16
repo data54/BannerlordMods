@@ -149,10 +149,11 @@ namespace PartyManager
                 newLayer?.LoadMovie("PartyManager", partyVM);
                 CurrentInstance.WidgetsAdded = true;
                 partyScreen.AddLayer(newLayer);
+                GenericHelpers.LogDebug("AddPartyWidgets", "Party Widget Added");
             }
             catch (Exception ex)
             {
-
+                GenericHelpers.LogException("AddPartyWidgets", ex);
             }
         }
 

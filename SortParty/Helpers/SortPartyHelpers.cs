@@ -13,12 +13,15 @@ namespace PartyManager
     {
         public static void SortPartyLogic(PartyScreenLogic PartyScreenLogic, PartyVM PartyVM, bool sortRecruitUpgrade, bool rightTroops, bool rightPrisoners, bool leftTroops, bool leftPrisoners)
         {
+            var left = (int) PartyScreenLogic.PartyRosterSide.Left;
+            var right = (int)PartyScreenLogic.PartyRosterSide.Right;
+
             //Left Side
-            if (leftTroops) SortPartyHelpers.SortUnits(PartyScreenLogic.MemberRosters[0], sortRecruitUpgrade, PartyVM?.OtherPartyTroops);
-            if (leftPrisoners) SortUnits(PartyScreenLogic.PrisonerRosters[0], sortRecruitUpgrade, PartyVM?.OtherPartyPrisoners);
+            if (leftTroops) SortPartyHelpers.SortUnits(PartyScreenLogic.MemberRosters[left], sortRecruitUpgrade, PartyVM?.OtherPartyTroops);
+            if (leftPrisoners) SortUnits(PartyScreenLogic.PrisonerRosters[left], sortRecruitUpgrade, PartyVM?.OtherPartyPrisoners);
             //Right Side
-            if (rightTroops) SortUnits(PartyScreenLogic.MemberRosters[1], sortRecruitUpgrade, PartyVM?.MainPartyTroops);
-            if (rightPrisoners) SortPartyHelpers.SortUnits(PartyScreenLogic.PrisonerRosters[1], sortRecruitUpgrade, PartyVM?.MainPartyPrisoners);
+            if (rightTroops) SortUnits(PartyScreenLogic.MemberRosters[right], sortRecruitUpgrade, PartyVM?.MainPartyTroops);
+            if (rightPrisoners) SortPartyHelpers.SortUnits(PartyScreenLogic.PrisonerRosters[right], sortRecruitUpgrade, PartyVM?.MainPartyPrisoners);
         }
 
         public static void SortUnits(TroopRoster input, bool sortRecruitUpgrade = false, MBBindingList<PartyCharacterVM> partyVmUnits = null)
