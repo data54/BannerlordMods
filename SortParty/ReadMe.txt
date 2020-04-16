@@ -1,9 +1,9 @@
-﻿The mod executes whenever the party screen is opened, no user interaction required past installing it unless you want to change the sort order.
+﻿The Sort executes whenever the party screen is opened, no user interaction required past installing it unless you want to change the sort order.
 
 In order to avoid overwriting user changes during updates the config file won't exist until after the module is loaded for the first time
 
 Config file located at:
-(steam install location)\Modules\SortParty\ModuleData\SortPartySettings.xml
+(steam install location)\Modules\PartyManager\ModuleData\PartyManager.xml
 
 ---------------Sort Types-----------------------------
 The following are available sort options for the config SortOrder node, all will have companions at the top:
@@ -70,3 +70,5 @@ EnableRecruitUpgradeSortHotkey - turns the CTRL-SHIFT-R hotkey that will sort wi
 EnableSortTypeCycleHotkey - turns the CTRL+SHIFT+- hotkey that will cycle sort types on/off
 CavalryAboveFootmen - self explanatory
 MeleeAboveArchers - self explanatory
+
+Debug - Don't turn this on unless you want to see a ton of random messages

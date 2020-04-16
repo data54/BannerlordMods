@@ -195,7 +195,7 @@
     <Compile Include="Patches\Party\GauntletPartyScreenAddWidgetsPatch.cs" />
     <Compile Include="Patches\Party\PartyVMRefreshValuesPatch.cs" />
     <Compile Include="Patches\ScreenBaseAddLayerPatch.cs" />
-    <Compile Include="Settings\SortPartySettings.cs" />
+    <Compile Include="Settings\PartyManagerSettings.cs" />
     <Compile Include="Helpers\SortPartyHelpers.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

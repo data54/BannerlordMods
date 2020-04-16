@@ -10,9 +10,9 @@ using TaleWorlds.Library;
 
 namespace PartyManager
 {
-    public class SortPartySettings
+    public class PartyManagerSettings
     {
-        const string filePath = "..\\..\\Modules\\SortParty\\ModuleData\\SortPartySettings.xml";
+        const string filePath = "..\\..\\Modules\\PartyManager\\ModuleData\\PartyManager.xml";
         const int version = 4;
 
         public int? Version { get; set; }
@@ -42,7 +42,7 @@ namespace PartyManager
             {
                 if (_serializer == null)
                 {
-                    _serializer = new XmlSerializer(typeof(SortPartySettings));
+                    _serializer = new XmlSerializer(typeof(PartyManagerSettings));
                 }
                 return _serializer;
             }
@@ -51,9 +51,9 @@ namespace PartyManager
 
         public string NewFileMessage = null;
 
-        private static SortPartySettings _settings;
+        private static PartyManagerSettings _settings;
         [XmlIgnore]
-        public static SortPartySettings Settings
+        public static PartyManagerSettings Settings
         {
             get
             {
@@ -93,7 +93,7 @@ namespace PartyManager
             InformationManager.DisplayMessage(new InformationMessage($"SortParty sort changed to {newSort}", Color.FromUint(4282569842U)));
         }
 
-        public SortPartySettings()
+        public PartyManagerSettings()
         {
             EnableHotkey = true;
             EnableRecruitUpgradeSortHotkey = true;
@@ -110,7 +110,7 @@ namespace PartyManager
             _settings = LoadSettings();
         }
 
-        public static SortPartySettings LoadSettings()
+        public static PartyManagerSettings LoadSettings()
         {
             if (!File.Exists(filePath))
             {
@@ -118,11 +118,19 @@ namespace PartyManager
             }
             else
             {
-                SortPartySettings settings;
+                PartyManagerSettings settings;
 
                 using (FileStream fs = new FileStream(filePath, FileMode.Open))
                 {
-                    settings = Serializer.Deserialize(fs) as SortPartySettings;
+                    try
+                    {
+                        settings = Serializer.Deserialize(fs) as PartyManagerSettings;
+                    }
+                    catch(Exception ex)
+                    {
+                        GenericHelpers.LogException("LoadSettings", ex);
+                    }
+                    settings = new PartyManagerSettings();
                 }
 
                 if (settings.Version != version)
@@ -133,14 +141,14 @@ namespace PartyManager
             }
         }
 
-        private static SortPartySettings CreateUpdateFile(SortPartySettings settings = null)
+        private static PartyManagerSettings CreateUpdateFile(PartyManagerSettings settings = null)
         {
             try
             {
                 var newFileGenerated = false;
                 if (settings == null)
                 {
-                    settings = new SortPartySettings();
+                    settings = new PartyManagerSettings();
                     newFileGenerated = true;
                 }
                 else

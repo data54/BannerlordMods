@@ -8,7 +8,7 @@ namespace PartyManager.Patches
     {
         static bool Prefix(PartyVM __instance)
         {
-            if (SortPartySettings.Settings.EnableAutoSort)
+            if (PartyManagerSettings.Settings.EnableAutoSort)
             {
                 GenericHelpers.LogDebug("PartyVM RefreshValues Patch", "Pre Update called");
                 PartyController.CurrentInstance.PartyVM = __instance;

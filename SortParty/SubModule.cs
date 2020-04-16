@@ -28,29 +28,29 @@ namespace PartyManager
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
 
-            InformationManager.DisplayMessage(new InformationMessage("Loaded SortParty. Press CTRL+SHIFT+S in Party Screen to sort, CTRL+SHIFT+R to upgrade/recruit sort, CTRL+SHIFT+(Minus) to cycle sort types", Color.FromUint(4282569842U)));
-            if (!string.IsNullOrEmpty(SortPartySettings.Settings.NewFileMessage))
+            InformationManager.DisplayMessage(new InformationMessage("Loaded PartyManager. Press CTRL+SHIFT+S in Party Screen to sort, CTRL+SHIFT+R to upgrade/recruit sort, CTRL+SHIFT+(Minus) to cycle sort types", Color.FromUint(4282569842U)));
+            if (!string.IsNullOrEmpty(PartyManagerSettings.Settings.NewFileMessage))
             {
-                InformationManager.DisplayMessage(new InformationMessage(SortPartySettings.Settings.NewFileMessage, Color.FromUint(4282569842U)));
+                InformationManager.DisplayMessage(new InformationMessage(PartyManagerSettings.Settings.NewFileMessage, Color.FromUint(4282569842U)));
             }
         }
 
         bool showFileCreateMessage = false;
         protected override void OnSubModuleLoad()
         {
-            enableHotkey = SortPartySettings.Settings.EnableHotkey;
-            enableAutoSort = SortPartySettings.Settings.EnableAutoSort;
-            enableRecruitUpgradeSort = SortPartySettings.Settings.EnableRecruitUpgradeSortHotkey;
-            enableSortTypeCycleHotkey = SortPartySettings.Settings.EnableSortTypeCycleHotkey;
+            enableHotkey = PartyManagerSettings.Settings.EnableHotkey;
+            enableAutoSort = PartyManagerSettings.Settings.EnableAutoSort;
+            enableRecruitUpgradeSort = PartyManagerSettings.Settings.EnableRecruitUpgradeSortHotkey;
+            enableSortTypeCycleHotkey = PartyManagerSettings.Settings.EnableSortTypeCycleHotkey;
 
             base.OnSubModuleLoad();
             try
             {
-                new Harmony("mod.sortparty").PatchAll();
+                new Harmony("mod.partymanager").PatchAll();
             }
             catch (Exception ex)
             {
-                InformationManager.DisplayMessage(new InformationMessage($"Patch Failed {ex.Message}"));
+                GenericHelpers.LogException("Patch Failed", ex);
             }
 
         }
@@ -86,7 +86,7 @@ namespace PartyManager
                         if (InputKey.Minus.IsDown() && enableSortTypeCycleHotkey)
                         {
                             key = "-";
-                            SortPartySettings.Settings.CycleSortType();
+                            PartyManagerSettings.Settings.CycleSortType();
                         }
 
                         //SortHotkey

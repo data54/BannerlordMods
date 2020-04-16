@@ -60,7 +60,7 @@ namespace PartyManager
                 return flattenedRoster.OrderByDescending(x => recruitUpgradeUnitTypes.Contains(x.Troop.Name.ToString())).ThenByDescending(x => insufficientUpgrades.Contains(x.Troop.Name.ToString())).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
             }
 
-            switch (SortPartySettings.Settings.SortOrder)
+            switch (PartyManagerSettings.Settings.SortOrder)
             {
                 case SortType.TierDesc:
                     return flattenedRoster.OrderByDescending(x => x.Troop.Tier)
@@ -70,22 +70,22 @@ namespace PartyManager
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.TierDescType:
                     return flattenedRoster.OrderByDescending(x => x.Troop.Tier)
-                        .ThenByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
-                        .ThenBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                        .ThenByDescending(x => PartyManagerSettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                        .ThenBy(x => PartyManagerSettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.TierAscType:
                     return flattenedRoster.OrderBy(x => x.Troop.Tier)
-                        .ThenByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
-                        .ThenBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                        .ThenByDescending(x => PartyManagerSettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                        .ThenBy(x => PartyManagerSettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.MountRangeTierDesc:
-                    return flattenedRoster.OrderByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
-                        .ThenBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                    return flattenedRoster.OrderByDescending(x => PartyManagerSettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                        .ThenBy(x => PartyManagerSettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
                         .ThenByDescending(x => x.Troop.Tier)
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.MountRangeTierAsc:
-                    return flattenedRoster.OrderByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
-                        .ThenBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                    return flattenedRoster.OrderByDescending(x => PartyManagerSettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                        .ThenBy(x => PartyManagerSettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
                         .ThenBy(x => x.Troop.Tier)
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.CultureTierDesc:
@@ -97,22 +97,22 @@ namespace PartyManager
                         .ThenBy(x => x.Troop.Tier)
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.RangeMountTierDesc:
-                    return flattenedRoster.OrderBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
-                        .ThenByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                    return flattenedRoster.OrderBy(x => PartyManagerSettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                        .ThenByDescending(x => PartyManagerSettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
                         .ThenByDescending(x => x.Troop.Tier)
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.RangeMountTierAsc:
-                    return flattenedRoster.OrderBy(x => SortPartySettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
-                        .ThenByDescending(x => SortPartySettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
+                    return flattenedRoster.OrderBy(x => PartyManagerSettings.Settings.MeleeAboveArchers ? x.Troop.IsArcher : !x.Troop.IsArcher)
+                        .ThenByDescending(x => PartyManagerSettings.Settings.CavalryAboveFootmen ? x.Troop.IsMounted : !x.Troop.IsMounted)
                         .ThenBy(x => x.Troop.Tier)
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.Custom:
                     return flattenedRoster
-                        .OrderBy(x => GetSortFieldValue(x, SortPartySettings.Settings.CustomSortOrderField1), new CustomComparer(SortPartySettings.Settings.CustomSortOrderField1))
-                        .ThenBy(x => GetSortFieldValue(x, SortPartySettings.Settings.CustomSortOrderField2), new CustomComparer(SortPartySettings.Settings.CustomSortOrderField2))
-                        .ThenBy(x => GetSortFieldValue(x, SortPartySettings.Settings.CustomSortOrderField3), new CustomComparer(SortPartySettings.Settings.CustomSortOrderField3))
-                        .ThenBy(x => GetSortFieldValue(x, SortPartySettings.Settings.CustomSortOrderField4), new CustomComparer(SortPartySettings.Settings.CustomSortOrderField4))
-                        .ThenBy(x => GetSortFieldValue(x, SortPartySettings.Settings.CustomSortOrderField5), new CustomComparer(SortPartySettings.Settings.CustomSortOrderField5))
+                        .OrderBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField1), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField1))
+                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField2), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField2))
+                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField3), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField3))
+                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField4), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField4))
+                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField5), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField5))
                         .ToList();
             }
 

@@ -218,7 +218,7 @@ namespace PartyManager
             }
             else
             {
-
+                GenericHelpers.LogMessage("No troops found with only a single upgrade path");
             }
         }
 

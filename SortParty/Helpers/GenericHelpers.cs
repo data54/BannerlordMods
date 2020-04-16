@@ -48,22 +48,27 @@ namespace PartyManager
             }
             catch (Exception ex)
             {
-                GenericHelpers.LogException($"GetPartyVM({typeof(R)?.ToString()})", ex);
+                LogException($"GetPartyVM({typeof(R)?.ToString()})", ex);
             }
             return null;
         }
 
         public static void LogException(string method, Exception ex)
         {
-            InformationManager.DisplayMessage(new InformationMessage($"SortParty {method} exception: {ex.Message}"));
+            InformationManager.DisplayMessage(new InformationMessage($"PartyManager {method} exception: {ex.Message}"));
         }
 
         public static void LogDebug(string method, string message)
         {
-            if (SortPartySettings.Settings.Debug)
+            if (PartyManagerSettings.Settings.Debug)
             {
-                InformationManager.DisplayMessage(new InformationMessage($"SortParty({method}) Debug: {message}"));
+                InformationManager.DisplayMessage(new InformationMessage($"PartyManager({method}) Debug: {message}"));
             }
+        }
+
+        public static void LogMessage(string message)
+        {
+            InformationManager.DisplayMessage(new InformationMessage(message));
         }
 
 
@@ -117,7 +122,7 @@ namespace PartyManager
             {
                 var p1 = prop.GetValue(object1);
                 var p2 = prop.GetValue(object2);
-                if ((p1==null && p2!=null)|| (p1 != null && p2 == null) || !p1.Equals(p2))
+                if ((p1 == null && p2 != null) || (p1 != null && p2 == null) || !p1.Equals(p2))
                 {
                     var propertyString = $"{property}.{prop.Name}";
                     results.Add($"{propertyString} not equal: {p1.ToString()} vs {p2.ToString()}");
