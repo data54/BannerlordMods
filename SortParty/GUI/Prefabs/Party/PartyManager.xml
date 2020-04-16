@@ -1,23 +1,39 @@
 ﻿<Prefab>
   <Constants>
+    <Constant Name="Buttons.Margin" Value="5" />
+    <Constant Name="Buttons.Width" Value="60" />
+    <Constant Name="Buttons.Height" Value="60" />
+
+
+    <Constant Name="TopRightMenuHeight" Value="100" />
+    <Constant Name="TopRightMenuWidth" Value="100" />
+
+
+    <Constant Name="UpgradeAllTroopsButtonRightMargin" Value="80" />
   </Constants>
   <Variables>
-
   </Variables>
   <VisualDefinitions>
-    <VisualDefinition Name="TopMenu" DelayOnBegin="0.2" TransitionDuration="0.4">
-      <VisualState PositionYOffset="0" State="Default" />
+    <VisualDefinition Name="TopRightMenu" DelayOnBegin="0.2" TransitionDuration="0.4">
+      <VisualState PositionYOffset="10" State="Default" />
     </VisualDefinition>
   </VisualDefinitions>
   <Window>
-    <Widget Id ="PartyManager" VisualDefinition="TopMenu" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
-            SuggestedWidth="200" SuggestedHeight="150" HorizontalAlignment="Right" VerticalAlignment="Top" MarginTop="10" MarginRight="20" >
-      <UpgradeAllTroopsWidget Id="UpgradeAllTroopsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
-                              HeightSizePolicy="Fixed" SuggestedWidth="!TransferAllButton.Width"
-                              SuggestedHeight="!TransferAllButton.Height" HorizontalAlignment="Right"
-                              VerticalAlignment="Top" MarginLeft="!TransferAllButton.Margin" MarginRight="80"
-                              MarginTop="15" Brush="PartyManager.UpgradeAll" />
-    </Widget>
+    <Widget Id="PartyManager" VisualDefinition="TopRightMenu"
+            WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+            SuggestedWidth="180"
+            SuggestedHeight="100"
+            HorizontalAlignment="Right" VerticalAlignment="Top" MarginTop="5">
+      <Children>
+        <UpgradeAllTroopsWidget Id="UpgradeAllTroopsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                                HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Width"
+                                SuggestedHeight="!Buttons.Height" HorizontalAlignment="Right"
+                                VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
+                                MarginRight="!UpgradeAllTroopsButtonRightMargin"
+                                MarginTop="0" Brush="PartyManager.UpgradeAll">
 
+        </UpgradeAllTroopsWidget>
+      </Children>
+    </Widget>
   </Window>
 </Prefab>

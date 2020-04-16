@@ -14,6 +14,7 @@ using TaleWorlds.Engine.Screens;
 using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.GauntletUI.PrefabSystem;
+using TaleWorlds.Library;
 
 namespace PartyManager
 {
@@ -141,9 +142,11 @@ namespace PartyManager
             try
             {
                 var newLayer = new GauntletLayer(1, "GauntletLayer");
+
+                newLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
                 var partyVM = partyScreen.GetPartyVM();
 
-                newLayer?.LoadMovie("PartyManager", partyScreen.GetPartyVM());
+                newLayer?.LoadMovie("PartyManager", partyVM);
                 CurrentInstance.WidgetsAdded = true;
                 partyScreen.AddLayer(newLayer);
             }
