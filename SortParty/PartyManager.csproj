@@ -202,7 +202,11 @@
     <Compile Include="Helpers\SortPartyHelpers.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Widgets\UpgradeAllTroopsWidget.cs" />
+    <Compile Include="Widgets\ReloadSettingsWidget.cs" />
+    <Compile Include="Widgets\RecruitAllPrisonersWidget.cs" />
+    <Compile Include="Widgets\CycleSortWidget.cs" />
+    <Compile Include="Widgets\SortUnitsWidget.cs" />
+    <Compile Include="Widgets\UpgradeAllTroopsWidget .cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

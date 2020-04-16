@@ -22,7 +22,9 @@ namespace PartyManager
         public bool EnableAutoSort { get; set; }
         public bool CavalryAboveFootmen { get; set; }
         public bool MeleeAboveArchers { get; set; }
-        public bool EnableUIChanges { get; set; }
+        public bool SortAfterRecruitAllUpgradeAllClick { get; set; }
+        public bool HideUIWidgets { get; set; }
+
         public bool Debug { get; set; }
 
         public CustomSortOrder CustomSortOrderField1 { get; set; }
@@ -33,8 +35,13 @@ namespace PartyManager
 
 
         public SortType SortOrder { get; set; }
+        
+        public string SortOrderString => SortOrder.ToString();
 
+        public string NextSortOrderString => GetCycledSortType(false).ToString();
 
+        public string PreviousSortOrderString => GetCycledSortType(true).ToString();
+        
         [XmlIgnore]
         private static XmlSerializer Serializer
         {
@@ -69,28 +76,40 @@ namespace PartyManager
             }
         }
 
-        private int? sortModulus;
         public void CycleSortType()
         {
+            CycleSortType(false);
+
+
+            InformationManager.DisplayMessage(new InformationMessage($"PartyManager sort changed to {SortOrderString}", Color.FromUint(4282569842U)));
+        }
+
+        public void CycleSortType(bool backward)
+        {
+            SortOrder = GetCycledSortType(backward);
+            CreateUpdateFile(this);
+        }
+
+        private int? sortModulus;
+        public SortType GetCycledSortType(bool backward=false)
+        {
+
             if (!sortModulus.HasValue)
             {
                 sortModulus = (int)Enum.GetValues(typeof(SortType)).Cast<SortType>().Max() + 1;
             }
 
+            var change = backward ? -1 : 1;
+
             var intValue = (int)SortOrder;
 
-            SortOrder = (SortType)((intValue + 1) % sortModulus);
-
-            CreateUpdateFile(this);
-
-            var newSort = SortOrder.ToString();
-            if(SortOrder== SortType.Custom)
+            var intResult = (intValue + change) % sortModulus;
+            if (intResult < 0)
             {
-                newSort = $"{newSort}({CustomSortOrderField1.ToString()},{CustomSortOrderField2.ToString()},{CustomSortOrderField3.ToString()},{CustomSortOrderField4.ToString()},{CustomSortOrderField5.ToString()})";
+                intResult = sortModulus - 1;
             }
 
-
-            InformationManager.DisplayMessage(new InformationMessage($"PartyManager sort changed to {newSort}", Color.FromUint(4282569842U)));
+            return (SortType) intResult;
         }
 
         public PartyManagerSettings()

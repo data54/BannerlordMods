@@ -136,20 +136,27 @@ namespace PartyManager
             GenericHelpers.LogDebug("PartyController.Constructor", "Party Controller Generated");
         }
 
-        
-        public  static void AddPartyWidgets(GauntletPartyScreen partyScreen)
+
+        public static void AddPartyWidgets(GauntletPartyScreen partyScreen)
         {
             try
             {
-                var newLayer = new GauntletLayer(1, "GauntletLayer");
+                if (!PartyManagerSettings.Settings.HideUIWidgets)
+                {
+                    var newLayer = new GauntletLayer(1, "GauntletLayer");
 
-                newLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
-                var partyVM = partyScreen.GetPartyVM();
+                    newLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
+                    var partyVM = partyScreen.GetPartyVM();
 
-                newLayer?.LoadMovie("PartyManager", partyVM);
-                CurrentInstance.WidgetsAdded = true;
-                partyScreen.AddLayer(newLayer);
-                GenericHelpers.LogDebug("AddPartyWidgets", "Party Widget Added");
+                    newLayer?.LoadMovie("PartyManager", partyVM);
+                    CurrentInstance.WidgetsAdded = true;
+                    partyScreen.AddLayer(newLayer);
+                    GenericHelpers.LogDebug("AddPartyWidgets", "Party Widget Added");
+                }
+                else
+                {
+                    GenericHelpers.LogDebug("AddPartyWidgets", "Skipped adding widgets");
+                }
             }
             catch (Exception ex)
             {
@@ -183,7 +190,7 @@ namespace PartyManager
 
         public void UpgradeAllTroops()
         {
-            var upgrades = PartyVM.MainPartyTroops
+            var upgrades = PartyVM?.MainPartyTroops?
                     .Where(x => !x.IsHero
                     && !(x.IsUpgrade1Exists && x.IsUpgrade2Exists)
                     && ((x.IsUpgrade1Available && !x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && !x.IsUpgrade2Insufficient))).ToList();
@@ -204,11 +211,55 @@ namespace PartyManager
                     PartyScreenLogic.AddCommand(command);
                 }
 
-                SortPartyScreen();
+                ButtonClickRefresh(true,false);
             }
             else
             {
                 GenericHelpers.LogMessage("No troops found with only a single upgrade path");
+            }
+        }
+
+        private void ButtonClickRefresh(bool rightTroops, bool rightPrisoners, bool leftTroops=false, bool leftPrisoners = false)
+        {
+            if (PartyManagerSettings.Settings.SortAfterRecruitAllUpgradeAllClick)
+            {
+                SortPartyScreen(false,true, rightTroops, rightPrisoners, leftTroops, leftPrisoners);
+            }
+            else
+            {
+                InitializeTroopLists();
+            }
+        }
+
+        public void RecruitAllPrisoners()
+        {
+            try
+            {
+                var recruits = PartyVM?.MainPartyPrisoners?
+                    .Where(x => !x.IsHero
+                                && x.IsRecruitablePrisoner && x.NumOfRecruitablePrisoners > 0).ToList();
+
+                if (recruits?.Count > 0)
+                {
+                    foreach (var troop in recruits)
+                    {
+                        PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
+
+                        command.FillForRecruitTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, troop.NumOfRecruitablePrisoners);
+
+                        PartyScreenLogic.AddCommand(command);
+                    }
+
+                    ButtonClickRefresh(true, true);
+                }
+                else
+                {
+                    GenericHelpers.LogMessage("No prisoners found to recruit");
+                }
+            }
+            catch (Exception ex)
+            {
+                GenericHelpers.LogException("RecruitAllPrisoners", ex);
             }
         }
 
