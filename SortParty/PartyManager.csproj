@@ -7,8 +7,8 @@
     <ProjectGuid>{3171F118-2564-4ACC-AF74-0D54D4151B6E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SortParty</RootNamespace>
-    <AssemblyName>SortParty</AssemblyName>
+    <RootNamespace>PartyManager</RootNamespace>
+    <AssemblyName>PartyManager</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>L:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\SortParty\bin\Win64_Shipping_Client\</OutputPath>
+    <OutputPath>L:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\PartyManager\bin\Win64_Shipping_Client\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>L:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\SortParty\bin\Win64_Shipping_Client\</OutputPath>
+    <OutputPath>L:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\PartyManager\bin\Win64_Shipping_Client\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

@@ -1,17 +1,7 @@
 ﻿using HarmonyLib;
-using SandBox.GauntletUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaleWorlds.CampaignSystem;
-using TaleWorlds.Core;
-using TaleWorlds.Localization;
-using SortParty;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
 
-namespace SortParty.Patches
+namespace PartyManager.Patches
 {
     [HarmonyPatch(typeof(PartyVM), "RefreshValues")]
     public class PartyVMRefreshValuesPatch

@@ -12,7 +12,7 @@ using TaleWorlds.Engine.Screens;
 using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
 
-namespace SortParty
+namespace PartyManager
 {
     internal static class ExtensionMethods
     {

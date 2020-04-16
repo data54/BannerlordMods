@@ -10,7 +10,7 @@ using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.Library;
 
-namespace SortParty.Widgets
+namespace PartyManager.Widgets
 {
     public class UpgradeAllTroopsWidget : ButtonWidget
     {
@@ -51,7 +51,7 @@ namespace SortParty.Widgets
             {
                 if (eventName == "HoverBegin")
                 {
-                    InformationManager.AddHintInformation("Upgrade All Troops");
+                    InformationManager.AddHintInformation("Upgrade All Troops, Right click to sort all recruits to the top");
                 }
                 if (eventName == "HoverEnd")
                 {
@@ -64,6 +64,11 @@ namespace SortParty.Widgets
         {
             base.OnClick();
             UpgradeAllTroops();
+        }
+
+        protected override void OnAlternateClick()
+        {
+            PartyController.CurrentInstance.SortPartyScreen(true);
         }
 
         public void UpgradeAllTroops()

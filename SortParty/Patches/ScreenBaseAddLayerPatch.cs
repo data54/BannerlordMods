@@ -11,7 +11,7 @@ using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Engine.Screens;
 using TaleWorlds.Library;
 
-namespace SortParty.Patches
+namespace PartyManager.Patches
 {
     [HarmonyPatch(typeof(ScreenBase))]
     public class ScreenBaseAddLayerPatch

@@ -7,7 +7,7 @@ using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 
-namespace SortParty
+namespace PartyManager
 {
     public class SortPartyHelpers
     {

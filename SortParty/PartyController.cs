@@ -1,6 +1,6 @@
 ﻿using SandBox;
 using SandBox.GauntletUI;
-using SortParty.Widgets;
+using PartyManager.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.GauntletUI.PrefabSystem;
 
-namespace SortParty
+namespace PartyManager
 {
     public class PartyController
     {
@@ -181,11 +181,6 @@ namespace SortParty
                 }
                 GenericHelpers.LogDebug("SortPartyScreen", "Sort Called");
 
-                var movie = GauntletLayer._moviesAndDatasources.First().Item1;
-                var mainPartyPanel = movie?.RootView?.Children?.Where(x => x?.Target?.Id == "MainPartyPanel").FirstOrDefault();
-                var upgradeallbutton = mainPartyPanel.Children.Where(x => x.Target.Id == "UpgradeAllTroopsButton").FirstOrDefault();
-                var upgradeallbutton2 = mainPartyPanel.Children.Where(x => x.Target.Id == "UpgradeAllTroopsButton2").FirstOrDefault();
-
                 SortPartyHelpers.SortPartyLogic(PartyScreenLogic, PartyVM, sortRecruitUpgrade, rightTroops, rightPrisoners, leftTroops, leftPrisoners);
 
                 if (updateUI) InitializeTroopLists();
@@ -203,21 +198,28 @@ namespace SortParty
                     && !(x.IsUpgrade1Exists && x.IsUpgrade2Exists)
                     && ((x.IsUpgrade1Available && !x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && !x.IsUpgrade2Insufficient))).ToList();
 
-            foreach (var troop in upgrades)
+            if (upgrades.Count > 0)
             {
-                PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
-                if (troop.NumOfTarget1UpgradesAvailable > 0)
+                foreach (var troop in upgrades)
                 {
-                    command.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, troop.NumOfTarget1UpgradesAvailable, PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1);
+                    PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
+                    if (troop.NumOfTarget1UpgradesAvailable > 0)
+                    {
+                        command.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, troop.NumOfTarget1UpgradesAvailable, PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1);
+                    }
+                    else
+                    {
+                        command.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, troop.NumOfTarget2UpgradesAvailable, PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget2);
+                    }
+                    PartyScreenLogic.AddCommand(command);
                 }
-                else
-                {
-                    command.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, troop.NumOfTarget2UpgradesAvailable, PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget2);
-                }
-                PartyScreenLogic.AddCommand(command);
-            }
 
-            SortPartyScreen();
+                SortPartyScreen();
+            }
+            else
+            {
+
+            }
         }
 
         public void InitializeTroopLists()

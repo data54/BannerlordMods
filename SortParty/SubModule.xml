@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Module>
-	<Name value="SortParty"/>
-	<Id value="SortParty"/>
+	<Name value="PartyManager"/>
+	<Id value="PartyManager"/>
 	<Version value="v1.6.0"/>
 	<SingleplayerModule value="true"/>
 	<MultiplayerModule value="false"/>
@@ -15,9 +15,9 @@
 	</DependedModules>
 	<SubModules>
 		<SubModule>
-			<Name value="SortParty"/>
-			<DLLName value="SortParty.dll"/>
-			<SubModuleClassType value="SortParty.SubModule"/>
+			<Name value="PartyManager"/>
+			<DLLName value="PartyManager.dll"/>
+			<SubModuleClassType value="PartyManager.SubModule"/>
 			<Tags>
 				<Tag key="DedicatedServerType" value="none" />
 				<Tag key="IsNoRenderModeElement" value="false" />

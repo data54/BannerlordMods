@@ -10,7 +10,7 @@ using TaleWorlds.Core;
 using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
 
-namespace SortParty
+namespace PartyManager
 {
     public static class GenericHelpers
     {

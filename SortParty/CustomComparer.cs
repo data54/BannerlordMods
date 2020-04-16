@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SortParty
+namespace PartyManager
 {
     public class CustomComparer : IComparer<int>, IComparer<string>, IComparer<bool>
     {

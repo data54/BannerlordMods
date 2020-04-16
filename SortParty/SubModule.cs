@@ -15,7 +15,7 @@ using System.Reflection;
 using TaleWorlds.Library;
 using System.Linq;
 
-namespace SortParty
+namespace PartyManager
 {
     public class SubModule : MBSubModuleBase
     {
