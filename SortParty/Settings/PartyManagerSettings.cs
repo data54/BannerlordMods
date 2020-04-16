@@ -129,8 +129,8 @@ namespace PartyManager
                     catch(Exception ex)
                     {
                         GenericHelpers.LogException("LoadSettings", ex);
+                        settings = new PartyManagerSettings();
                     }
-                    settings = new PartyManagerSettings();
                 }
 
                 if (settings.Version != version)
@@ -196,7 +196,7 @@ namespace PartyManager
             }
             catch (Exception ex)
             {
-                GenericHelpers.LogException("PartyManager.CreateUpdateFile", ex);
+                GenericHelpers.LogException("PartyManagerSettings.CreateUpdateFile", ex);
             }
 
             return settings;
