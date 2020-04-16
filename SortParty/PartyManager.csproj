@@ -196,7 +196,6 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Helpers\GenericHelpers.cs" />
     <Compile Include="PartyController.cs" />
-    <Compile Include="Patches\Party\GauntletPartyScreenAddWidgetsPatch.cs" />
     <Compile Include="Patches\Party\PartyVMRefreshValuesPatch.cs" />
     <Compile Include="Patches\ScreenBaseAddLayerPatch.cs" />
     <Compile Include="Settings\PartyManagerSettings.cs" />

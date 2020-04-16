@@ -64,13 +64,10 @@ namespace PartyManager
             }
         }
 
-        PartyVM partyVM;
-        public static float lastTick = 0;
         long lastHotkeyExecute = 0;
         protected override void OnApplicationTick(float dt)
         {
             base.OnApplicationTick(dt);
-            lastTick = dt;
             if (enableHotkey || enableRecruitUpgradeSort || enableSortTypeCycleHotkey)
             {
                 string key = "";
