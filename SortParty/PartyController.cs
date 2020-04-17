@@ -203,7 +203,7 @@ namespace PartyManager
                 var customTroops = PartyManagerSettings.Settings.SavedTroopUpgradePaths.Where(x => !x.EvenSplit).Select(x => x.UnitName).ToList();
                 var splitUpgrades = upgrades.Where(x => splitTroops.Contains(x.Name.ToString())).ToList();
                 var customUpgrades = upgrades.Where(x => customTroops.Contains(x.Name.ToString())).ToList();
-                upgrades = upgrades.Where(x => !splitTroops.Contains(x.Name.ToString()) || !customTroops.Contains(x.Name.ToString())).ToList();
+                upgrades = upgrades.Where(x => !splitTroops.Contains(x.Name.ToString()) && !customTroops.Contains(x.Name.ToString())).ToList();
 
                 foreach (var troop in splitUpgrades)
                 {
@@ -211,9 +211,11 @@ namespace PartyManager
                         troop.NumOfTarget2UpgradesAvailable) / 2;
                     GenericHelpers.LogDebug("UpgradeAllTroops", $"Split {troop.Name.ToString()}: {unitUpgrades}");
 
+                    var unitsUpgraded = false;
+
                     for (int i = 0; i < unitUpgrades; i++)
                     {
-                        if (troop.IsUpgrade1Insufficient || troop.IsUpgrade2Insufficient)
+                        if (troop.IsUpgrade1Insufficient || troop.IsUpgrade2Insufficient || !troop.IsUpgrade1Available || !troop.IsUpgrade2Available)
                         {
                             break;
                         }
@@ -222,7 +224,9 @@ namespace PartyManager
                         PartyScreenLogic.PartyCommand command2 = new PartyScreenLogic.PartyCommand();
                         command1.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, 1,
                             PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1);
+                        var c1Valid = PartyScreenLogic.ValidateCommand(command1);
                         PartyScreenLogic.AddCommand(command1);
+
 
                         if (troop.IsUpgrade2Insufficient)
                         {
@@ -232,12 +236,17 @@ namespace PartyManager
 
                         command2.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, 1,
                             PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget2);
+                        var c2Valid = PartyScreenLogic.ValidateCommand(command1);
                         PartyScreenLogic.AddCommand(command2);
+                        unitsUpgraded = true;
                     }
 
 
 
-                    upgradesCount++;
+                    if (unitsUpgraded)
+                    {
+                        upgradesCount++;
+                    }
                 }
 
                 foreach (var troop in customUpgrades)
