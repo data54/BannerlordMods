@@ -60,7 +60,7 @@ MountedAsc MeleeAsc UnitNameAsc None None - Infantry Archers MeleeCavalry Ranged
 MountedAsc MeleeDesc UnitNameAsc None None - Archers Infantry RangedCavalry MeleeCavalry 
 MountedAsc MeleeAsc TierDesc UnitNameAsc None - Infantry Archers MeleeCavalry RangedCavalry (each group is ordered by tier desc and each tier is alphabetized)
 
-If you're looking to test custom sorts you'll want to avoid hitting CTRL+SHIFT+(Minus) between restarts as it cycles and saves the file which would overwrite any changes since the game was launched, next priority after bugfixes is a UI
+If you're looking to test custom sorts you'll want to avoid cycling your sort type in game before clicking the load button or restarting the game
 
 ---------------Config toggles-------------------------
 The following settings should have a value of either true or false:
@@ -70,5 +70,6 @@ EnableRecruitUpgradeSortHotkey - turns the CTRL-SHIFT-R hotkey that will sort wi
 EnableSortTypeCycleHotkey - turns the CTRL+SHIFT+- hotkey that will cycle sort types on/off
 CavalryAboveFootmen - self explanatory
 MeleeAboveArchers - self explanatory
+HideUIWidgets - This will hide the UI widgets if you just want the hotkey functionality
 
 Debug - Don't turn this on unless you want to see a ton of random messages
