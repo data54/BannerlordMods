@@ -78,8 +78,6 @@ namespace PartyManager.Widgets
             {
                 PartyController.CurrentInstance.UpgradeAllTroops(true);
             }
-
-            PartyController.CurrentInstance.UpgradeAllTroops(true);
         }
     }
 }

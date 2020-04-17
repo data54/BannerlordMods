@@ -205,7 +205,9 @@ namespace PartyManager
 
             {
                 var customUpgradeTroopsNames = PartyManagerSettings.Settings.SavedTroopUpgradePaths.Select(x => x.UnitName).ToList();
-                var customUpgrades = upgrades.Where(x => customUpgradeTroopsNames.Contains(x.Name.ToString()));
+                var customUpgrades = upgrades.Where(x => customUpgradeTroopsNames.Contains(x.Name.ToString())).ToList();
+                upgrades = upgrades.Where(x => !customUpgradeTroopsNames.Contains(x.Name.ToString())).ToList();
+
 
                 foreach (var troop in customUpgrades)
                 {
