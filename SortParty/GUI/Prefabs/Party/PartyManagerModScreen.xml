@@ -32,18 +32,15 @@
     <VisualDefinition Name="UpgradeRecruitMenu" DelayOnBegin="0.2" TransitionDuration="0.4">
       <VisualState PositionYOffset="12" State="Default" />
     </VisualDefinition>
-    <VisualDefinition Name="SortOptionsMenu" DelayOnBegin="0.2" TransitionDuration="0.4">
-      <VisualState PositionYOffset="9" State="Default" />
-    </VisualDefinition>
   </VisualDefinitions>
   <Window>
-    <Widget Id="PartyManager" VisualDefinition="UpgradeRecruitMenu"
+    <Widget Id="PartyManagerMod" VisualDefinition="UpgradeRecruitMenu"
             WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
             SuggestedWidth="!ButtonGroup.SuggestedWidth"
             SuggestedHeight="!ButtonGroup.SuggestedHeight"
             HorizontalAlignment="Right" VerticalAlignment="Top" MarginTop="!ButtonGroup.TopMargin" MarginRight="!ButtonGroup.RightMargin" >
       <Children>
-        <UpgradeAllTroopsWidget Id="UpgradeAllTroopsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+        <UpgradeAllTroopsWidget Id="PartyManagerModUpgradeAllTroopsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                         HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
                                         SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
                                         VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
@@ -51,7 +48,7 @@
                                         MarginTop="!Buttons.TopMargin" Brush="PartyManager.UpgradeAll">
 
         </UpgradeAllTroopsWidget>
-        <RecruitAllPrisonersWidget Id="RecruitAllPrisonersButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+        <RecruitAllPrisonersWidget Id="PartyManagerModRecruitAllPrisonersButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                 HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
                                 SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
                                 VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
@@ -59,7 +56,7 @@
                                 MarginTop="!Buttons.TopMargin" Brush="PartyManager.RecruitAll">
 
         </RecruitAllPrisonersWidget>
-        <SortUnitsWidget Id="SortUnitsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+        <SortUnitsWidget Id="PartyManagerModSortUnitsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                 HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Width"
                                 SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
@@ -68,7 +65,7 @@
                                 MarginTop="!Buttons.TopMargin" Brush="PartyManager.SortUnits">
 
         </SortUnitsWidget>
-        <CycleUnitSortWidget Id="CycleSortButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+        <CycleUnitSortWidget Id="PartyManagerModCycleSortButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                 HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Width"
                                 SuggestedHeight="!Buttons.Height" HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
@@ -77,7 +74,7 @@
                                 MarginTop="!Buttons.TopMargin" Brush="PartyManager.CycleSort">
 
         </CycleUnitSortWidget>
-        <ReloadSettingsWidget Id="ReloadSettingsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+        <ReloadSettingsWidget Id="PartyManagerModReloadSettingsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                 HeightSizePolicy="Fixed" SuggestedWidth="!ReloadSettingsButton.Size"
                                 SuggestedHeight="!ReloadSettingsButton.Size" HorizontalAlignment="Right"
                                 VerticalAlignment="Top"

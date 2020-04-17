@@ -223,8 +223,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="GUI\Brushes\PartyManagerBrush.xml" />
-    <Content Include="GUI\Prefabs\Party\PartyManager.xml" />
+    <Content Include="GUI\Brushes\PartyManagerModBrush.xml" />
+    <Content Include="GUI\PartyManagerModSpriteData.xml" />
+    <Content Include="GUI\Prefabs\Party\PartyManagerModScreen.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

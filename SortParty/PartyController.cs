@@ -148,7 +148,7 @@ namespace PartyManager
                     newLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
                     var partyVM = partyScreen.GetPartyVM();
 
-                    newLayer?.LoadMovie("PartyManager", partyVM);
+                    newLayer?.LoadMovie("PartyManagerModScreen", partyVM);
                     CurrentInstance.WidgetsAdded = true;
                     partyScreen.AddLayer(newLayer);
                     GenericHelpers.LogDebug("AddPartyWidgets", "Party Widget Added");
