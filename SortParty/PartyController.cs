@@ -164,7 +164,7 @@ namespace PartyManager
             }
         }
 
-        public void SortPartyScreen(SortType sortType=SortType.Default,
+        public void SortPartyScreen(SortType sortType = SortType.Default,
             bool updateUI = true, bool rightTroops = true,
             bool rightPrisoners = true, bool leftTroops = true, bool leftPrisoners = true)
         {
@@ -262,8 +262,8 @@ namespace PartyManager
         {
             PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
             command.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character,
-                path1? troop.NumOfTarget1UpgradesAvailable :troop.NumOfTarget2UpgradesAvailable,
-                path1? PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1: PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget2);
+                path1 ? troop.NumOfTarget1UpgradesAvailable : troop.NumOfTarget2UpgradesAvailable,
+                path1 ? PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1 : PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget2);
             PartyScreenLogic.AddCommand(command);
         }
 
@@ -279,7 +279,7 @@ namespace PartyManager
             }
         }
 
-        public void RecruitAllPrisoners()
+        public void RecruitAllPrisoners(bool ignorePartyLimit)
         {
             try
             {
@@ -289,13 +289,28 @@ namespace PartyManager
 
                 if (recruits?.Count > 0)
                 {
+                    var freeUnitSlots = PartyScreenLogic.RightOwnerParty.PartySizeLimit - PartyScreenLogic.RightOwnerParty.NumberOfAllMembers;
+
+                    var recruitCount = 0;
+
                     foreach (var troop in recruits)
                     {
-                        PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
+                        if (freeUnitSlots > 0 || ignorePartyLimit)
+                        {
 
-                        command.FillForRecruitTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, troop.NumOfRecruitablePrisoners);
+                            var toBeRecruited = ignorePartyLimit ? troop.NumOfRecruitablePrisoners : Math.Min(freeUnitSlots, troop.NumOfRecruitablePrisoners);
+                            for (int i = 0; i < toBeRecruited; i++)
+                            {
+                                PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
+                                command.FillForRecruitTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type,
+                                    troop.Character, 1);
+                                PartyScreenLogic.AddCommand(command);
+                            }
 
-                        PartyScreenLogic.AddCommand(command);
+                            GenericHelpers.LogDebug("RecruitAll", $"Recruited {toBeRecruited} {troop.Character.Name}");
+                            recruitCount += toBeRecruited;
+                            freeUnitSlots -= toBeRecruited;
+                        }
                     }
 
                     ButtonClickRefresh(true, true);
@@ -346,7 +361,7 @@ namespace PartyManager
                     UnitName = vm.Name,
                     TargetUpgrade = upgradeIndex
                 };
-                
+
                 PartyManagerSettings.Settings.SavedTroopUpgradePaths.Add(newUpgrade);
                 message = $"Added Upgrade Path for {vm.Character.Name.ToString()}";
             }

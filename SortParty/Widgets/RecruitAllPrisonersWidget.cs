@@ -26,7 +26,7 @@ namespace PartyManager.Widgets
             {
                 if (eventName == "HoverBegin")
                 {
-                    InformationManager.AddHintInformation("Recruit All Prisoners");
+                    InformationManager.AddHintInformation("Recruit All Prisoners\nRight click to recruit past party limit");
                 }
                 else if (eventName == "HoverEnd")
                 {
@@ -38,13 +38,13 @@ namespace PartyManager.Widgets
         protected override void OnClick()
         {
             base.OnClick();
-            PartyController.CurrentInstance.RecruitAllPrisoners();
+            PartyController.CurrentInstance.RecruitAllPrisoners(false);
         }
 
         protected override void OnAlternateClick()
         {
             base.OnAlternateClick();
-
+            PartyController.CurrentInstance.RecruitAllPrisoners(true);
         }
     }
 }
