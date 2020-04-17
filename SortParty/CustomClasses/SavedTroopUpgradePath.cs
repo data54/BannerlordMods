@@ -10,5 +10,6 @@ namespace PartyManager
     {
         public string UnitName { get; set; }
         public int? TargetUpgrade { get; set; }
+        public bool EvenSplit { get; set; }
     }
 }

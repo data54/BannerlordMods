@@ -17,10 +17,19 @@ namespace PartyManager.Patches.Party
     {
         public static bool Prefix(int upgradeIndex, ref PartyCharacterVM __instance)
         {
-            if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths && (ScreenManager.TopScreen is GauntletPartyScreen topScreen) && topScreen.DebugInput.IsControlDown())
+            if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths && (ScreenManager.TopScreen is GauntletPartyScreen topScreen))
             {
-                PartyController.ToggleUpgradePath(__instance, upgradeIndex);
-                return false;
+                if (topScreen.DebugInput.IsControlDown() && topScreen.DebugInput.IsShiftDown())
+                {
+                    PartyController.ToggleUpgradePath(__instance, upgradeIndex,true);
+                    return false;
+                }
+                else if (topScreen.DebugInput.IsControlDown())
+                {
+                    PartyController.ToggleUpgradePath(__instance, upgradeIndex, false);
+                    return false;
+                }
+                return true;
             }
 
             return true;

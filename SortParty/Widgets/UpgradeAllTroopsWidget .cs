@@ -51,7 +51,7 @@ namespace PartyManager.Widgets
             {
                 if (eventName == "HoverBegin")
                 {
-                    InformationManager.AddHintInformation("Upgrade All Troops\nRight click to only upgrade custom paths\nCTRL+Left click unit upgrades to set/unset custom paths\nCTRL+Right click to sort custom path units to the top");
+                    InformationManager.AddHintInformation("Upgrade All Troops\nRight click to only upgrade custom paths\nCTRL+Left click unit upgrades to set/unset custom paths\nCTRL+SHIFT+Left Click to even split the upgrade\nCTRL+Right click to sort custom path units to the top");
                 }
                 else if (eventName == "HoverEnd")
                 {
