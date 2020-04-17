@@ -24,6 +24,7 @@ namespace PartyManager
         public bool MeleeAboveArchers { get; set; }
         public bool SortAfterRecruitAllUpgradeAllClick { get; set; }
         public bool HideUIWidgets { get; set; }
+        public bool DisableCustomUpgradePaths { get; set; }
 
         public bool Debug { get; set; }
 
@@ -33,6 +34,23 @@ namespace PartyManager
         public CustomSortOrder CustomSortOrderField4 { get; set; }
         public CustomSortOrder CustomSortOrderField5 { get; set; }
 
+
+        private List<SavedTroopUpgradePath> _savedTroopUpgradePaths;
+
+        public List<SavedTroopUpgradePath> SavedTroopUpgradePaths
+        {
+            get
+            {
+                if (_savedTroopUpgradePaths == null)
+                {
+                    _savedTroopUpgradePaths=new List<SavedTroopUpgradePath>();
+                }
+
+                return _savedTroopUpgradePaths;
+            }
+            set { _savedTroopUpgradePaths = value; }
+
+        }
 
         public SortType SortOrder { get; set; }
 
@@ -142,6 +160,12 @@ namespace PartyManager
             GenericHelpers.LogMessage("Settings Reloaded");
         }
 
+        public void SaveSettings()
+        {
+            CreateUpdateFile(this);
+            GenericHelpers.LogDebug("PartyManagerSettings", "Settings Saved");
+        }
+
         public static PartyManagerSettings LoadSettings()
         {
             if (!File.Exists(filePath))
@@ -237,6 +261,9 @@ namespace PartyManager
 
     public enum SortType
     {
+        CustomUpgrades = -3,
+        RecruitUpgrade =-2,
+        Default=-1,
         TierDesc = 0,
         TierAsc = 1,
         TierDescType = 2,

@@ -12,7 +12,7 @@ namespace PartyManager.Patches
             {
                 GenericHelpers.LogDebug("PartyVM RefreshValues Patch", "Pre Update called");
                 PartyController.CurrentInstance.PartyVM = __instance;
-                PartyController.CurrentInstance.SortPartyScreen(false, true);
+                PartyController.CurrentInstance.SortPartyScreen(SortType.Default, true);
             }
 
             return true;

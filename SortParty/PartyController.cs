@@ -164,7 +164,7 @@ namespace PartyManager
             }
         }
 
-        public void SortPartyScreen(bool sortRecruitUpgrade = false,
+        public void SortPartyScreen(SortType sortType=SortType.Default,
             bool updateUI = true, bool rightTroops = true,
             bool rightPrisoners = true, bool leftTroops = true, bool leftPrisoners = true)
         {
@@ -178,7 +178,7 @@ namespace PartyManager
                 }
                 GenericHelpers.LogDebug("SortPartyScreen", "Sort Called");
 
-                SortPartyHelpers.SortPartyLogic(PartyScreenLogic, PartyVM, sortRecruitUpgrade, rightTroops, rightPrisoners, leftTroops, leftPrisoners);
+                SortPartyHelpers.SortPartyLogic(PartyScreenLogic, PartyVM, sortType, rightTroops, rightPrisoners, leftTroops, leftPrisoners);
 
                 if (updateUI) InitializeTroopLists();
             }
@@ -188,42 +188,90 @@ namespace PartyManager
             }
         }
 
-        public void UpgradeAllTroops()
+        public void SortCustomUpgradesToTop()
+        {
+
+        }
+
+        public void UpgradeAllTroops(bool customOnly = false)
         {
             var upgrades = PartyVM?.MainPartyTroops?
                     .Where(x => !x.IsHero
-                    && !(x.IsUpgrade1Exists && x.IsUpgrade2Exists)
                     && ((x.IsUpgrade1Available && !x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && !x.IsUpgrade2Insufficient))).ToList();
 
-            if (upgrades.Count > 0)
+            var upgradesCount = 0;
+
+            if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths)
+
             {
-                foreach (var troop in upgrades)
+                var customUpgradeTroopsNames = PartyManagerSettings.Settings.SavedTroopUpgradePaths.Select(x => x.UnitName).ToList();
+                var customUpgrades = upgrades.Where(x => customUpgradeTroopsNames.Contains(x.Name.ToString()));
+
+                foreach (var troop in customUpgrades)
+                {
+                    var upgradePath = PartyManagerSettings.Settings.SavedTroopUpgradePaths
+                        .Where(x => x.UnitName == troop.Name.ToString())?.Select(x => x.TargetUpgrade).FirstOrDefault();
+
+                    if (upgradePath == 0 && !troop.IsUpgrade1Insufficient)
+                    {
+                        UpgradeUnit(troop, true);
+                        upgradesCount++;
+                    }
+                    else if (upgradePath == 1 && !troop.IsUpgrade2Insufficient)
+                    {
+                        UpgradeUnit(troop, false);
+                        upgradesCount++;
+                    }
+                }
+            }
+
+            if (!customOnly)
+            {
+                //single upgrade units
+                var singleUpgrades = upgrades.Where(x => !(x.IsUpgrade1Exists && x.IsUpgrade2Exists)).ToList();
+
+
+                foreach (var troop in singleUpgrades)
                 {
                     PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
                     if (troop.NumOfTarget1UpgradesAvailable > 0)
                     {
-                        command.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, troop.NumOfTarget1UpgradesAvailable, PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1);
+                        UpgradeUnit(troop, true);
                     }
                     else
                     {
-                        command.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, troop.NumOfTarget2UpgradesAvailable, PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget2);
+                        UpgradeUnit(troop, false);
                     }
-                    PartyScreenLogic.AddCommand(command);
-                }
 
-                ButtonClickRefresh(true,false);
+                    upgradesCount++;
+                }
+            }
+
+            if (upgradesCount > 0)
+            {
+                GenericHelpers.LogDebug("UpgradeAllTroops", $"{upgradesCount} troops upgraded");
+                ButtonClickRefresh(true, false);
             }
             else
             {
-                GenericHelpers.LogMessage("No troops found with only a single upgrade path");
+                GenericHelpers.LogMessage("No troops found to upgrade");
             }
         }
 
-        private void ButtonClickRefresh(bool rightTroops, bool rightPrisoners, bool leftTroops=false, bool leftPrisoners = false)
+        private void UpgradeUnit(PartyCharacterVM troop, bool path1)
+        {
+            PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
+            command.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character,
+                path1? troop.NumOfTarget1UpgradesAvailable :troop.NumOfTarget2UpgradesAvailable,
+                path1? PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1: PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget2);
+            PartyScreenLogic.AddCommand(command);
+        }
+
+        private void ButtonClickRefresh(bool rightTroops, bool rightPrisoners, bool leftTroops = false, bool leftPrisoners = false)
         {
             if (PartyManagerSettings.Settings.SortAfterRecruitAllUpgradeAllClick)
             {
-                SortPartyScreen(false,true, rightTroops, rightPrisoners, leftTroops, leftPrisoners);
+                SortPartyScreen(SortType.Default, true, rightTroops, rightPrisoners, leftTroops, leftPrisoners);
             }
             else
             {
@@ -273,6 +321,38 @@ namespace PartyManager
             RefreshPartyInformationMethod.Invoke(PartyVM, new object[0] { });
         }
 
+        public static void ToggleUpgradePath(PartyCharacterVM vm, int upgradeIndex)
+        {
+            string message = "";
+            var upgrade = PartyManagerSettings.Settings.SavedTroopUpgradePaths.FirstOrDefault(x => x.UnitName == vm.Character.Name.ToString());
+
+            if (upgrade != null)
+            {
+                if (upgradeIndex == upgrade.TargetUpgrade)
+                {
+                    PartyManagerSettings.Settings.SavedTroopUpgradePaths.Remove(upgrade);
+                    message = $"Removed Upgrade Path for {vm.Character.Name.ToString()}";
+                }
+                else
+                {
+                    upgrade.TargetUpgrade = upgradeIndex;
+                    message = $"Changed Upgrade Path for {vm.Character.Name.ToString()}";
+                }
+            }
+            else
+            {
+                var newUpgrade = new SavedTroopUpgradePath()
+                {
+                    UnitName = vm.Name,
+                    TargetUpgrade = upgradeIndex
+                };
+                
+                PartyManagerSettings.Settings.SavedTroopUpgradePaths.Add(newUpgrade);
+                message = $"Added Upgrade Path for {vm.Character.Name.ToString()}";
+            }
+            PartyManagerSettings.Settings.SaveSettings();
+            GenericHelpers.LogMessage(message);
+        }
 
         public void TriggerGauntletViewOnEventFired(GauntletView view)
         {

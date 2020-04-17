@@ -104,7 +104,7 @@ namespace PartyManager
                         else if (InputKey.R.IsDown() && enableRecruitUpgradeSort)
                         {
                             key = "R";
-                            PartyController.CurrentInstance.SortPartyScreen(true);
+                            PartyController.CurrentInstance.SortPartyScreen(SortType.RecruitUpgrade);
                         }
                         lastHotkeyExecute = DateTime.Now.Ticks;
                     }

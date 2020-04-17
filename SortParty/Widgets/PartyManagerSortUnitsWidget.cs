@@ -12,9 +12,9 @@ using TaleWorlds.Library;
 
 namespace PartyManager.Widgets
 {
-    public class SortUnitsWidget : ButtonWidget
+    public class PartyManagerSortUnitsWidget : ButtonWidget
     {
-        public SortUnitsWidget(UIContext context) : base(context)
+        public PartyManagerSortUnitsWidget(UIContext context) : base(context)
         {
             EventFire += EventHandler;
         }
@@ -44,7 +44,7 @@ namespace PartyManager.Widgets
         protected override void OnAlternateClick()
         {
             base.OnAlternateClick();
-            PartyController.CurrentInstance.SortPartyScreen(SortType.RecruitUpgrade);
+            PartyController.CurrentInstance.SortPartyScreen(true);
         }
     }
 }

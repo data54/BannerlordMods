@@ -9,4 +9,7 @@ del /S "Modules\PartyManager\bin\Win64_Shipping_Client\*.pdb" /F /Q
 del /S "Modules\*vortex*" /F /Q
 Powershell Compress-Archive "Modules" "PartyManager.zip"
 
-PAUSE
+if NOT ["%errorlevel%"]==["0"] (
+    pause
+    exit /b %errorlevel%
+)

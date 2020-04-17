@@ -11,29 +11,29 @@ namespace PartyManager
 {
     public class SortPartyHelpers
     {
-        public static void SortPartyLogic(PartyScreenLogic PartyScreenLogic, PartyVM PartyVM, bool sortRecruitUpgrade, bool rightTroops, bool rightPrisoners, bool leftTroops, bool leftPrisoners)
+        public static void SortPartyLogic(PartyScreenLogic PartyScreenLogic, PartyVM PartyVM, SortType sortType, bool rightTroops, bool rightPrisoners, bool leftTroops, bool leftPrisoners)
         {
             var left = (int) PartyScreenLogic.PartyRosterSide.Left;
             var right = (int)PartyScreenLogic.PartyRosterSide.Right;
 
             //Left Side
-            if (leftTroops) SortPartyHelpers.SortUnits(PartyScreenLogic.MemberRosters[left], sortRecruitUpgrade, PartyVM?.OtherPartyTroops);
-            if (leftPrisoners) SortUnits(PartyScreenLogic.PrisonerRosters[left], sortRecruitUpgrade, PartyVM?.OtherPartyPrisoners);
+            if (leftTroops) SortPartyHelpers.SortUnits(PartyScreenLogic.MemberRosters[left], sortType, PartyVM?.OtherPartyTroops);
+            if (leftPrisoners) SortUnits(PartyScreenLogic.PrisonerRosters[left], sortType, PartyVM?.OtherPartyPrisoners);
             //Right Side
-            if (rightTroops) SortUnits(PartyScreenLogic.MemberRosters[right], sortRecruitUpgrade, PartyVM?.MainPartyTroops);
-            if (rightPrisoners) SortPartyHelpers.SortUnits(PartyScreenLogic.PrisonerRosters[right], sortRecruitUpgrade, PartyVM?.MainPartyPrisoners);
+            if (rightTroops) SortUnits(PartyScreenLogic.MemberRosters[right], sortType, PartyVM?.MainPartyTroops);
+            if (rightPrisoners) SortPartyHelpers.SortUnits(PartyScreenLogic.PrisonerRosters[right], sortType, PartyVM?.MainPartyPrisoners);
         }
 
-        public static void SortUnits(TroopRoster input, bool sortRecruitUpgrade = false, MBBindingList<PartyCharacterVM> partyVmUnits = null)
+        public static void SortUnits(TroopRoster input, SortType sortType, MBBindingList<PartyCharacterVM> partyVmUnits = null)
         {
             if (input == null || input.Count == 0)
             {
                 return;
             }
-
+            
             var inputList = input.ToList();
 
-            var flattenedOrder = CreateFlattenedRoster(input, sortRecruitUpgrade, partyVmUnits);
+            var flattenedOrder = CreateFlattenedRoster(input, sortType, partyVmUnits);
 
             for (int i = 0; i < inputList.Count; i++)
             {
@@ -46,11 +46,19 @@ namespace PartyManager
             input.Add(flattenedOrder);
         }
 
-        public static List<FlattenedTroopRosterElement> CreateFlattenedRoster(TroopRoster roster, bool sortRecruitUpgrade, MBBindingList<PartyCharacterVM> partyVmUnits = null)
+        public static List<FlattenedTroopRosterElement> CreateFlattenedRoster(TroopRoster roster, SortType sortType, MBBindingList<PartyCharacterVM> partyVmUnits = null)
         {
+            sortType = sortType == SortType.Default ? PartyManagerSettings.Settings.SortOrder : sortType;
+
+            if (sortType == SortType.Default)
+            {
+                var sortOrder = PartyManagerSettings.Settings.SortOrder;
+            }
+
+
             var flattenedRoster = roster.ToFlattenedRoster().Where(x => !x.Troop.IsHero);
 
-            if (sortRecruitUpgrade && partyVmUnits != null)
+            if (sortType == SortType.RecruitUpgrade && partyVmUnits != null)
             {
                 //Units that can be upgraded
                 var recruitUpgradeUnitTypes = partyVmUnits
@@ -63,7 +71,7 @@ namespace PartyManager
                 return flattenedRoster.OrderByDescending(x => recruitUpgradeUnitTypes.Contains(x.Troop.Name.ToString())).ThenByDescending(x => insufficientUpgrades.Contains(x.Troop.Name.ToString())).ThenByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
             }
 
-            switch (PartyManagerSettings.Settings.SortOrder)
+            switch (sortType)
             {
                 case SortType.TierDesc:
                     return flattenedRoster.OrderByDescending(x => x.Troop.Tier)
@@ -117,6 +125,10 @@ namespace PartyManager
                         .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField4), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField4))
                         .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField5), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField5))
                         .ToList();
+                case SortType.CustomUpgrades:
+                    var unitNames = PartyManagerSettings.Settings.SavedTroopUpgradePaths.Select(x=>x.UnitName);
+                    return flattenedRoster.OrderByDescending(x => unitNames.Contains(x.Troop.Name.ToString()))
+                        .ThenBy(x => x.Troop.Name.ToString()).ToList();
             }
 
             return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();

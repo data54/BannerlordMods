@@ -12,9 +12,9 @@ using TaleWorlds.Library;
 
 namespace PartyManager.Widgets
 {
-    public class SortUnitsWidget : ButtonWidget
+    public class PartyManagerReloadSettingsWidget : ButtonWidget
     {
-        public SortUnitsWidget(UIContext context) : base(context)
+        public PartyManagerReloadSettingsWidget(UIContext context) : base(context)
         {
             EventFire += EventHandler;
         }
@@ -26,25 +26,31 @@ namespace PartyManager.Widgets
             {
                 if (eventName == "HoverBegin")
                 {
-                    InformationManager.AddHintInformation("Sort All Units\nRight click to sort all recruits/upgrades to the top");
+                    ToggleTooltip(true);
                 }
                 else if (eventName == "HoverEnd")
                 {
-                    InformationManager.HideInformations();
+                    ToggleTooltip(false);
                 }
+            }
+        }
+
+        private void ToggleTooltip(bool on)
+        {
+            if (on)
+            {
+                InformationManager.AddHintInformation($"Reload Party Manager Settings");
+            }
+            else
+            {
+                InformationManager.HideInformations();
             }
         }
 
         protected override void OnClick()
         {
             base.OnClick();
-            PartyController.CurrentInstance.SortPartyScreen();
-        }
-
-        protected override void OnAlternateClick()
-        {
-            base.OnAlternateClick();
-            PartyController.CurrentInstance.SortPartyScreen(SortType.RecruitUpgrade);
+            PartyManagerSettings.ReloadSettings();
         }
     }
 }

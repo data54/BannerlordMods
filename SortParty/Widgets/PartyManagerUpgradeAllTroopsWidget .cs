@@ -12,9 +12,9 @@ using TaleWorlds.Library;
 
 namespace PartyManager.Widgets
 {
-    public class UpgradeAllTroopsWidget : ButtonWidget
+    public class PartyManagerUpgradeAllTroopsWidget : ButtonWidget
     {
-        public UpgradeAllTroopsWidget(UIContext context) : base(context)
+        public PartyManagerUpgradeAllTroopsWidget(UIContext context) : base(context)
         {
             EventFire += EventHandler;
 
@@ -51,7 +51,7 @@ namespace PartyManager.Widgets
             {
                 if (eventName == "HoverBegin")
                 {
-                    InformationManager.AddHintInformation("Upgrade All Troops\nRight click to only upgrade custom paths\nCTRL+Right click to sort custom path unit to the top");
+                    InformationManager.AddHintInformation("Upgrade All Troops");
                 }
                 else if (eventName == "HoverEnd")
                 {
@@ -69,17 +69,7 @@ namespace PartyManager.Widgets
         protected override void OnAlternateClick()
         {
             base.OnAlternateClick();
-
-            if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths && (ScreenManager.TopScreen is GauntletPartyScreen topScreen) && topScreen.DebugInput.IsControlDown())
-            {
-                PartyController.CurrentInstance.SortPartyScreen(SortType.CustomUpgrades, true, true, false, false, false);
-            }
-            else
-            {
-                PartyController.CurrentInstance.UpgradeAllTroops(true);
-            }
-
-            PartyController.CurrentInstance.UpgradeAllTroops(true);
+            PartyController.CurrentInstance.SortPartyScreen(true);
         }
     }
 }

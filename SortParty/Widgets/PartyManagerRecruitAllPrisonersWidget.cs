@@ -12,13 +12,13 @@ using TaleWorlds.Library;
 
 namespace PartyManager.Widgets
 {
-    public class SortUnitsWidget : ButtonWidget
+    public class PartyManagerRecruitAllPrisonersWidget : ButtonWidget
     {
-        public SortUnitsWidget(UIContext context) : base(context)
+        public PartyManagerRecruitAllPrisonersWidget(UIContext context) : base(context)
         {
             EventFire += EventHandler;
-        }
 
+        }
 
         private void EventHandler(Widget widget, string eventName, object[] args)
         {
@@ -26,7 +26,7 @@ namespace PartyManager.Widgets
             {
                 if (eventName == "HoverBegin")
                 {
-                    InformationManager.AddHintInformation("Sort All Units\nRight click to sort all recruits/upgrades to the top");
+                    InformationManager.AddHintInformation("Recruit All Prisoners");
                 }
                 else if (eventName == "HoverEnd")
                 {
@@ -38,13 +38,18 @@ namespace PartyManager.Widgets
         protected override void OnClick()
         {
             base.OnClick();
-            PartyController.CurrentInstance.SortPartyScreen();
+            PartyController.CurrentInstance.RecruitAllPrisoners();
         }
 
         protected override void OnAlternateClick()
         {
             base.OnAlternateClick();
-            PartyController.CurrentInstance.SortPartyScreen(SortType.RecruitUpgrade);
+
+        }
+
+        public void UpgradeAllTroops()
+        {
+            PartyController.CurrentInstance.UpgradeAllTroops();
         }
     }
 }

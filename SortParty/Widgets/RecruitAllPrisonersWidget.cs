@@ -46,10 +46,5 @@ namespace PartyManager.Widgets
             base.OnAlternateClick();
 
         }
-
-        public void UpgradeAllTroops()
-        {
-            PartyController.CurrentInstance.UpgradeAllTroops();
-        }
     }
 }
