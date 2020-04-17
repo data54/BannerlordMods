@@ -220,7 +220,7 @@ namespace PartyManager
 
                         PartyScreenLogic.PartyCommand command1 = new PartyScreenLogic.PartyCommand();
                         PartyScreenLogic.PartyCommand command2 = new PartyScreenLogic.PartyCommand();
-                        command1.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character,1,
+                        command1.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, 1,
                             PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1);
                         PartyScreenLogic.AddCommand(command1);
 
@@ -378,18 +378,20 @@ namespace PartyManager
 
             if (upgrade != null)
             {
-                if (split)
-                {
-                    upgrade.TargetUpgrade = upgradeIndex;
-                    message = $"Changed Upgrade Path for {vm.Character.Name.ToString()} to be split evenly";
-                }
-                else if (upgradeIndex == upgrade.TargetUpgrade)
+
+                if ((upgradeIndex == upgrade.TargetUpgrade && (split == upgrade.EvenSplit)) || (split && upgrade.EvenSplit))
                 {
                     PartyManagerSettings.Settings.SavedTroopUpgradePaths.Remove(upgrade);
                     message = $"Removed Upgrade Path for {vm.Character.Name.ToString()}";
                 }
+                else if (split)
+                {
+                    upgrade.EvenSplit = true;
+                    message = $"Changed Upgrade Path for {vm.Character.Name.ToString()} to be split evenly";
+                }
                 else
                 {
+                    upgrade.EvenSplit = false;
                     upgrade.TargetUpgrade = upgradeIndex;
                     message = $"Changed Upgrade Path for {vm.Character.Name.ToString()}";
                 }
