@@ -16,68 +16,7 @@ namespace PartyManager.Widgets
     {
         public UpgradeAllTroopsWidget(UIContext context) : base(context)
         {
-            EventFire += EventHandler;
 
-        }
-
-        //public UpgradeAllTroopsWidget(UIContext context, GauntletMovie movie) : base(context)
-        //{
-        //    EventFire += EventHandler;
-
-        //    IsVisible = true;
-        //    Id = "UpgradeAllTroopsButton2";
-        //    Tag = Guid.NewGuid().ToString();
-        //    this.VisualDefinition = new VisualDefinition("test", 0f, 0f, false);
-        //    DoNotPassEventsToChildren = true;
-        //    WidthSizePolicy = SizePolicy.Fixed;
-        //    HeightSizePolicy = SizePolicy.Fixed;
-
-        //    HorizontalAlignment = HorizontalAlignment.Right;
-        //    VerticalAlignment = VerticalAlignment.Top;
-
-        //    Brush = UIResourceManager.BrushFactory.GetBrush("PartyManager.UpgradeAll");
-        //    MarginLeft = 10f;
-        //    MarginRight = 80f;
-        //    MarginTop = 15f;
-        //    MarginBottom = 0f;
-
-        //    SuggestedWidth = 500f;
-        //    SuggestedHeight = 500f;
-        //}
-
-        private void EventHandler(Widget widget, string eventName, object[] args)
-        {
-            if (IsVisible)
-            {
-                if (eventName == "HoverBegin")
-                {
-                    InformationManager.AddHintInformation("Upgrade All Troops\nRight click to only upgrade custom paths\nCTRL+Left click unit upgrades to set/unset custom paths\nCTRL+SHIFT+Left Click to even split the upgrade\nCTRL+Right click to sort custom path units to the top");
-                }
-                else if (eventName == "HoverEnd")
-                {
-                    InformationManager.HideInformations();
-                }
-            }
-        }
-
-        protected override void OnClick()
-        {
-            base.OnClick();
-            PartyController.CurrentInstance.UpgradeAllTroops();
-        }
-
-        protected override void OnAlternateClick()
-        {
-            base.OnAlternateClick();
-
-            if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths && (ScreenManager.TopScreen is GauntletPartyScreen topScreen) && topScreen.DebugInput.IsControlDown())
-            {
-                PartyController.CurrentInstance.SortPartyScreen(SortType.CustomUpgrades, true, true, false, false, false);
-            }
-            else
-            {
-                PartyController.CurrentInstance.UpgradeAllTroops(true);
-            }
         }
     }
 }

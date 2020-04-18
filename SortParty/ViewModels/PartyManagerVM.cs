@@ -21,9 +21,27 @@ namespace PartyManager.ViewModels
         private GauntletPartyScreen _parentScreen;
         private GauntletMovie _currentMovie;
         private HintViewModel _settingsHint;
+        private UpgradeAllTroopsVM _upgradeAllTroopsVm;
 
         [DataSourceProperty]
-        public UpgradeAllTroopsVM UpgradeAllTroopsVm { get; set; }
+        public PartyScreenLogic PartyScreenLogic
+        {
+            get
+            {
+                return this._partyScreenLogic;
+            }
+        }
+
+        [DataSourceProperty]
+        public UpgradeAllTroopsVM UpgradeAllTroopsVm
+        {
+            get => _upgradeAllTroopsVm;
+            set
+            {
+                _upgradeAllTroopsVm = value;
+                OnPropertyChanged(nameof(UpgradeAllTroopsVm));
+            }
+        }
 
 
         public PartyManagerVM(

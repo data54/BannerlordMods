@@ -31,7 +31,11 @@ namespace PartyManager.ViewModels
                 , "PMUpgradeAllTroops");
 
         }
-        
-        
+
+        public void UpgradeAllTroops()
+        {
+
+        }
+
     }
 }

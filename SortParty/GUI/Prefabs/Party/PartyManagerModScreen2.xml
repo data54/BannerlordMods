@@ -40,7 +40,8 @@
             SuggestedHeight="!ButtonGroup.SuggestedHeight"
             HorizontalAlignment="Right" VerticalAlignment="Top" MarginTop="!ButtonGroup.TopMargin" MarginRight="!ButtonGroup.RightMargin" >
       <Children>
-        <!--<Widget Datasource="{UpgradeAllTroopsVm}" Id="PartyManagerModUpgradeAllTroopsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+        <UpgradeAllTroopsWidget Datasource="{UpgradeAllTroopsVm}" Command.Click="UpgradeAllTroops"
+		Id="PartyManagerModUpgradeAllTroopsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                         HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
                                         SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
                                         VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
@@ -49,11 +50,11 @@
           <Children>
             <HintWidget DataSource="{UpgradeTroopsHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
-            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" DoNotAcceptEvents="false"
-                    SuggestedHeight="40" HorizontalAlignment="Center" MarginTop="0"
-                    VerticalAlignment="Center" MarginLeft="4" IsDisabled="false" Brush="PartyManager.UpgradeAll" />
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size" DoNotAcceptEvents="false"
+                    SuggestedHeight="!Buttons.Size" HorizontalAlignment="Center" MarginTop="0"
+                    VerticalAlignment="Center" IsDisabled="false" Brush="PartyManager.UpgradeAll" />
           </Children>
-        </Widget>-->
+        </UpgradeAllTroopsWidget>
         <RecruitAllPrisonersWidget Id="PartyManagerModRecruitAllPrisonersButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                 HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
                                 SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
