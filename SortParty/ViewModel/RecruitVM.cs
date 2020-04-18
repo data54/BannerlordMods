@@ -12,7 +12,7 @@ using TaleWorlds.Library;
 
 namespace PartyManager.ViewModels
 {
-    public class UpgradeAllTroopsVM : TaleWorlds.Library.ViewModel
+    public class RecruitVM : TaleWorlds.Library.ViewModel
     {
         private readonly MBBindingList<PartyCharacterVM> _mainPartyList;
         private readonly PartyScreenLogic _partyLogic;
@@ -34,7 +34,7 @@ namespace PartyManager.ViewModels
             }
         }
 
-        public UpgradeAllTroopsVM(PartyScreenLogic partyLogic, PartyVM partyVm)
+        public RecruitVM(PartyScreenLogic partyLogic, PartyVM partyVm)
         {
             this._partyLogic = partyLogic;
             this._partyVM = partyVm;
@@ -51,21 +51,14 @@ namespace PartyManager.ViewModels
 
         }
 
-        public void UpgradeLeftClick()
+        public void Click()
         {
-            PartyController.CurrentInstance.UpgradeAllTroops(false);
+
         }
 
-        public void UpgradeRightClick()
+        public void AltClick()
         {
-            if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths && (ScreenManager.TopScreen is GauntletPartyScreen topScreen) && topScreen.DebugInput.IsControlDown())
-            {
-                PartyController.CurrentInstance.SortPartyScreen(SortType.CustomUpgrades, true, true, false, false, false);
-            }
-            else
-            {
-                PartyController.CurrentInstance.UpgradeAllTroops(true);
-            }
+
         }
 
     }

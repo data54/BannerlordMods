@@ -21,7 +21,9 @@ namespace PartyManager.ViewModels
         private GauntletPartyScreen _parentScreen;
         private GauntletMovie _currentMovie;
         private HintViewModel _settingsHint;
-        private UpgradeAllTroopsVM _upgradeTroopsVM;
+        private UpgradeTroopsVM _upgradeTroopsVM;
+        private RecruitVM _recruitController;
+        private SortUnitsVM _sortController;
 
         [DataSourceProperty]
         public PartyScreenLogic PartyScreenLogic
@@ -33,7 +35,7 @@ namespace PartyManager.ViewModels
         }
 
         [DataSourceProperty]
-        public UpgradeAllTroopsVM UpgradeAllTroops
+        public UpgradeTroopsVM UpgradeTroopsController
         {
             get => _upgradeTroopsVM;
             set
@@ -42,6 +44,31 @@ namespace PartyManager.ViewModels
                     return;
                 this._upgradeTroopsVM = value;
                 this.OnPropertyChanged(nameof(_upgradeTroopsVM));
+            }
+        }
+
+        public RecruitVM RecruitController
+        {
+            get => _recruitController;
+            set
+            {
+                if (value == this._recruitController)
+                    return;
+                this._recruitController = value;
+                this.OnPropertyChanged(nameof(_recruitController));
+            }
+        }
+
+        [DataSourceProperty]
+        public SortUnitsVM SortController
+        {
+            get => _sortController;
+            set
+            {
+                if (value == this._sortController)
+                    return;
+                this._sortController = value;
+                this.OnPropertyChanged(nameof(_sortController));
             }
         }
 
@@ -54,7 +81,9 @@ namespace PartyManager.ViewModels
             this._partyVM = partyVM;
             this._partyScreenLogic = partyScreenLogic;
             this._parentScreen = parentScreen;
-            _upgradeTroopsVM = new UpgradeAllTroopsVM(partyScreenLogic, partyVM);
+            _upgradeTroopsVM = new UpgradeTroopsVM(partyScreenLogic, partyVM);
+            _sortController = new SortUnitsVM(partyScreenLogic, partyVM);
+            _recruitController = new RecruitVM(partyScreenLogic, partyVM);
 
         }
 

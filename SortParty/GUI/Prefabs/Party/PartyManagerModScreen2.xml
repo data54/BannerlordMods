@@ -39,13 +39,13 @@
             MarginTop="!ButtonGroup.TopMargin" MarginRight="!ButtonGroup.RightMargin"
                 DoNotAcceptEvents="true">
       <Children>
-        <ButtonWidget  DataSource="{UpgradeAllTroops}" Id="PartyManagerModUpgradeAllTroopsButton"
+        <ButtonWidget  DataSource="{UpgradeTroopsController}" Id="PartyManagerModUpgradeAllTroopsButton"
 				                        DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
 				                        HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
 				                        SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
 				                        VerticalAlignment="Center"
 										MarginRight="!UpgradeAllTroopsButtonRightMargin" MarginLeft="!Buttons.Margin"
-				                        MarginTop="!Buttons.TopMargin" Brush="PartyManager.UpgradeAll" Command.Click="UpgradeLeftClick" Command.AlternateClick="UpgradeRightClick"	>
+				                        MarginTop="!Buttons.TopMargin" Brush="PartyManager.UpgradeAll" Command.Click="Click" Command.AlternateClick="AltClick"	>
           <Children>
             <HintWidget DataSource="{UpgradeTroopsHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
