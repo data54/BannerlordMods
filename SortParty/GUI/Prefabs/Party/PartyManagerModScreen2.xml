@@ -45,7 +45,7 @@
 				                        SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
 				                        VerticalAlignment="Center"
 										MarginRight="!UpgradeAllTroopsButtonRightMargin" MarginLeft="!Buttons.Margin"
-				                        MarginTop="!Buttons.TopMargin" Brush="PartyManager.UpgradeAll" Command.Click="UpgradeAllTroops"	>
+				                        MarginTop="!Buttons.TopMargin" Brush="PartyManager.UpgradeAll" Command.Click="UpgradeLeftClick" Command.AlternateClick="UpgradeRightClick"	>
           <Children>
             <HintWidget DataSource="{UpgradeTroopsHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />

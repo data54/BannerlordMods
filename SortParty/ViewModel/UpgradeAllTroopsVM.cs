@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Core.ViewModelCollection;
+using TaleWorlds.Engine.Screens;
 using TaleWorlds.Library;
 
 namespace PartyManager.ViewModels
@@ -20,14 +22,14 @@ namespace PartyManager.ViewModels
 
 
         private HintViewModel _upgradeTroopsHint;
-        
+
         [DataSourceProperty]
         public HintViewModel UpgradeTroopsHint
         {
             get => _upgradeTroopsHint;
             set
             {
-                _upgradeTroopsHint = value; 
+                _upgradeTroopsHint = value;
                 this.OnPropertyChanged(nameof(UpgradeTroopsHint));
             }
         }
@@ -41,13 +43,29 @@ namespace PartyManager.ViewModels
 
             this.
             _upgradeTroopsHint = new HintViewModel(
-                "Upgrade All Troops\nRight click to only upgrade custom paths\nCTRL+Left click unit upgrades to set/unset custom paths\nCTRL+SHIFT+Left Click to even split the upgrade\nCTRL+Right click to sort custom path units to the top");
+                "Upgrade All Troops" +
+                "\nRight Click to only upgrade custom paths" +
+                "\nCTRL+Right Click to sort custom path units to the top"+
+                "\nCTRL+Left Click unit upgrades to set/unset custom paths" +
+                "\nCTRL+SHIFT+Left Click to even split the upgrade" );
 
         }
 
-        public void UpgradeAllTroops()
+        public void UpgradeLeftClick()
         {
+            PartyController.CurrentInstance.UpgradeAllTroops(false);
+        }
 
+        public void UpgradeRightClick()
+        {
+            if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths && (ScreenManager.TopScreen is GauntletPartyScreen topScreen) && topScreen.DebugInput.IsControlDown())
+            {
+                PartyController.CurrentInstance.SortPartyScreen(SortType.CustomUpgrades, true, true, false, false, false);
+            }
+            else
+            {
+                PartyController.CurrentInstance.UpgradeAllTroops(true);
+            }
         }
 
     }
