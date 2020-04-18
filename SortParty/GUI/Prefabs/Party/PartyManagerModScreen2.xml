@@ -34,33 +34,29 @@
     </VisualDefinition>
   </VisualDefinitions>
   <Window>
-    <Widget Id="PartyManagerMod" VisualDefinition="UpgradeRecruitMenu"
-            WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
-            SuggestedWidth="!ButtonGroup.SuggestedWidth"
-            SuggestedHeight="!ButtonGroup.SuggestedHeight"
-            HorizontalAlignment="Right" VerticalAlignment="Top" MarginTop="!ButtonGroup.TopMargin" MarginRight="!ButtonGroup.RightMargin" >
+    <Widget Id="PartyManagerMod" VisualDefinition="UpgradeRecruitMenu" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                SuggestedWidth="!ButtonGroup.SuggestedWidth" SuggestedHeight="!ButtonGroup.SuggestedHeight" HorizontalAlignment="Right" VerticalAlignment="Top"
+            MarginTop="!ButtonGroup.TopMargin" MarginRight="!ButtonGroup.RightMargin"
+                DoNotAcceptEvents="true">
       <Children>
-        <UpgradeAllTroopsWidget Datasource="{UpgradeAllTroopsVm}" Command.Click="UpgradeAllTroops"
-		Id="PartyManagerModUpgradeAllTroopsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
-                                        HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
-                                        SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
-                                        VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
-										MarginRight="!UpgradeAllTroopsButtonRightMargin"
-                                        MarginTop="!Buttons.TopMargin">
+        <ButtonWidget  DataSource="{UpgradeAllTroops}" Id="PartyManagerModUpgradeAllTroopsButton"
+				                        DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+				                        HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+				                        SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+				                        VerticalAlignment="Center"
+										MarginRight="!UpgradeAllTroopsButtonRightMargin" MarginLeft="!Buttons.Margin"
+				                        MarginTop="!Buttons.TopMargin" Brush="PartyManager.UpgradeAll" Command.Click="UpgradeAllTroops"	>
           <Children>
             <HintWidget DataSource="{UpgradeTroopsHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
-            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size" DoNotAcceptEvents="false"
-                    SuggestedHeight="!Buttons.Size" HorizontalAlignment="Center" MarginTop="0"
-                    VerticalAlignment="Center" IsDisabled="false" Brush="PartyManager.UpgradeAll" />
           </Children>
-        </UpgradeAllTroopsWidget>
+        </ButtonWidget>
         <RecruitAllPrisonersWidget Id="PartyManagerModRecruitAllPrisonersButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
-                                HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
-                                SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
-                                VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
-								MarginRight="!RecruitAllButtonRightMargin"
-                                MarginTop="!Buttons.TopMargin" Brush="PartyManager.RecruitAll">
+                                    HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+                                    SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+                                    VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
+                    MarginRight="!RecruitAllButtonRightMargin"
+                                    MarginTop="!Buttons.TopMargin" Brush="PartyManager.RecruitAll">
 
         </RecruitAllPrisonersWidget>
         <SortUnitsWidget Id="PartyManagerModSortUnitsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"

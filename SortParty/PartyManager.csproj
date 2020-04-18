@@ -207,8 +207,8 @@
     <Compile Include="Helpers\SortPartyHelpers.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\PartyManagerVM.cs" />
-    <Compile Include="ViewModels\UpgradeAllTroopsVM.cs" />
+    <Compile Include="ViewModel\PartyManagerVM.cs" />
+    <Compile Include="ViewModel\UpgradeAllTroopsVM.cs" />
     <Compile Include="Widgets\ReloadSettingsWidget.cs" />
     <Compile Include="Widgets\RecruitAllPrisonersWidget.cs" />
     <Compile Include="Widgets\CycleSortWidget.cs" />

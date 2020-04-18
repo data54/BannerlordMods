@@ -150,9 +150,9 @@ namespace PartyManager
 
                     newLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
 
-                    var partyManagerModVm = new PartyManagerVM(partyScreen.GetPartyVM(), PartyController.CurrentInstance.PartyScreenLogic, partyScreen);
+                    var partyManagerModVm = new PartyManagerVM(partyScreen.GetPartyVM(), partyScreen.GetPartyVM()?.GetPartyScreenLogic(), partyScreen);
 
-                    newLayer?.LoadMovie("PartyManagerModScreen2", partyManagerModVm);
+                    newLayer?.LoadMovie("PartyManagerModScreen2", (TaleWorlds.Library.ViewModel)partyManagerModVm);
                     CurrentInstance.WidgetsAdded = true;
                     partyScreen.AddLayer(newLayer);
                     GenericHelpers.LogDebug("AddPartyWidgets", "Party Widget Added");
