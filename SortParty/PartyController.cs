@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using PartyManager.ViewModels;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Engine.GauntletUI;
@@ -145,10 +147,12 @@ namespace PartyManager
                 {
                     var newLayer = new GauntletLayer(1, "GauntletLayer");
 
-                    newLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
-                    var partyVM = partyScreen.GetPartyVM();
 
-                    newLayer?.LoadMovie("PartyManagerModScreen", partyVM);
+                    newLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
+
+                    var partyManagerModVm = new PartyManagerVM(partyScreen.GetPartyVM(), PartyController.CurrentInstance.PartyScreenLogic, partyScreen);
+
+                    newLayer?.LoadMovie("PartyManagerModScreen2", partyManagerModVm);
                     CurrentInstance.WidgetsAdded = true;
                     partyScreen.AddLayer(newLayer);
                     GenericHelpers.LogDebug("AddPartyWidgets", "Party Widget Added");

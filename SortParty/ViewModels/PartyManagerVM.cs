@@ -9,10 +9,11 @@ using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
+using TaleWorlds.Library;
 
 namespace PartyManager.ViewModels
 {
-    public class PartyManagerModVM : TaleWorlds.Library.ViewModel
+    public class PartyManagerVM : TaleWorlds.Library.ViewModel
     {
         protected readonly PartyVM _partyVM;
         protected readonly PartyScreenLogic _partyScreenLogic;
@@ -21,8 +22,11 @@ namespace PartyManager.ViewModels
         private GauntletMovie _currentMovie;
         private HintViewModel _settingsHint;
 
+        [DataSourceProperty]
+        public UpgradeAllTroopsVM UpgradeAllTroopsVm { get; set; }
 
-        public PartyManagerModVM(
+
+        public PartyManagerVM(
             PartyVM partyVM,
             PartyScreenLogic partyScreenLogic,
             GauntletPartyScreen parentScreen)
@@ -30,7 +34,12 @@ namespace PartyManager.ViewModels
             this._partyVM = partyVM;
             this._partyScreenLogic = partyScreenLogic;
             this._parentScreen = parentScreen;
+            UpgradeAllTroopsVm = new UpgradeAllTroopsVM();
         }
+
+
+
+
 
     }
 }

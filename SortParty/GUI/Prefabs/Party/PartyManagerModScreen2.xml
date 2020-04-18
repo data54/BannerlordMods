@@ -1,0 +1,94 @@
+﻿<Prefab>
+  <Constants>
+    <Constant Name="ButtonGroup.SuggestedWidth" Value="500" />
+    <Constant Name="ButtonGroup.SuggestedHeight" Value="70" />
+    <Constant Name="ButtonGroup.RightMargin" Value="0" />
+    <Constant Name="ButtonGroup.TopMargin" Value="18" />
+
+
+    <Constant Name="Buttons.Margin" Value="5" />
+    <Constant Name="Buttons.Width" Value="40" />
+    <Constant Name="Buttons.Size" Value="35" />
+    <Constant Name="Buttons.Height" Value="40" />
+    <Constant Name="Buttons.TopMargin" Value="0" />
+
+
+
+
+
+    <Constant Name="SortButtonRightMargin" Value="140" />
+    <Constant Name="CycleSortButtonRightMargin" Value="100" />
+    <Constant Name="UpgradeAllTroopsButtonRightMargin" Value="60" />
+    <Constant Name="RecruitAllButtonRightMargin" Value="20" />
+
+
+    <Constant Name="ReloadSettingsButton.Size" Value="20" />
+    <Constant Name="ReloadSettingsButton.TopMargin" Value="0" />
+    <Constant Name="ReloadSettingsButton.RightMargin" Value="5" />
+  </Constants>
+  <Variables>
+  </Variables>
+  <VisualDefinitions>
+    <VisualDefinition Name="UpgradeRecruitMenu" DelayOnBegin="0.2" TransitionDuration="0.4">
+      <VisualState PositionYOffset="12" State="Default" />
+    </VisualDefinition>
+  </VisualDefinitions>
+  <Window>
+    <Widget Id="PartyManagerMod" VisualDefinition="UpgradeRecruitMenu"
+            WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+            SuggestedWidth="!ButtonGroup.SuggestedWidth"
+            SuggestedHeight="!ButtonGroup.SuggestedHeight"
+            HorizontalAlignment="Right" VerticalAlignment="Top" MarginTop="!ButtonGroup.TopMargin" MarginRight="!ButtonGroup.RightMargin" >
+      <Children>
+        <!--<Widget Datasource="{UpgradeAllTroopsVm}" Id="PartyManagerModUpgradeAllTroopsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                                        HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+                                        SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+                                        VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
+										MarginRight="!UpgradeAllTroopsButtonRightMargin"
+                                        MarginTop="!Buttons.TopMargin">
+          <Children>
+            <HintWidget DataSource="{UpgradeTroopsHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" DoNotAcceptEvents="false"
+                    SuggestedHeight="40" HorizontalAlignment="Center" MarginTop="0"
+                    VerticalAlignment="Center" MarginLeft="4" IsDisabled="false" Brush="PartyManager.UpgradeAll" />
+          </Children>
+        </Widget>-->
+        <RecruitAllPrisonersWidget Id="PartyManagerModRecruitAllPrisonersButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                                HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+                                SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+                                VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
+								MarginRight="!RecruitAllButtonRightMargin"
+                                MarginTop="!Buttons.TopMargin" Brush="PartyManager.RecruitAll">
+
+        </RecruitAllPrisonersWidget>
+        <SortUnitsWidget Id="PartyManagerModSortUnitsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                                HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Width"
+                                SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+								MarginLeft="!Buttons.Margin"
+								MarginRight="!SortButtonRightMargin"
+                                MarginTop="!Buttons.TopMargin" Brush="PartyManager.SortUnits">
+
+        </SortUnitsWidget>
+        <CycleUnitSortWidget Id="PartyManagerModCycleSortButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                                HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Width"
+                                SuggestedHeight="!Buttons.Height" HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+								MarginLeft="!Buttons.Margin"
+								MarginRight="!CycleSortButtonRightMargin"
+                                MarginTop="!Buttons.TopMargin" Brush="PartyManager.CycleSort">
+
+        </CycleUnitSortWidget>
+        <ReloadSettingsWidget Id="PartyManagerModReloadSettingsButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                                HeightSizePolicy="Fixed" SuggestedWidth="!ReloadSettingsButton.Size"
+                                SuggestedHeight="!ReloadSettingsButton.Size" HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+								MarginRight="!ReloadSettingsButton.RightMargin"
+                                MarginTop="!ReloadSettingsButton.TopMargin" Brush="PartyManager.ReloadSettings">
+
+        </ReloadSettingsWidget>
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>
