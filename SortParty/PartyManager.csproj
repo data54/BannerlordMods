@@ -226,7 +226,6 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="GUI\Brushes\PartyManagerModBrush.xml" />
-    <Content Include="GUI\Prefabs\Party\PartyManagerModScreen2.xml" />
     <Content Include="GUI\Prefabs\Party\PartyManagerModScreen.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
