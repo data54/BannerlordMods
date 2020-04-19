@@ -151,7 +151,7 @@ namespace PartyManager
 
                     var partyManagerModVm = new PartyManagerVM(partyScreen.GetPartyVM(), partyScreen.GetPartyVM()?.GetPartyScreenLogic(), partyScreen);
 
-                    newLayer?.LoadMovie("PartyManagerModScreen2", (TaleWorlds.Library.ViewModel)partyManagerModVm);
+                    newLayer?.LoadMovie("PartyManagerModScreen", (TaleWorlds.Library.ViewModel)partyManagerModVm);
                     CurrentInstance.WidgetsAdded = true;
                     partyScreen.AddLayer(newLayer);
                     GenericHelpers.LogDebug("AddPartyWidgets", "Party Widget Added");
