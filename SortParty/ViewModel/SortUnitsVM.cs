@@ -78,7 +78,7 @@ namespace PartyManager.ViewModels
             }
             catch (Exception ex)
             {
-                GenericHelpers.LogException("CycleAltClick", ex);
+                GenericHelpers.LogException("CycleClick", ex);
             }
         }
 
