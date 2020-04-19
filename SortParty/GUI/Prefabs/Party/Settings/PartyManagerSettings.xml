@@ -63,7 +63,7 @@
             <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="128" HorizontalAlignment="Center" VerticalAlignment="Bottom" LayoutImp.LayoutMethod="HorizontalLeftToRight">
               <Children>
                 <OptionsTabToggle DataSource="{CustomSortController}" Parameter.ButtonBrush="Header.Tab.Left" Parameter.TabName="CustomSortPage" />
-                <OptionsTabToggle DataSource="{TogglesController}" PositionYOffset="2" Parameter.ButtonBrush="Header.Tab.Center" Parameter.TabName="TogglesPage" />
+                <OptionsTabToggle DataSource="{TogglesController}" PositionYOffset="2" Parameter.ButtonBrush="Header.Tab.Right" Parameter.TabName="TogglesPage" />
               </Children>
             </ListPanel>
           </Children>

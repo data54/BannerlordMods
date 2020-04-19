@@ -17,6 +17,9 @@ namespace PartyManager.ViewModel.Settings
     {
         private string _titleText;
 
+
+        [DataSourceProperty]
+        public String Name { get; set; }
         [DataSourceProperty]
         public string TitleText
         {
@@ -44,10 +47,8 @@ namespace PartyManager.ViewModel.Settings
                 this.OnPropertyChanged(nameof(Options));
             }
         }
-        public OptionsVM OptionsVm { get; set; }
-
         [DataSourceProperty]
-        public String Name { get; set; }
+        public OptionsVM OptionsVm { get; set; }
 
 
 

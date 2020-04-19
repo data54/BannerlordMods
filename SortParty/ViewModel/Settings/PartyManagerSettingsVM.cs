@@ -63,7 +63,7 @@ namespace PartyManager.ViewModel
             //TabToggleWidget
             _togglesController=new TogglesVM();
             _customSortVM= new CustomSortVM();
-            OptionsLbl = "Test";
+            OptionsLbl = "Party Manager Settings";
             CancelLbl = "Cancel";
             DoneLbl = "Done";
 

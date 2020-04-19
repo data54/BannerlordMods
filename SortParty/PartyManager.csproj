@@ -245,6 +245,7 @@
     <Content Include="GUI\Prefabs\Party\Settings\OptionsGenericPage.xml" />
     <Content Include="GUI\Prefabs\Party\Settings\OptionsGraphicsPage.xml" />
     <Content Include="GUI\Prefabs\Party\Settings\OptionsTabToggle.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\PartyManagerModSettingsToggles.xml" />
     <Content Include="GUI\Prefabs\Party\Settings\PartyManagerSettings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

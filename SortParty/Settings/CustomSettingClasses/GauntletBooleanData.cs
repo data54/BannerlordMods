@@ -30,12 +30,12 @@ namespace PartyManager.Settings.CustomSettingClasses
 
         public float GetValue()
         {
-            return BoolValue ? 1 : 0;
+            return BoolValue ? 1f : 0f;
         }
 
         public void SetValue(float value)
         {
-            if (value == 1)
+            if (value == 1f)
             {
                 BoolValue = true;
             }
