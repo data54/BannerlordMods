@@ -106,7 +106,7 @@ namespace PartyManager.ViewModels
 
         public void ReloadSettings()
         {
-
+            PartyManagerSettings.ReloadSettings();
         }
 
 
