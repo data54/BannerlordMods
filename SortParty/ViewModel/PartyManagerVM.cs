@@ -43,7 +43,7 @@ namespace PartyManager.ViewModels
                 if (value == this._upgradeTroopsVM)
                     return;
                 this._upgradeTroopsVM = value;
-                this.OnPropertyChanged(nameof(_upgradeTroopsVM));
+                this.OnPropertyChanged(nameof(UpgradeTroopsController));
             }
         }
 
@@ -56,7 +56,7 @@ namespace PartyManager.ViewModels
                 if (value == this._recruitController)
                     return;
                 this._recruitController = value;
-                this.OnPropertyChanged(nameof(_recruitController));
+                this.OnPropertyChanged(nameof(RecruitController));
             }
         }
 
@@ -69,7 +69,7 @@ namespace PartyManager.ViewModels
                 if (value == this._sortController)
                     return;
                 this._sortController = value;
-                this.OnPropertyChanged(nameof(_sortController));
+                this.OnPropertyChanged(nameof(SortController));
             }
         }
 

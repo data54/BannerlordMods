@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using TaleWorlds.Library;
 using System.Linq;
+using PartyManager.ViewModel;
+using PartyManager.ViewModels;
 
 namespace PartyManager
 {
@@ -73,6 +75,17 @@ namespace PartyManager
                 string key = "";
                 try
                 {
+
+                    if (ScreenManager.TopScreen !=null && InputKey.LeftControl.IsDown() && InputKey.P.IsDown())
+                    {
+                        //var settingsLayer = new GauntletLayer(1, );
+                        //var settingsScreen = new PartyManagerSettingsVM();
+                        
+
+
+                    }
+
+
                     if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || (!InputKey.LeftShift.IsDown()) && !InputKey.LeftControl.IsDown() && !InputKey.Minus.IsDown()))
                     {
                         return;

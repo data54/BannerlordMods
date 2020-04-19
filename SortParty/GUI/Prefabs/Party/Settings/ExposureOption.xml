@@ -1,0 +1,50 @@
+<Prefab>
+  <Window>
+    <Widget Id="ExposureOptions" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="BlankWhiteSquare_9" Brush.Color="#000000FF" IsVisible="@Visible">
+      <Children>
+
+        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="VerticalBottomToTop" MarginTop="40">
+          <Children>
+
+            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" ClipContents="false" Text="@TitleText" Brush="SPOptions.Exposure.Title.Text" HorizontalAlignment="Center"/>
+            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" ClipContents="false" Text="@ExplanationText" Brush="SPOptions.Exposure.Explanation.Text" HorizontalAlignment="Center" MarginTop="35"/>
+          </Children>
+        </ListPanel>
+
+        <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="80" LayoutImp.LayoutMethod="VerticalBottomToTop">
+          <Children>
+
+            <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" HorizontalAlignment="Center" MarginTop="10">
+              <Children>
+                <BrightnessDemoWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="574" SuggestedHeight="742" DemoType="ExposureTexture1"/>
+                <BrightnessDemoWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="574" SuggestedHeight="742" MarginLeft="10" MarginRight="10" DemoType="ExposureTexture2"/>
+                <BrightnessDemoWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="574" SuggestedHeight="742" DemoType="ExposureTexture3"/>
+              </Children>
+            </ListPanel>
+
+            <!--Brightness Value Slider-->
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="367" SuggestedHeight="42" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginTop="30">
+              <Children>
+                <SliderWidget Id="ScrollBar" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="338" SuggestedHeight="42" VerticalAlignment="Center" Filler="Filler" Handle="SliderHandle" MaxValueFloat="0.75" MinValueFloat="-0.75" ValueFloat="@Value">
+                  <Children>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="362" SuggestedHeight="38" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="SPOptions\standart_slider_canvas" IsEnabled="false" />
+                    <Widget Id="Filler" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="345" SuggestedHeight="35" VerticalAlignment="Center" Sprite="SPOptions\standart_slider_fill" ClipContents="true">
+                      <Children>
+                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="345" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Center" Sprite="SPOptions\standart_slider_fill" />
+                      </Children>
+                    </Widget>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="400" SuggestedHeight="65" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="SPOptions\standart_slider_frame" IsEnabled="false" />
+                    <Widget Id="SliderHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="14" SuggestedHeight="38" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="SPOptions.Slider.Handle" DoNotAcceptEvents="true"/>
+                  </Children>
+                </SliderWidget>
+              </Children>
+            </Widget>
+          </Children>
+        </ListPanel>
+        
+        <Standard.DialogCloseButtons Parameter.CancelButtonAction="ExecuteCancel" Parameter.CancelButtonText="@CancelText" Parameter.DoneButtonAction="ExecuteConfirm" Parameter.DoneButtonText="@AcceptText" />
+      
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

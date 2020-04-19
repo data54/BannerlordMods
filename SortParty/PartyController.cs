@@ -144,7 +144,7 @@ namespace PartyManager
             {
                 if (!PartyManagerSettings.Settings.HideUIWidgets)
                 {
-                    var newLayer = new GauntletLayer(1, "GauntletLayer");
+                    var newLayer = new GauntletLayer(100, "GauntletLayer");
 
 
                     newLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);

@@ -171,6 +171,12 @@
       <HintPath>L:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="TaleWorlds.MountAndBlade.GauntletUI">
+      <HintPath>L:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\Native\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.GauntletUI.dll</HintPath>
+    </Reference>
+    <Reference Include="TaleWorlds.MountAndBlade.View">
+      <HintPath>L:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\Native\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.View.dll</HintPath>
+    </Reference>
     <Reference Include="TaleWorlds.MountAndBlade.ViewModelCollection">
       <HintPath>L:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.ViewModelCollection.dll</HintPath>
       <Private>False</Private>
@@ -207,8 +213,11 @@
     <Compile Include="Helpers\SortPartyHelpers.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\Settings\PartyManagerSettingsVM.cs" />
     <Compile Include="ViewModel\PartyManagerVM.cs" />
     <Compile Include="ViewModel\RecruitVM.cs" />
+    <Compile Include="ViewModel\Settings\CustomSortVM.cs" />
+    <Compile Include="ViewModel\Settings\TogglesVM.cs" />
     <Compile Include="ViewModel\SortUnitsVM.cs" />
     <Compile Include="ViewModel\UpgradeTroopsVM.cs" />
   </ItemGroup>
@@ -223,7 +232,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GUI\Prefabs\Party\Settings\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="GUI\Brushes\PartyManagerModBrush.xml" />
     <Content Include="GUI\Prefabs\Party\PartyManagerModScreen.xml" />
