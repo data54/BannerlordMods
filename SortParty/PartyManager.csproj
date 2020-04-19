@@ -211,11 +211,6 @@
     <Compile Include="ViewModel\RecruitVM.cs" />
     <Compile Include="ViewModel\SortUnitsVM.cs" />
     <Compile Include="ViewModel\UpgradeTroopsVM.cs" />
-    <Compile Include="Widgets\ReloadSettingsWidget.cs" />
-    <Compile Include="Widgets\RecruitAllPrisonersWidget.cs" />
-    <Compile Include="Widgets\CycleSortWidget.cs" />
-    <Compile Include="Widgets\SortUnitsWidget.cs" />
-    <Compile Include="Widgets\UpgradeAllTroopsWidget .cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -69,23 +69,32 @@ namespace PartyManager.ViewModels
 
         public void CycleClick()
         {
-            PartyManagerSettings.Settings.CycleSortType(false);
-            this.CycleSortTooltip.HintText = getCycleTooltip();
             try
             {
+                PartyManagerSettings.Settings.CycleSortType(false);
+                this.CycleSortTooltip.HintText = getCycleTooltip();
                 CycleSortTooltip.ExecuteCommand("ExecuteEndHint", new object[0]);
                 CycleSortTooltip.ExecuteCommand("ExecuteBeginHint", new object[0]);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e);
+                GenericHelpers.LogException("CycleAltClick", ex);
             }
         }
 
         public void CycleAltClick()
         {
-            PartyManagerSettings.Settings.CycleSortType(true);
-            this.CycleSortTooltip.HintText = getCycleTooltip();
+            try
+            {
+                PartyManagerSettings.Settings.CycleSortType(true);
+                this.CycleSortTooltip.HintText = getCycleTooltip();
+                CycleSortTooltip.ExecuteCommand("ExecuteEndHint", new object[0]);
+                CycleSortTooltip.ExecuteCommand("ExecuteBeginHint", new object[0]);
+            }
+            catch (Exception ex)
+            {
+                GenericHelpers.LogException("CycleAltClick", ex);
+            }
         }
 
         private string getCycleTooltip()
