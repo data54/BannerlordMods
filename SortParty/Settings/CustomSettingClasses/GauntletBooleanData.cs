@@ -52,7 +52,7 @@ namespace PartyManager.Settings.CustomSettingClasses
 
         public bool IsNative()
         {
-            return false;
+            return true;
         }
     }
 }

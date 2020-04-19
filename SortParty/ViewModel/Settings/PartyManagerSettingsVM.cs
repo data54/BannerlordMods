@@ -66,6 +66,7 @@ namespace PartyManager.ViewModel
             OptionsLbl = "Party Manager Settings";
             CancelLbl = "Cancel";
             DoneLbl = "Done";
+            this.RefreshValues();
 
         }
 

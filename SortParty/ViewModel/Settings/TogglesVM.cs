@@ -16,10 +16,25 @@ namespace PartyManager.ViewModel.Settings
     public class TogglesVM : TaleWorlds.Library.ViewModel
     {
         private string _titleText;
-
+        private string _name;
 
         [DataSourceProperty]
-        public String Name { get; set; }
+        public int OptionTypeID { get; set; }
+
+        [DataSourceProperty]
+        public string Name
+        {
+            get { return this._name; }
+            set
+            {
+                if (!(value != this._name))
+                    return;
+                this._name = value;
+                this.OnPropertyChanged(nameof(Name));
+            }
+        }
+
+
         [DataSourceProperty]
         public string TitleText
         {
@@ -34,6 +49,7 @@ namespace PartyManager.ViewModel.Settings
         }
 
         private List<GenericOptionDataVM> _options;
+        private OptionsVM _optionsVm;
 
         [DataSourceProperty]
         public List<GenericOptionDataVM> Options
@@ -47,20 +63,31 @@ namespace PartyManager.ViewModel.Settings
                 this.OnPropertyChanged(nameof(Options));
             }
         }
+
         [DataSourceProperty]
-        public OptionsVM OptionsVm { get; set; }
-
-
+        public OptionsVM OptionsVm
+        {
+            get { return this._optionsVm; }
+            set
+            {
+                if (!(value != this._optionsVm))
+                    return;
+                this._optionsVm = value;
+                this.OnPropertyChanged(nameof(OptionsVm));
+            }
+        }
 
 
         public TogglesVM()
         {
             Options= new List<GenericOptionDataVM>();
-            Name = "Toggles";
+            _name = "Toggles";
             _titleText = "test";
             OptionsVm = new OptionsVM(false, false, KeyOptionsVM);
-            Options.Add(createBooleanOptionDataVM("test","Test Description", true, OptionsVm));
 
+            Options.Add(createBooleanOptionDataVM("test","Test Description", true, OptionsVm));
+            OptionTypeID = -1;
+            this.RefreshValues();
         }
         private void KeyOptionsVM(GameKeyOptionVM optonsVm)
         {
@@ -70,9 +97,12 @@ namespace PartyManager.ViewModel.Settings
         private BooleanOptionDataVM createBooleanOptionDataVM(string name, string description, bool value, OptionsVM optionsVm)
         {
             var data = new GauntletBooleanData(value);
-            return new BooleanOptionDataVM(optionsVm, data,
+            var result = new BooleanOptionDataVM(optionsVm, data,
                 new TextObject(name, new Dictionary<string, TextObject>()),
                 new TextObject(description, new Dictionary<string, TextObject>()));
+            
+            result.ImageIDs = new string[0];
+            return result;
 
         }
     }
