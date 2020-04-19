@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -256,6 +257,30 @@ namespace PartyManager
             }
 
             return settings;
+        }
+
+        public PartyManagerSettings Clone()
+        {
+            try
+            {
+                //I feel dirty
+                PartyManagerSettings clone;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    Serializer.Serialize(ms,this);
+
+                    ms.Seek(0, SeekOrigin.Begin);
+                    clone =Serializer.Deserialize(ms) as PartyManagerSettings;
+                }
+
+                return clone;
+            }
+            catch (Exception ex)
+            {
+                GenericHelpers.LogException("PartyManagerSettings.Clone", ex);
+            }
+
+            return null;
         }
     }
 

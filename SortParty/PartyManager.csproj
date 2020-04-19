@@ -233,11 +233,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModel\Settings\OptionVMS\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="GUI\Brushes\PartyManagerModBrush.xml" />
     <Content Include="GUI\Prefabs\Party\PartyManagerModScreen.xml" />
     <Content Include="GUI\Prefabs\Party\Settings\PartyManagerModSettingsToggles.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\PartyManagerModSettingsCustomSort.xml" />
     <Content Include="GUI\Prefabs\Party\Settings\PartyManagerSettings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

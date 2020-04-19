@@ -78,15 +78,18 @@ namespace PartyManager.ViewModel.Settings
         }
 
 
-        public TogglesVM()
+        private PartyManagerSettings _settings;
+
+        public TogglesVM(PartyManagerSettings settings)
         {
-            Options= new List<GenericOptionDataVM>();
+            _settings = settings;
+
+            Options = new List<GenericOptionDataVM>();
             _name = "Toggles";
             _titleText = "test";
             OptionsVm = new OptionsVM(false, false, KeyOptionsVM);
 
-            Options.Add(createBooleanOptionDataVM("test","Test Description", true, OptionsVm));
-            OptionTypeID = -1;
+            Options.Add(createBooleanOptionDataVM("DisableCustomUpgradePaths", "Disable Custom Upgrade Paths", _settings.DisableCustomUpgradePaths, OptionsVm));
             this.RefreshValues();
         }
         private void KeyOptionsVM(GameKeyOptionVM optonsVm)
