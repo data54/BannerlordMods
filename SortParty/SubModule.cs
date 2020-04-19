@@ -66,6 +66,8 @@ namespace PartyManager
             }
         }
 
+
+        private GauntletLayer settingsLayer;
         long lastHotkeyExecute = 0;
         protected override void OnApplicationTick(float dt)
         {
@@ -76,17 +78,25 @@ namespace PartyManager
                 try
                 {
 
-                    if (ScreenManager.TopScreen !=null && InputKey.LeftControl.IsDown() && InputKey.P.IsDown())
+                    if (ScreenManager.TopScreen != null && InputKey.LeftControl.IsDown() && InputKey.P.IsDown() && settingsLayer == null)
                     {
-                        //var settingsLayer = new GauntletLayer(1, );
-                        //var settingsScreen = new PartyManagerSettingsVM();
-                        
+                        settingsLayer = new GauntletLayer(100, "GauntletLayer");
+                        settingsLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
+                        var settingsScreen = new PartyManagerSettingsVM();
+
+                        settingsLayer?.LoadMovie("PartyManagerSettings", settingsScreen);
+                        ScreenManager.TopScreen.AddLayer(settingsLayer);
 
 
                     }
+                    else if (settingsLayer != null && InputKey.LeftControl.IsDown() && InputKey.L.IsDown())
+                    {
+                        ScreenManager.TopScreen.RemoveLayer(settingsLayer);
+                        settingsLayer = null;
+                    }
 
 
-                    if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || (!InputKey.LeftShift.IsDown()) && !InputKey.LeftControl.IsDown() && !InputKey.Minus.IsDown()))
+                        if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || (!InputKey.LeftShift.IsDown()) && !InputKey.LeftControl.IsDown() && !InputKey.Minus.IsDown()))
                     {
                         return;
                     }

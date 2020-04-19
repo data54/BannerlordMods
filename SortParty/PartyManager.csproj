@@ -209,6 +209,7 @@
     <Compile Include="Patches\Party\PartyCharacterVMUpgradePathPatch.cs" />
     <Compile Include="Patches\Party\PartyVMRefreshValuesPatch.cs" />
     <Compile Include="Patches\ScreenBaseAddLayerPatch.cs" />
+    <Compile Include="Settings\CustomSettingClasses\GauntletBooleanData.cs" />
     <Compile Include="Settings\PartyManagerSettings.cs" />
     <Compile Include="Helpers\SortPartyHelpers.cs" />
     <Compile Include="SubModule.cs" />
@@ -232,12 +233,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GUI\Prefabs\Party\Settings\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="GUI\Brushes\PartyManagerModBrush.xml" />
     <Content Include="GUI\Prefabs\Party\PartyManagerModScreen.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\BrightnessOption.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\ExposureOption.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\KeybindingPopup.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\OptionsGameKeyPage.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\OptionsGamepadPage.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\OptionsGenericPage.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\OptionsGraphicsPage.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\OptionsTabToggle.xml" />
+    <Content Include="GUI\Prefabs\Party\Settings\PartyManagerSettings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

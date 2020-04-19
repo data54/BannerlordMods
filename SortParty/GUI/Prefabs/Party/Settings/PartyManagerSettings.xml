@@ -17,8 +17,8 @@
                       <Children>
                         <TabControl Id="TabControl" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren">
                           <Children>
-                            <OptionsGenericPage Id="VideoOptionsPage" DataSource="{VideoOptions}" />
-                            <OptionsGenericPage Id="GameplayOptionsPage" DataSource="{GameplayOptions}" />
+                            <OptionsGenericPage Id="CustomSortPage" DataSource="{CustomSortController}" />
+                            <PartyManagerModSettingsToggles Id="TogglesPage" DataSource="{TogglesController}" />
                           </Children>
                         </TabControl>
                       </Children>
@@ -62,8 +62,8 @@
           <Children>
             <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="128" HorizontalAlignment="Center" VerticalAlignment="Bottom" LayoutImp.LayoutMethod="HorizontalLeftToRight">
               <Children>
-                <OptionsTabToggle DataSource="{VideoOptions}" Parameter.ButtonBrush="Header.Tab.Left" Parameter.TabName="VideoOptionsPage" />
-                <OptionsTabToggle DataSource="{GameplayOptions}" PositionYOffset="2" Parameter.ButtonBrush="Header.Tab.Center" Parameter.TabName="GameplayOptionsPage" />
+                <OptionsTabToggle DataSource="{CustomSortController}" Parameter.ButtonBrush="Header.Tab.Left" Parameter.TabName="CustomSortPage" />
+                <OptionsTabToggle DataSource="{TogglesController}" PositionYOffset="2" Parameter.ButtonBrush="Header.Tab.Center" Parameter.TabName="TogglesPage" />
               </Children>
             </ListPanel>
           </Children>
