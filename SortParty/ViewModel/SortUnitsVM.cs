@@ -17,20 +17,31 @@ namespace PartyManager.ViewModels
         private readonly MBBindingList<PartyCharacterVM> _mainPartyList;
         private readonly PartyScreenLogic _partyLogic;
         private readonly PartyVM _partyVM;
-        private HintViewModel _upgradeHint;
 
 
-
-        private HintViewModel _upgradeTroopsHint;
+        private HintViewModel _cycleSortTooltip;
 
         [DataSourceProperty]
-        public HintViewModel UpgradeTroopsHint
+        public HintViewModel CycleSortTooltip
         {
-            get => _upgradeTroopsHint;
+            get => _cycleSortTooltip;
             set
             {
-                _upgradeTroopsHint = value;
-                this.OnPropertyChanged(nameof(UpgradeTroopsHint));
+                _cycleSortTooltip = value;
+                this.OnPropertyChanged(nameof(CycleSortTooltip));
+            }
+        }
+
+        private HintViewModel _sorttoolTip;
+
+        [DataSourceProperty]
+        public HintViewModel SortTooltip
+        {
+            get => _sorttoolTip;
+            set
+            {
+                _sorttoolTip = value;
+                this.OnPropertyChanged(nameof(SortTooltip));
             }
         }
 
@@ -41,25 +52,48 @@ namespace PartyManager.ViewModels
             this._mainPartyList = this._partyVM.MainPartyTroops;
 
 
-            this.
-            _upgradeTroopsHint = new HintViewModel(
-                "Upgrade All Troops" +
-                "\nRight Click to only upgrade custom paths" +
-                "\nCTRL+Right Click to sort custom path units to the top"+
-                "\nCTRL+Left Click unit upgrades to set/unset custom paths" +
-                "\nCTRL+SHIFT+Left Click to even split the upgrade" );
+            this._sorttoolTip = new HintViewModel("Sort All Units\nRight click to sort all recruits/upgrades to the top");
+            this._cycleSortTooltip = new HintViewModel(getCycleTooltip());
 
         }
 
-        public void Click()
+        public void SortClick()
         {
-
+            PartyController.CurrentInstance.SortPartyScreen();
         }
 
-        public void AltClick()
+        public void SortAltClick()
         {
-
+            PartyController.CurrentInstance.SortPartyScreen(SortType.RecruitUpgrade);
         }
+
+        public void CycleClick()
+        {
+            PartyManagerSettings.Settings.CycleSortType(false);
+            this.CycleSortTooltip.HintText = getCycleTooltip();
+            try
+            {
+                CycleSortTooltip.ExecuteCommand("ExecuteEndHint", new object[0]);
+                CycleSortTooltip.ExecuteCommand("ExecuteBeginHint", new object[0]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void CycleAltClick()
+        {
+            PartyManagerSettings.Settings.CycleSortType(true);
+            this.CycleSortTooltip.HintText = getCycleTooltip();
+        }
+
+        private string getCycleTooltip()
+        {
+            return
+                $"Cycle Sort Order\nRight click to cycle backwards\nNext:\n{PartyManagerSettings.Settings.NextSortOrderString}\nPrevious:\n{PartyManagerSettings.Settings.PreviousSortOrderString}\nCurrent:\n{PartyManagerSettings.Settings.SortOrderString}";
+        }
+
 
     }
 }

@@ -21,16 +21,16 @@ namespace PartyManager.ViewModels
 
 
 
-        private HintViewModel _upgradeTroopsHint;
+        private HintViewModel _tooltip;
 
         [DataSourceProperty]
-        public HintViewModel UpgradeTroopsHint
+        public HintViewModel Tooltip
         {
-            get => _upgradeTroopsHint;
+            get => _tooltip;
             set
             {
-                _upgradeTroopsHint = value;
-                this.OnPropertyChanged(nameof(UpgradeTroopsHint));
+                _tooltip = value;
+                this.OnPropertyChanged(nameof(Tooltip));
             }
         }
 
@@ -42,23 +42,18 @@ namespace PartyManager.ViewModels
 
 
             this.
-            _upgradeTroopsHint = new HintViewModel(
-                "Upgrade All Troops" +
-                "\nRight Click to only upgrade custom paths" +
-                "\nCTRL+Right Click to sort custom path units to the top"+
-                "\nCTRL+Left Click unit upgrades to set/unset custom paths" +
-                "\nCTRL+SHIFT+Left Click to even split the upgrade" );
+                _tooltip = new HintViewModel("Recruit All Prisoners\nRight click to recruit past party limit");
 
         }
 
         public void Click()
         {
-
+            PartyController.CurrentInstance.RecruitAllPrisoners(false);
         }
 
         public void AltClick()
         {
-
+            PartyController.CurrentInstance.RecruitAllPrisoners(true);
         }
 
     }

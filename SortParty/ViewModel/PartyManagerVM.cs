@@ -47,6 +47,7 @@ namespace PartyManager.ViewModels
             }
         }
 
+        [DataSourceProperty]
         public RecruitVM RecruitController
         {
             get => _recruitController;
@@ -73,6 +74,20 @@ namespace PartyManager.ViewModels
         }
 
 
+        private HintViewModel _reloadSettingsTooltip;
+
+        [DataSourceProperty]
+        public HintViewModel ReloadSettingsTooltip
+        {
+            get => _reloadSettingsTooltip;
+            set
+            {
+                _reloadSettingsTooltip = value;
+                this.OnPropertyChanged(nameof(ReloadSettingsTooltip));
+            }
+        }
+
+
         public PartyManagerVM(
             PartyVM partyVM,
             PartyScreenLogic partyScreenLogic,
@@ -84,11 +99,12 @@ namespace PartyManager.ViewModels
             _upgradeTroopsVM = new UpgradeTroopsVM(partyScreenLogic, partyVM);
             _sortController = new SortUnitsVM(partyScreenLogic, partyVM);
             _recruitController = new RecruitVM(partyScreenLogic, partyVM);
+            _reloadSettingsTooltip = new HintViewModel("Reload Party Manager Settings","reloadSettingsTooltipUniqueEnoughYet?");
 
         }
 
 
-        public void Test()
+        public void ReloadSettings()
         {
 
         }
