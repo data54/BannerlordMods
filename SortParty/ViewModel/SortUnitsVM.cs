@@ -18,18 +18,11 @@ namespace PartyManager.ViewModels
         private readonly PartyScreenLogic _partyLogic;
         private readonly PartyVM _partyVM;
 
-
-        private HintViewModel _cycleSortTooltip;
-
+        
         [DataSourceProperty]
         public HintViewModel CycleSortTooltip
         {
-            get => _cycleSortTooltip;
-            set
-            {
-                _cycleSortTooltip = value;
-                this.OnPropertyChanged(nameof(CycleSortTooltip));
-            }
+            get => new HintViewModel(getCycleTooltip());
         }
 
         private HintViewModel _sorttoolTip;
@@ -53,7 +46,6 @@ namespace PartyManager.ViewModels
 
 
             this._sorttoolTip = new HintViewModel("Sort All Units\nRight click to sort all recruits/upgrades to the top");
-            this._cycleSortTooltip = new HintViewModel(getCycleTooltip());
 
         }
 

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using PartyManager.ViewModel;
 using PartyManager.ViewModels;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -435,6 +436,21 @@ namespace PartyManager
         {
             //var refreshCall = GenericHelpers.GetPrivateMethod("OnEventFired", view);
             //refreshCall.Invoke(view, new[] { view.Target });
+        }
+
+        private static GauntletLayer settingsLayer;
+        public static void OpenSettings()
+        {
+            if (settingsLayer == null || !settingsLayer.IsActive)
+            {
+                
+                var screen = ScreenManager.TopScreen;
+                settingsLayer = new GauntletLayer(10000, "GauntletLayer");
+                settingsLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
+                var settingsVm = new PartyManagerSettingsVM(screen, settingsLayer);
+                settingsLayer?.LoadMovie("PartyManagerSettings", settingsVm);
+                screen.AddLayer(settingsLayer);
+            }
         }
 
     }

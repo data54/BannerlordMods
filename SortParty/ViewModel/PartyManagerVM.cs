@@ -74,16 +74,16 @@ namespace PartyManager.ViewModels
         }
 
 
-        private HintViewModel _reloadSettingsTooltip;
+        private HintViewModel _openSettingsTooltip;
 
         [DataSourceProperty]
-        public HintViewModel ReloadSettingsTooltip
+        public HintViewModel OpenSettingsTooltip
         {
-            get => _reloadSettingsTooltip;
+            get => _openSettingsTooltip;
             set
             {
-                _reloadSettingsTooltip = value;
-                this.OnPropertyChanged(nameof(ReloadSettingsTooltip));
+                _openSettingsTooltip = value;
+                this.OnPropertyChanged(nameof(OpenSettingsTooltip));
             }
         }
 
@@ -99,18 +99,14 @@ namespace PartyManager.ViewModels
             _upgradeTroopsVM = new UpgradeTroopsVM(partyScreenLogic, partyVM);
             _sortController = new SortUnitsVM(partyScreenLogic, partyVM);
             _recruitController = new RecruitVM(partyScreenLogic, partyVM);
-            _reloadSettingsTooltip = new HintViewModel("Reload Party Manager Settings","reloadSettingsTooltipUniqueEnoughYet?");
+            _openSettingsTooltip = new HintViewModel("Open Party Manager Settings","openSettingsTooltipUniqueEnoughYet?");
 
         }
 
 
-        public void ReloadSettings()
+        public void OpenSettings()
         {
-            PartyManagerSettings.ReloadSettings();
+            PartyController.OpenSettings();
         }
-
-
-
-
     }
 }

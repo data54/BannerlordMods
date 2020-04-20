@@ -77,27 +77,6 @@ namespace PartyManager
                 string key = "";
                 try
                 {
-                    if (settingsLayer!=null && !settingsLayer.IsActive)
-                    {
-                        settingsLayer = null;
-                    }
-
-                    if (ScreenManager.TopScreen != null && InputKey.LeftControl.IsDown() && InputKey.P.IsDown() && settingsLayer == null)
-                    {
-                        var screen = ScreenManager.TopScreen;
-
-                        settingsLayer = new GauntletLayer(500, "GauntletLayer");
-                        settingsLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
-                        var settingsVm = new PartyManagerSettingsVM(screen, settingsLayer);
-                        settingsLayer?.LoadMovie("PartyManagerSettings", settingsVm);
-                        screen.AddLayer(settingsLayer);
-                    }
-                    else if (settingsLayer != null && InputKey.LeftControl.IsDown() && InputKey.L.IsDown())
-                    {
-                        ScreenManager.TopScreen.RemoveLayer(settingsLayer);
-                        settingsLayer = null;
-                    }
-
                     if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || (!InputKey.LeftShift.IsDown()) && !InputKey.LeftControl.IsDown() && !InputKey.Minus.IsDown()))
                     {
                         return;

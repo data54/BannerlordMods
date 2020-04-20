@@ -22,9 +22,9 @@
     <Constant Name="RecruitAllButtonRightMargin" Value="20" />
 
 
-    <Constant Name="ReloadSettingsButton.Size" Value="20" />
-    <Constant Name="ReloadSettingsButton.TopMargin" Value="0" />
-    <Constant Name="ReloadSettingsButton.RightMargin" Value="5" />
+    <Constant Name="OpenSettingsButton.Size" Value="20" />
+    <Constant Name="OpenSettingsButton.TopMargin" Value="0" />
+    <Constant Name="OpenSettingsButton.RightMargin" Value="5" />
   </Constants>
   <Variables>
   </Variables>
@@ -87,16 +87,16 @@
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
           </Children>
         </ButtonWidget>
-        <ButtonWidget Id="PartyManagerModReloadSettingsButton"
+        <ButtonWidget Id="PartyManagerModOpenSettingsButton"
                                     DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
-                                    HeightSizePolicy="Fixed" SuggestedWidth="!ReloadSettingsButton.Size"
-                                    SuggestedHeight="!ReloadSettingsButton.Size" HorizontalAlignment="Right"
+                                    HeightSizePolicy="Fixed" SuggestedWidth="!OpenSettingsButton.Size"
+                                    SuggestedHeight="!OpenSettingsButton.Size" HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                        MarginRight="!ReloadSettingsButton.RightMargin" MarginLeft="!Buttons.Margin"
-                                    MarginTop="!ReloadSettingsButton.TopMargin" Brush="PartyManager.ReloadSettings"
-                        Command.Click="ReloadClick" Command.AlternateClick="ReloadAltClick"	>
+                        MarginRight="!OpenSettingsButton.RightMargin" MarginLeft="!Buttons.Margin"
+                                    MarginTop="!OpenSettingsButton.TopMargin" Brush="PartyManager.ReloadSettings"
+                        Command.Click="OpenSettings"	>
           <Children>
-            <HintWidget DataSource="{ReloadSettingsTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+            <HintWidget DataSource="{OpenSettingsTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
           </Children>
         </ButtonWidget>

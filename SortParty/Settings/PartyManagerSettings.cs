@@ -147,7 +147,6 @@ namespace PartyManager
         {
             EnableHotkey = true;
             EnableRecruitUpgradeSortHotkey = true;
-            EnableAutoSort = true;
             EnableSortTypeCycleHotkey = true;
             CavalryAboveFootmen = true;
             MeleeAboveArchers = true;
