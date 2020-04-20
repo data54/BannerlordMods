@@ -80,14 +80,13 @@ namespace PartyManager
 
                     if (ScreenManager.TopScreen != null && InputKey.LeftControl.IsDown() && InputKey.P.IsDown() && settingsLayer == null)
                     {
-                        settingsLayer = new GauntletLayer(100, "GauntletLayer");
+                        var screen = ScreenManager.TopScreen;
+
+                        settingsLayer = new GauntletLayer(500, "GauntletLayer");
                         settingsLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
-                        var settingsScreen = new PartyManagerSettingsVM();
-
-                        settingsLayer?.LoadMovie("PartyManagerSettings", settingsScreen);
-                        ScreenManager.TopScreen.AddLayer(settingsLayer);
-
-
+                        var settingsVm = new PartyManagerSettingsVM(screen, settingsLayer);
+                        settingsLayer?.LoadMovie("PartyManagerSettings", settingsVm);
+                        screen.AddLayer(settingsLayer);
                     }
                     else if (settingsLayer != null && InputKey.LeftControl.IsDown() && InputKey.L.IsDown())
                     {
@@ -95,8 +94,7 @@ namespace PartyManager
                         settingsLayer = null;
                     }
 
-
-                        if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || (!InputKey.LeftShift.IsDown()) && !InputKey.LeftControl.IsDown() && !InputKey.Minus.IsDown()))
+                    if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || (!InputKey.LeftShift.IsDown()) && !InputKey.LeftControl.IsDown() && !InputKey.Minus.IsDown()))
                     {
                         return;
                     }
