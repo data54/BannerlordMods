@@ -25,47 +25,44 @@ namespace PartyManager
         bool enableRecruitUpgradeSort = false;
         bool enableAutoSort = false;
         bool enableSortTypeCycleHotkey = false;
-
+        
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
 
-            InformationManager.DisplayMessage(new InformationMessage("Loaded PartyManager. Press CTRL+SHIFT+S in Party Screen to sort, CTRL+SHIFT+R to upgrade/recruit sort, CTRL+SHIFT+(Minus) to cycle sort types", Color.FromUint(4282569842U)));
-            if (!string.IsNullOrEmpty(PartyManagerSettings.Settings.NewFileMessage))
+            try
             {
-                InformationManager.DisplayMessage(new InformationMessage(PartyManagerSettings.Settings.NewFileMessage, Color.FromUint(4282569842U)));
+                GenericHelpers.LogMessage("Loaded PartyManager. Press CTRL+SHIFT+S in Party Screen to sort, CTRL+SHIFT+R to upgrade/recruit sort, CTRL+SHIFT+(Minus) to cycle sort types", "#ffa136FF");
+                if (!string.IsNullOrEmpty(PartyManagerSettings.Settings.NewFileMessage))
+                {
+                    GenericHelpers.LogMessage(PartyManagerSettings.Settings.NewFileMessage);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                GenericHelpers.LogException("OnBeforeInitialModuleScreenSetAsRoot", ex);
             }
         }
 
         bool showFileCreateMessage = false;
         protected override void OnSubModuleLoad()
         {
-            enableHotkey = PartyManagerSettings.Settings.EnableHotkey;
-            enableAutoSort = PartyManagerSettings.Settings.EnableAutoSort;
-            enableRecruitUpgradeSort = PartyManagerSettings.Settings.EnableRecruitUpgradeSortHotkey;
-            enableSortTypeCycleHotkey = PartyManagerSettings.Settings.EnableSortTypeCycleHotkey;
 
             base.OnSubModuleLoad();
             try
             {
+                enableHotkey = PartyManagerSettings.Settings.EnableHotkey;
+                enableAutoSort = PartyManagerSettings.Settings.EnableAutoSort;
+                enableRecruitUpgradeSort = PartyManagerSettings.Settings.EnableRecruitUpgradeSortHotkey;
+                enableSortTypeCycleHotkey = PartyManagerSettings.Settings.EnableSortTypeCycleHotkey;
                 new Harmony("mod.partymanager").PatchAll();
             }
             catch (Exception ex)
             {
                 GenericHelpers.LogException("Patch Failed", ex);
             }
-
-            ScreenManager.OnPushScreen += ScreenManager_OnPushScreen;
         }
-
-        private void ScreenManager_OnPushScreen(ScreenBase pushedScreen)
-        {
-            if (pushedScreen is GauntletPartyScreen screen)
-            {
-                //PartyController.AddPartyWidgets(screen);
-            }
-        }
-
 
         private GauntletLayer settingsLayer;
         long lastHotkeyExecute = 0;

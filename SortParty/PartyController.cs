@@ -194,113 +194,124 @@ namespace PartyManager
 
         public void UpgradeAllTroops(bool customOnly = false)
         {
-            var upgrades = PartyVM?.MainPartyTroops?
+            var currentlyUpgradingUnit = "";
+            try
+            {
+                var upgrades = PartyVM?.MainPartyTroops?
                     .Where(x => !x.IsHero
-                    && ((x.IsUpgrade1Available && !x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && !x.IsUpgrade2Insufficient))).ToList();
+                                && ((x.IsUpgrade1Available && !x.IsUpgrade1Insufficient) || (x.IsUpgrade2Available && !x.IsUpgrade2Insufficient))).ToList();
 
-            var upgradesCount = 0;
+                var upgradesCount = 0;
 
-            if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths)
+                if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths)
 
-            {
-                var splitTroops = PartyManagerSettings.Settings.SavedTroopUpgradePaths.Where(x => x.EvenSplit).Select(x => x.UnitName).ToList();
-                var customTroops = PartyManagerSettings.Settings.SavedTroopUpgradePaths.Where(x => !x.EvenSplit).Select(x => x.UnitName).ToList();
-                var splitUpgrades = upgrades.Where(x => splitTroops.Contains(x.Name.ToString())).ToList();
-                var customUpgrades = upgrades.Where(x => customTroops.Contains(x.Name.ToString())).ToList();
-                upgrades = upgrades.Where(x => !splitTroops.Contains(x.Name.ToString()) && !customTroops.Contains(x.Name.ToString())).ToList();
-
-                foreach (var troop in splitUpgrades)
                 {
-                    var unitUpgrades = Math.Min(troop.NumOfTarget1UpgradesAvailable,
-                        troop.NumOfTarget2UpgradesAvailable) / 2;
-                    GenericHelpers.LogDebug("UpgradeAllTroops", $"Split {troop.Name.ToString()}: {unitUpgrades}");
+                    var splitTroops = PartyManagerSettings.Settings.SavedTroopUpgradePaths.Where(x => x.EvenSplit).Select(x => x.UnitName).ToList();
+                    var customTroops = PartyManagerSettings.Settings.SavedTroopUpgradePaths.Where(x => !x.EvenSplit).Select(x => x.UnitName).ToList();
+                    var splitUpgrades = upgrades.Where(x => splitTroops.Contains(x.Name.ToString())).ToList();
+                    var customUpgrades = upgrades.Where(x => customTroops.Contains(x.Name.ToString())).ToList();
+                    upgrades = upgrades.Where(x => !splitTroops.Contains(x.Name.ToString()) && !customTroops.Contains(x.Name.ToString())).ToList();
 
-                    var unitsUpgraded = false;
-
-                    for (int i = 0; i < unitUpgrades; i++)
+                    foreach (var troop in splitUpgrades)
                     {
-                        if (troop.IsUpgrade1Insufficient || troop.IsUpgrade2Insufficient || !troop.IsUpgrade1Available || !troop.IsUpgrade2Available)
+                        currentlyUpgradingUnit = troop?.Character?.Name?.ToString();
+                        var unitUpgrades = Math.Min(troop.NumOfTarget1UpgradesAvailable,
+                            troop.NumOfTarget2UpgradesAvailable) / 2;
+                        GenericHelpers.LogDebug("UpgradeAllTroops", $"Split {troop.Name.ToString()}: {unitUpgrades}");
+
+                        var unitsUpgraded = false;
+
+                        for (int i = 0; i < unitUpgrades; i++)
                         {
-                            break;
+                            if (troop.IsUpgrade1Insufficient || troop.IsUpgrade2Insufficient || !troop.IsUpgrade1Available || !troop.IsUpgrade2Available)
+                            {
+                                break;
+                            }
+
+                            PartyScreenLogic.PartyCommand command1 = new PartyScreenLogic.PartyCommand();
+                            PartyScreenLogic.PartyCommand command2 = new PartyScreenLogic.PartyCommand();
+                            command1.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, 1,
+                                PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1);
+                            var c1Valid = PartyScreenLogic.ValidateCommand(command1);
+                            PartyScreenLogic.AddCommand(command1);
+
+
+                            if (troop.IsUpgrade2Insufficient)
+                            {
+                                GenericHelpers.LogDebug("UpgradeAllTroops", $"Upgrade2 Insufficient");
+                                break;
+                            }
+
+                            command2.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, 1,
+                                PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget2);
+                            var c2Valid = PartyScreenLogic.ValidateCommand(command1);
+                            PartyScreenLogic.AddCommand(command2);
+                            unitsUpgraded = true;
                         }
 
-                        PartyScreenLogic.PartyCommand command1 = new PartyScreenLogic.PartyCommand();
-                        PartyScreenLogic.PartyCommand command2 = new PartyScreenLogic.PartyCommand();
-                        command1.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, 1,
-                            PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget1);
-                        var c1Valid = PartyScreenLogic.ValidateCommand(command1);
-                        PartyScreenLogic.AddCommand(command1);
 
 
-                        if (troop.IsUpgrade2Insufficient)
+                        if (unitsUpgraded)
                         {
-                            GenericHelpers.LogDebug("UpgradeAllTroops", $"Upgrade2 Insufficient");
-                            break;
+                            upgradesCount++;
+                        }
+                    }
+
+                    foreach (var troop in customUpgrades)
+                    {
+                        currentlyUpgradingUnit = troop?.Character?.Name?.ToString();
+                        var upgradePath = PartyManagerSettings.Settings.SavedTroopUpgradePaths
+                            .Where(x => x.UnitName == troop.Name.ToString())?.Select(x => x.TargetUpgrade).FirstOrDefault();
+
+                        if (upgradePath == 0 && !troop.IsUpgrade1Insufficient)
+                        {
+                            UpgradeUnit(troop, true);
+                            upgradesCount++;
+                        }
+                        else if (upgradePath == 1 && !troop.IsUpgrade2Insufficient)
+                        {
+                            UpgradeUnit(troop, false);
+                            upgradesCount++;
+                        }
+                    }
+                }
+
+                if (!customOnly)
+                {
+                    //single upgrade units
+                    var singleUpgrades = upgrades.Where(x => !(x.IsUpgrade1Exists && x.IsUpgrade2Exists)).ToList();
+
+
+                    foreach (var troop in singleUpgrades)
+                    {
+                        currentlyUpgradingUnit = troop?.Character?.Name?.ToString();
+                        PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
+                        if (troop.NumOfTarget1UpgradesAvailable > 0)
+                        {
+                            UpgradeUnit(troop, true);
+                        }
+                        else
+                        {
+                            UpgradeUnit(troop, false);
                         }
 
-                        command2.FillForUpgradeTroop(PartyScreenLogic.PartyRosterSide.Right, troop.Type, troop.Character, 1,
-                            PartyScreenLogic.PartyCommand.UpgradeTargetType.UpgradeTarget2);
-                        var c2Valid = PartyScreenLogic.ValidateCommand(command1);
-                        PartyScreenLogic.AddCommand(command2);
-                        unitsUpgraded = true;
-                    }
-
-
-
-                    if (unitsUpgraded)
-                    {
                         upgradesCount++;
                     }
                 }
 
-                foreach (var troop in customUpgrades)
+                if (upgradesCount > 0)
                 {
-                    var upgradePath = PartyManagerSettings.Settings.SavedTroopUpgradePaths
-                        .Where(x => x.UnitName == troop.Name.ToString())?.Select(x => x.TargetUpgrade).FirstOrDefault();
-
-                    if (upgradePath == 0 && !troop.IsUpgrade1Insufficient)
-                    {
-                        UpgradeUnit(troop, true);
-                        upgradesCount++;
-                    }
-                    else if (upgradePath == 1 && !troop.IsUpgrade2Insufficient)
-                    {
-                        UpgradeUnit(troop, false);
-                        upgradesCount++;
-                    }
+                    GenericHelpers.LogDebug("UpgradeAllTroops", $"{upgradesCount} troops upgraded");
+                    ButtonClickRefresh(true, false);
                 }
-            }
-
-            if (!customOnly)
-            {
-                //single upgrade units
-                var singleUpgrades = upgrades.Where(x => !(x.IsUpgrade1Exists && x.IsUpgrade2Exists)).ToList();
-
-
-                foreach (var troop in singleUpgrades)
+                else
                 {
-                    PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
-                    if (troop.NumOfTarget1UpgradesAvailable > 0)
-                    {
-                        UpgradeUnit(troop, true);
-                    }
-                    else
-                    {
-                        UpgradeUnit(troop, false);
-                    }
-
-                    upgradesCount++;
+                    GenericHelpers.LogMessage("No troops found to upgrade");
                 }
             }
-
-            if (upgradesCount > 0)
+            catch (Exception ex)
             {
-                GenericHelpers.LogDebug("UpgradeAllTroops", $"{upgradesCount} troops upgraded");
-                ButtonClickRefresh(true, false);
-            }
-            else
-            {
-                GenericHelpers.LogMessage("No troops found to upgrade");
+                GenericHelpers.LogException($"UpgradeAllTroops unittype({currentlyUpgradingUnit})", ex);
             }
         }
 
@@ -327,6 +338,7 @@ namespace PartyManager
 
         public void RecruitAllPrisoners(bool ignorePartyLimit)
         {
+            var currentlyRecruitingPrisoner = "";
             try
             {
                 var recruits = PartyVM?.MainPartyPrisoners?
@@ -341,6 +353,7 @@ namespace PartyManager
 
                     foreach (var troop in recruits)
                     {
+                        currentlyRecruitingPrisoner = troop?.Name?.ToString();
                         if (freeUnitSlots > 0 || ignorePartyLimit)
                         {
 
@@ -368,7 +381,7 @@ namespace PartyManager
             }
             catch (Exception ex)
             {
-                GenericHelpers.LogException("RecruitAllPrisoners", ex);
+                GenericHelpers.LogException($"RecruitAllPrisoners UnitType({currentlyRecruitingPrisoner})", ex);
             }
         }
 
@@ -384,72 +397,80 @@ namespace PartyManager
 
         public static void ToggleUpgradePath(PartyCharacterVM vm, int upgradeIndex, bool split = false)
         {
-            split = split && vm.IsUpgrade1Exists && vm.IsUpgrade2Exists;
-
-            string message = "";
-            var upgrade = PartyManagerSettings.Settings.SavedTroopUpgradePaths.FirstOrDefault(x => x.UnitName == vm.Character.Name.ToString());
-
-            if (upgrade != null)
+            try
             {
+                split = split && vm.IsUpgrade1Exists && vm.IsUpgrade2Exists;
 
-                if ((upgradeIndex == upgrade.TargetUpgrade && (split == upgrade.EvenSplit)) || (split && upgrade.EvenSplit))
+                string message = "";
+                var upgrade = PartyManagerSettings.Settings.SavedTroopUpgradePaths.FirstOrDefault(x => x.UnitName == vm.Character.Name.ToString());
+
+                if (upgrade != null)
                 {
-                    PartyManagerSettings.Settings.SavedTroopUpgradePaths.Remove(upgrade);
-                    message = $"Removed Upgrade Path for {vm.Character.Name.ToString()}";
-                }
-                else if (split)
-                {
-                    upgrade.EvenSplit = true;
-                    message = $"Changed Upgrade Path for {vm.Character.Name.ToString()} to be split evenly";
+
+                    if ((upgradeIndex == upgrade.TargetUpgrade && (split == upgrade.EvenSplit)) || (split && upgrade.EvenSplit))
+                    {
+                        PartyManagerSettings.Settings.SavedTroopUpgradePaths.Remove(upgrade);
+                        message = $"Removed Upgrade Path for {vm.Character.Name.ToString()}";
+                    }
+                    else if (split)
+                    {
+                        upgrade.EvenSplit = true;
+                        message = $"Changed Upgrade Path for {vm.Character.Name.ToString()} to be split evenly";
+                    }
+                    else
+                    {
+                        upgrade.EvenSplit = false;
+                        upgrade.TargetUpgrade = upgradeIndex;
+                        message = $"Changed Upgrade Path for {vm.Character.Name.ToString()}";
+                    }
                 }
                 else
                 {
-                    upgrade.EvenSplit = false;
-                    upgrade.TargetUpgrade = upgradeIndex;
-                    message = $"Changed Upgrade Path for {vm.Character.Name.ToString()}";
+                    var newUpgrade = new SavedTroopUpgradePath()
+                    {
+                        UnitName = vm.Name,
+                        TargetUpgrade = upgradeIndex,
+                        EvenSplit = split
+                    };
+
+                    PartyManagerSettings.Settings.SavedTroopUpgradePaths.Add(newUpgrade);
+                    if (split)
+                    {
+                        message = $"Added Split Upgrade Path for {vm.Character.Name.ToString()}";
+                    }
+                    else
+                    {
+                        message = $"Added Upgrade Path for {vm.Character.Name.ToString()}";
+                    }
                 }
+                PartyManagerSettings.Settings.SaveSettings();
+                GenericHelpers.LogMessage(message);
             }
-            else
+            catch (Exception e)
             {
-                var newUpgrade = new SavedTroopUpgradePath()
-                {
-                    UnitName = vm.Name,
-                    TargetUpgrade = upgradeIndex,
-                    EvenSplit = split
-                };
-
-                PartyManagerSettings.Settings.SavedTroopUpgradePaths.Add(newUpgrade);
-                if (split)
-                {
-                    message = $"Added Split Upgrade Path for {vm.Character.Name.ToString()}";
-                }
-                else
-                {
-                    message = $"Added Upgrade Path for {vm.Character.Name.ToString()}";
-                }
+                GenericHelpers.LogException("UpgradeAllTroops", e);
             }
-            PartyManagerSettings.Settings.SaveSettings();
-            GenericHelpers.LogMessage(message);
         }
-
-        public void TriggerGauntletViewOnEventFired(GauntletView view)
-        {
-            //var refreshCall = GenericHelpers.GetPrivateMethod("OnEventFired", view);
-            //refreshCall.Invoke(view, new[] { view.Target });
-        }
-
+        
         private static GauntletLayer settingsLayer;
         public static void OpenSettings()
         {
-            if (settingsLayer == null || !settingsLayer.IsActive)
+            try
             {
+                if (settingsLayer == null || !settingsLayer.IsActive)
+                {
                 
-                var screen = ScreenManager.TopScreen;
-                settingsLayer = new GauntletLayer(10000, "GauntletLayer");
-                settingsLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
-                var settingsVm = new PartyManagerSettingsVM(screen, settingsLayer);
-                settingsLayer?.LoadMovie("PartyManagerSettings", settingsVm);
-                screen.AddLayer(settingsLayer);
+                    var screen = ScreenManager.TopScreen;
+                    settingsLayer = new GauntletLayer(10000, "GauntletLayer");
+                    settingsLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
+                    var settingsVm = new PartyManagerSettingsVM(screen, settingsLayer);
+                    settingsLayer?.LoadMovie("PartyManagerSettings", settingsVm);
+                    screen.AddLayer(settingsLayer);
+                }
+            }
+            catch (Exception e)
+            {
+                GenericHelpers.LogException("UpgradeAllTroops", e);
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,6 +8,8 @@ using System.Xml.Serialization;
 using TaleWorlds.Core;
 using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
+using TaleWorlds.Library;
+using StringWriter = System.IO.StringWriter;
 
 namespace PartyManager
 {
@@ -55,7 +56,7 @@ namespace PartyManager
 
         public static void LogException(string method, Exception ex)
         {
-            InformationManager.DisplayMessage(new InformationMessage($"PartyManager {method} exception: {ex.Message}"));
+            InformationManager.DisplayMessage(new InformationMessage($"PartyManager {method} exception: {ex.Message}",Color.ConvertStringToColor("#b51705FF")));
         }
 
         public static void LogDebug(string method, string message)
@@ -66,9 +67,9 @@ namespace PartyManager
             }
         }
 
-        public static void LogMessage(string message)
+        public static void LogMessage(string message, string color = "#ffffffFF")
         {
-            InformationManager.DisplayMessage(new InformationMessage(message));
+            InformationManager.DisplayMessage(new InformationMessage(message, Color.ConvertStringToColor(color)));
         }
 
 
