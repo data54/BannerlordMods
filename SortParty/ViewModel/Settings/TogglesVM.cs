@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PartyManager.Settings.CustomSettingClasses;
 using PartyManager.ViewModel.Settings.OptionVMS;
 using PartyManager.ViewModels;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -89,14 +88,16 @@ namespace PartyManager.ViewModel.Settings
             _options = new MBBindingList<IPMOptions>();
             _name = "Toggles";
             _titleText = "test";
-            OptionsVm = new OptionsVM(false, false, KeyOptionsVM);
 
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableAutoSort,"Enable Autosort", "Enable Auto Sort on opening the party screen",
                 b => { _settings.EnableAutoSort = b;}, CampaignOptionItemVM.OptionTypes.Boolean));
-            
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.SortAfterRecruitAllUpgradeAllClick, "Sort After Recruit/Upgrade All Click", "Sort units after clicking the Recruit/Upgrade All buttons are clicked",
+                b => { _settings.SortAfterRecruitAllUpgradeAllClick = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+
+
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.CavalryAboveFootmen, "Sort Mounted Units Above Footmen", "Turn off if you want the default sorts to not have mounted units above footmen",
                 b => { _settings.CavalryAboveFootmen = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.MeleeAboveArchers, "Melee Above Archers", "Turn off if you want the default sorts to not have melee units above ranged",
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.MeleeAboveArchers, "Sort Melee Units Above Archers", "Turn off if you want the default sorts to not have melee units above ranged",
                 b => { _settings.MeleeAboveArchers = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             
             
@@ -108,25 +109,14 @@ namespace PartyManager.ViewModel.Settings
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableSortTypeCycleHotkey, "Enable Cycle Sort Type Hotkey", "Enable Cycle Sort Type Hotkey of CTRL+SHIFT+(MINUS)",
                 b => { _settings.EnableSortTypeCycleHotkey = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
 
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableCustomUpgradePaths, "Disable Custom Upgrade Paths", "Custom Upgrade Paths will not be used when the upgrade button is clicked",
+                b => { _settings.DisableCustomUpgradePaths = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.Debug, "Enable Debug Mode", "Enable Debug Mode, probably want to leave this off",
+                b => { _settings.Debug = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+
             this.RefreshValues();
-
-            //var test = new BooleanOptionDataVM(this._settings.EnableAutoSort, "Recruit By Default", "Determines whether all prisoners eligible for recruitment will be enlisted with the Recruit All button.\nIf turned off you'll have to CTRL + click each prisoner's recruitment button to allow their recruitment explicitly.\n\nNote any previously disallowed units will now be allowed", (Action<bool>)(value => this._settings.RecruitByDefault = value))
-        }
-        private void KeyOptionsVM(GameKeyOptionVM optonsVm)
-        {
-
-        }
-
-        private BooleanOptionDataVM createBooleanOptionDataVM(string name, string description, bool value, OptionsVM optionsVm)
-        {
-            var data = new GauntletBooleanData(value);
-            var result = new BooleanOptionDataVM(optionsVm, data,
-                new TextObject(name, new Dictionary<string, TextObject>()),
-                new TextObject(description, new Dictionary<string, TextObject>()));
             
-            result.ImageIDs = new string[0];
-            return result;
-
         }
+
     }
 }

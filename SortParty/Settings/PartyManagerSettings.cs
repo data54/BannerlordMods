@@ -44,7 +44,7 @@ namespace PartyManager
             {
                 if (_savedTroopUpgradePaths == null)
                 {
-                    _savedTroopUpgradePaths=new List<SavedTroopUpgradePath>();
+                    _savedTroopUpgradePaths = new List<SavedTroopUpgradePath>();
                 }
 
                 return _savedTroopUpgradePaths;
@@ -63,7 +63,7 @@ namespace PartyManager
 
         [XmlIgnore]
         public string PreviousSortOrderString => GetCycledSortType(true).ToString();
-        
+
         [XmlIgnore]
         private static XmlSerializer Serializer
         {
@@ -111,9 +111,9 @@ namespace PartyManager
             SortOrder = GetCycledSortType(backward);
             CreateUpdateFile(this);
         }
-        
+
         private int? sortModulus;
-        public SortType GetCycledSortType(bool backward=false)
+        public SortType GetCycledSortType(bool backward = false)
         {
 
             if (!sortModulus.HasValue)
@@ -131,7 +131,7 @@ namespace PartyManager
                 intResult = sortModulus - 1;
             }
 
-            return (SortType) intResult;
+            return (SortType)intResult;
         }
 
         public string GetSortTypeString(SortType type)
@@ -183,7 +183,7 @@ namespace PartyManager
                     {
                         settings = Serializer.Deserialize(fs) as PartyManagerSettings;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         GenericHelpers.LogException("LoadSettings", ex);
                         settings = new PartyManagerSettings();
@@ -267,10 +267,10 @@ namespace PartyManager
                 PartyManagerSettings clone;
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    Serializer.Serialize(ms,this);
+                    Serializer.Serialize(ms, this);
 
                     ms.Seek(0, SeekOrigin.Begin);
-                    clone =Serializer.Deserialize(ms) as PartyManagerSettings;
+                    clone = Serializer.Deserialize(ms) as PartyManagerSettings;
                 }
 
                 return clone;
@@ -282,13 +282,36 @@ namespace PartyManager
 
             return null;
         }
+
+        public static MBBindingList<string> GetSelectableSortOrderStrings()
+        {
+            var sortTypes = new MBBindingList<string>();
+            try
+            {
+
+                foreach (var sort in Enum.GetValues(typeof(CustomSortOrder)))
+                {
+                    if ((int)sort >= 0)
+                    {
+                        sortTypes.Add(sort.ToString());
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                GenericHelpers.LogException("PartyManagerSettings.GetSelectableSortOrders", ex);
+            }
+
+            return sortTypes;
+        }
     }
 
     public enum SortType
     {
         CustomUpgrades = -3,
-        RecruitUpgrade =-2,
-        Default=-1,
+        RecruitUpgrade = -2,
+        Default = -1,
         TierDesc = 0,
         TierAsc = 1,
         TierDescType = 2,

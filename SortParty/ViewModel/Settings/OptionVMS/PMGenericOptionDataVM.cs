@@ -19,12 +19,12 @@ namespace PartyManager.ViewModel.Settings.OptionVMS
 
     public class PMGenericOptionDataVM<T> : TaleWorlds.Library.ViewModel, IPMOptions where T : IComparable
     {
-        private int _optionTypeId = -1;
-        private TextObject _nameObj;
-        private TextObject _descriptionObj;
-        private string _description;
-        private string _name;
-        private string[] _imageIDs;
+        internal int _optionTypeId = -1;
+        internal TextObject _nameObj;
+        internal TextObject _descriptionObj;
+        internal string _description;
+        internal string _name;
+        internal string[] _imageIDs;
 
         private T _value;
         [DataSourceProperty]
@@ -41,9 +41,9 @@ namespace PartyManager.ViewModel.Settings.OptionVMS
         }
 
 
-        private T _initialValue;
-        private Action<T> _updateCall;
-        private CampaignOptionItemVM.OptionTypes _optionType;
+        internal T _initialValue;
+        internal Action<T> _updateCall;
+        internal CampaignOptionItemVM.OptionTypes _optionType;
 
         public PMGenericOptionDataVM(
             T value,
@@ -51,6 +51,17 @@ namespace PartyManager.ViewModel.Settings.OptionVMS
             string description
             , Action<T> updateCall, CampaignOptionItemVM.OptionTypes optionType)
         {
+            Initialize(value, name, description, updateCall, optionType);
+            RefreshValues();
+        }
+
+
+        internal void Initialize(T value,
+            string name,
+            string description
+            , Action<T> updateCall, CampaignOptionItemVM.OptionTypes optionType)
+        {
+            _name = name;
             this._nameObj = new TextObject(name, new Dictionary<string, TextObject>());
             this._descriptionObj = new TextObject(description, new Dictionary<string, TextObject>());
             _updateCall = updateCall;
@@ -58,19 +69,24 @@ namespace PartyManager.ViewModel.Settings.OptionVMS
             _initialValue = value;
             _value = value;
 
-            if (typeof(T) == typeof(bool))
+            switch (_optionType)
             {
-                this.ImageIDs = new string[2]
-                {
-                    name.ToString() + "_0",
-                    name.ToString() + "_1"
-                };
-                this._optionTypeId = 0;
-
+                case CampaignOptionItemVM.OptionTypes.Boolean:
+                    _optionTypeId = 0;
+                    this.ImageIDs = new string[2]
+                    {
+                        _name.ToString() + "_0",
+                        _name.ToString() + "_1"
+                    };
+                    break;
+                case CampaignOptionItemVM.OptionTypes.Numeric:
+                    _optionTypeId = 1;
+                    break;
+                case CampaignOptionItemVM.OptionTypes.Selection:
+                    _optionTypeId = 3;
+                    break;
             }
 
-
-            this.RefreshValues();
         }
 
         public override void RefreshValues()
@@ -159,33 +175,38 @@ namespace PartyManager.ViewModel.Settings.OptionVMS
             _updateCall.Invoke(Value);
         }
 
-        public void Cancel()
+        public virtual void Cancel()
         {
 
         }
 
-        public bool IsChanged()
+        public virtual bool IsChanged()
         {
             return _value.Equals(_initialValue);
         }
 
-        public void SetValue(T value)
+        public virtual void SetValue(T value)
         {
             _value = value;
         }
 
-        public void ResetData()
+        public virtual void ResetData()
         {
             Value = _initialValue;
         }
 
-        private T ConvertToT<R>(R input, T oldValue)
+        internal T ConvertToT<R>(R input, T oldValue)
         {
             try
             {
-                var result = (T) Convert.ChangeType(input, typeof(T));
-
-                return result;
+                if (typeof(T) == typeof(CustomSortOrder))
+                {
+                    return (T) Enum.Parse(typeof(CustomSortOrder), input.ToString());
+                }
+                else
+                {
+                    return (T) Convert.ChangeType(input, typeof(T));
+                }
             }
             catch (Exception ex)
             {

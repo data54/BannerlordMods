@@ -17,12 +17,8 @@
                       <Children>
                         <TabControl Id="TabControl" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren">
                           <Children>
-							<PartyManagerModSettingsToggles Id="TogglesPage" DataSource="{TogglesController}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" />
-							<Widget Id="CustomSortPage" DataSource="{CustomSortController}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
-								<Children>
-								<OptionsTabToggle DataSource="{CustomSortController}" Parameter.ButtonBrush="Header.Tab.Left" Parameter.TabName="CustomSortPage" />
-								</Children>
-							</Widget>
+							<OptionsGenericPage Id="CustomSortPage" DataSource="{CustomSortController}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" />
+							<OptionsGenericPage Id="TogglesPage" DataSource="{TogglesController}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" />
                           </Children>
                         </TabControl>
                       </Children>

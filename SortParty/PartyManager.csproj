@@ -208,13 +208,14 @@
     <Compile Include="PartyController.cs" />
     <Compile Include="Patches\Party\PartyCharacterVMUpgradePathPatch.cs" />
     <Compile Include="Patches\Party\PartyVMRefreshValuesPatch.cs" />
+    <Compile Include="Patches\TestPatch.cs" />
     <Compile Include="Patches\ScreenBaseAddLayerPatch.cs" />
-    <Compile Include="Settings\CustomSettingClasses\GauntletBooleanData.cs" />
     <Compile Include="Settings\PartyManagerSettings.cs" />
     <Compile Include="Helpers\SortPartyHelpers.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\Settings\OptionVMS\PMGenericOptionDataVM.cs" />
+    <Compile Include="ViewModel\Settings\OptionVMS\PMStringOptionDataVM.cs" />
     <Compile Include="ViewModel\Settings\PartyManagerSettingsVM.cs" />
     <Compile Include="ViewModel\PartyManagerVM.cs" />
     <Compile Include="ViewModel\RecruitVM.cs" />
@@ -234,12 +235,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Settings\CustomSettingClasses\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="GUI\Brushes\PartyManagerModBrush.xml" />
     <Content Include="GUI\Prefabs\Party\PartyManagerModScreen.xml" />
-    <Content Include="GUI\Prefabs\Party\Settings\PartyManagerModSettingsToggles.xml" />
-    <Content Include="GUI\Prefabs\Party\Settings\PartyManagerModSettingsCustomSort.xml" />
     <Content Include="GUI\Prefabs\Party\Settings\PartyManagerSettings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
