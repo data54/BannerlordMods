@@ -341,7 +341,13 @@ namespace PartyManager
         CultureDesc,
 
         UnitNameAsc,
-        UnitNameDesc
+        UnitNameDesc,
+
+        UnitCountAsc,
+        UnitCountDesc,
+
+        CustomUpgradesPathAsc,
+        CustomUpgradesPathDesc
     }
 }
 

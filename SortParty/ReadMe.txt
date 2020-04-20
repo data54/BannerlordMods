@@ -1,6 +1,4 @@
-﻿The Sort executes whenever the party screen is opened, no user interaction required past installing it unless you want to change the sort order.
-
-In order to avoid overwriting user changes during updates the config file won't exist until after the module is loaded for the first time
+﻿In order to avoid overwriting user changes during updates the config file won't exist until after the module is loaded for the first time
 
 Config file located at:
 (steam install location)\Modules\PartyManager\ModuleData\PartyManager.xml
@@ -59,17 +57,3 @@ CultureAsc TierDesc UnitNameAsc None None - Grouped by culture ascending, then e
 MountedAsc MeleeAsc UnitNameAsc None None - Infantry Archers MeleeCavalry RangedCavalry 
 MountedAsc MeleeDesc UnitNameAsc None None - Archers Infantry RangedCavalry MeleeCavalry 
 MountedAsc MeleeAsc TierDesc UnitNameAsc None - Infantry Archers MeleeCavalry RangedCavalry (each group is ordered by tier desc and each tier is alphabetized)
-
-If you're looking to test custom sorts you'll want to avoid cycling your sort type in game before clicking the load button or restarting the game
-
----------------Config toggles-------------------------
-The following settings should have a value of either true or false:
-EnableAutoSort - turns the autosort when you open/close the party screen on/off
-EnableHotkey - turns the CTRL-SHIFT-S hotkey that will sort your party on/off
-EnableRecruitUpgradeSortHotkey - turns the CTRL-SHIFT-R hotkey that will sort with upgradeable/recruitable units at the top on/off
-EnableSortTypeCycleHotkey - turns the CTRL+SHIFT+- hotkey that will cycle sort types on/off
-CavalryAboveFootmen - self explanatory
-MeleeAboveArchers - self explanatory
-HideUIWidgets - This will hide the UI widgets if you just want the hotkey functionality
-
-Debug - Don't turn this on unless you want to see a ton of random messages

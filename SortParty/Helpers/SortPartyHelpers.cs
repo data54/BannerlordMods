@@ -119,11 +119,11 @@ namespace PartyManager
                         .ThenBy(x => x.Troop.Name.ToString()).ToList();
                 case SortType.Custom:
                     return flattenedRoster
-                        .OrderBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField1), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField1))
-                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField2), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField2))
-                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField3), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField3))
-                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField4), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField4))
-                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField5), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField5))
+                        .OrderBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField1, partyVmUnits), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField1))
+                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField2, partyVmUnits), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField2))
+                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField3, partyVmUnits), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField3))
+                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField4, partyVmUnits), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField4))
+                        .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField5, partyVmUnits), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField5))
                         .ToList();
                 case SortType.CustomUpgrades:
                     var unitNames = PartyManagerSettings.Settings.SavedTroopUpgradePaths.Select(x=>x.UnitName);
@@ -134,7 +134,7 @@ namespace PartyManager
             return flattenedRoster.OrderByDescending(x => x.Troop.Tier).ThenBy(x => x.Troop.Name.ToString()).ToList();
         }
 
-        public static string GetSortFieldValue(FlattenedTroopRosterElement element, CustomSortOrder customOrder)
+        public static string GetSortFieldValue(FlattenedTroopRosterElement element, CustomSortOrder customOrder, MBBindingList<PartyCharacterVM> partyVmUnits)
         {
             switch (customOrder)
             {
@@ -153,6 +153,19 @@ namespace PartyManager
                 case CustomSortOrder.UnitNameAsc:
                 case CustomSortOrder.UnitNameDesc:
                     return element.Troop.Name.ToString();
+                case CustomSortOrder.UnitCountAsc:
+                case CustomSortOrder.UnitCountDesc:
+                    return partyVmUnits?.Where(x => x.Character.Name == element.Troop.Name)?.Select(x => x.Number)
+                        ?.FirstOrDefault().ToString();
+                case CustomSortOrder.CustomUpgradesPathAsc:
+                case CustomSortOrder.CustomUpgradesPathDesc:
+                    var unitHasUpgrade = PartyManagerSettings.Settings.SavedTroopUpgradePaths?.Exists(x =>
+                        x.UnitName == element.Troop.Name.ToString());
+                    if (unitHasUpgrade==true)
+                    {
+                        return "1";
+                    }
+                    return "0";
                 default:
                     return "";
             }
