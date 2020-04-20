@@ -77,6 +77,10 @@ namespace PartyManager
                 string key = "";
                 try
                 {
+                    if (settingsLayer!=null && !settingsLayer.IsActive)
+                    {
+                        settingsLayer = null;
+                    }
 
                     if (ScreenManager.TopScreen != null && InputKey.LeftControl.IsDown() && InputKey.P.IsDown() && settingsLayer == null)
                     {

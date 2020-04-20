@@ -93,11 +93,8 @@ namespace PartyManager.ViewModel.Settings
 
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableAutoSort,"Enable Autosort", "Enable Auto Sort on opening the party screen",
                 b => { _settings.EnableAutoSort = b;}, CampaignOptionItemVM.OptionTypes.Boolean));
-
             
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.HideUIWidgets, "Hide UI", "Hide the party screen UI changes",
-                b => { _settings.HideUIWidgets = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.CavalryAboveFootmen, "Sort Mounted Units Above Footmen", "Turn off if you want the default sorts to not have mounted units on top",
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.CavalryAboveFootmen, "Sort Mounted Units Above Footmen", "Turn off if you want the default sorts to not have mounted units above footmen",
                 b => { _settings.CavalryAboveFootmen = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.MeleeAboveArchers, "Melee Above Archers", "Turn off if you want the default sorts to not have melee units above ranged",
                 b => { _settings.MeleeAboveArchers = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
@@ -107,10 +104,9 @@ namespace PartyManager.ViewModel.Settings
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableHotkey, "Enable Sort Hotkey", "Enable Sort Hotkey of CTRL+SHIFT+S",
                 b => { _settings.EnableHotkey = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableRecruitUpgradeSortHotkey, "Enable Recruit/Upgrade Sort Hotkey", "Enable Recruit/Upgrade Sort of CTRL+SHIFT+R",
-                b => { _settings.EnableHotkey = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+                b => { _settings.EnableRecruitUpgradeSortHotkey = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableSortTypeCycleHotkey, "Enable Cycle Sort Type Hotkey", "Enable Cycle Sort Type Hotkey of CTRL+SHIFT+(MINUS)",
-                b => { _settings.EnableHotkey = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
-
+                b => { _settings.EnableSortTypeCycleHotkey = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
 
             this.RefreshValues();
 
