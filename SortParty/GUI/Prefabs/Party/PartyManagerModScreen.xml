@@ -16,6 +16,7 @@
 
 
 
+    <Constant Name="PartyInfoIconRightMargin" Value="180" />
     <Constant Name="SortButtonRightMargin" Value="140" />
     <Constant Name="CycleSortButtonRightMargin" Value="100" />
     <Constant Name="UpgradeAllTroopsButtonRightMargin" Value="60" />
@@ -100,6 +101,18 @@
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
           </Children>
         </ButtonWidget>
+        <Widget Id="PartyManagerModTroopOverviewTooltip"
+                       DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                       HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+                       SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       MarginRight="!PartyInfoIconRightMargin" MarginLeft="!Buttons.Margin"
+                       MarginTop="!Buttons.TopMargin" Brush="PartyManager.CycleSort"	>
+          <Children>
+            <HintWidget DataSource="{TroopOverviewTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+          </Children>
+        </Widget>
       </Children>
     </Widget>
   </Window>

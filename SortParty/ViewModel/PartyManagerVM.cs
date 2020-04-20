@@ -88,6 +88,66 @@ namespace PartyManager.ViewModels
         }
 
 
+        [DataSourceProperty]
+        public HintViewModel TroopOverviewTooltip
+        {
+            get => getTroopTooltip();
+            set
+            {
+                _openSettingsTooltip = value;
+                this.OnPropertyChanged(nameof(OpenSettingsTooltip));
+            }
+        }
+
+        public HintViewModel getTroopTooltip()
+        {
+
+            var composition = getUnitComposition(PartyScreenLogic.RightOwnerParty);
+
+            var model = new HintViewModel(composition);
+            
+            return model;
+        }
+
+        public string getUnitComposition(PartyBase troops)
+        {
+            var ret = "";
+
+            var totalTroops = troops.NumberOfAllMembers;
+            var mounted = troops.NumberOfMenWithHorse;
+            var mountedPercent = mounted * 100f / totalTroops;
+            var onFoot = troops.NumberOfMenWithoutHorse;
+            var onFootPercent = onFoot * 100f / totalTroops;
+            
+            var footArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && !x.Character.IsMounted).Sum(x => x.Number);
+            var footArcherPercent = footArchers * 100f / totalTroops;
+            var horseArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
+            var horseArcherPercent = horseArchers * 100f / totalTroops;
+
+            var footMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && !x.Character.IsMounted).Sum(x => x.Number);
+            var footMeleePercent = footMelee * 100f / totalTroops;
+            var horseMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
+            var horseMeleePercent = horseMelee * 100f / totalTroops;
+
+
+            var sb = new StringBuilder();
+            sb.Append($"{troops.Name.ToString()}\n");
+            sb.Append($"{totalTroops} Troops\n");
+            sb.Append($"- {mounted} Mounted ({mountedPercent.ToString("n2")}%)\n");
+            sb.Append($"--- {horseMelee} Melee ({horseMeleePercent.ToString("n2")}%)\n");
+            sb.Append($"--- {horseArchers} Ranged ({horseArcherPercent.ToString("n2")}%)\n");
+            sb.Append($"- {onFoot} On Foot ({onFootPercent.ToString("n2")}%)\n");
+            sb.Append($"--- {footMelee} Melee ({footMeleePercent.ToString("n2")}%)\n");
+            sb.Append($"--- {footArchers} Ranged ({footArcherPercent.ToString("n2")}%)\n");
+
+
+
+
+
+            return sb.ToString();
+        }
+
+
         public PartyManagerVM(
             PartyVM partyVM,
             PartyScreenLogic partyScreenLogic,
