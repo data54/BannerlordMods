@@ -20,6 +20,15 @@ namespace PartyManager
 
         public int Compare(string x, string y)
         {
+            int parsedX;
+            int parsedY;
+
+            if (int.TryParse(x, out parsedX) && int.TryParse(y, out parsedY))
+            {
+                return Compare(parsedX, parsedY);
+            }
+
+
             return string.Compare(x, y, true) * multiplier;
         }
 
