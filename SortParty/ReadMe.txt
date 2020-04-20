@@ -18,6 +18,9 @@ RangeMountTierAsc	- Melee/Ranged then by mounted then tier Asc
 Custom				- Sorts by user defined criteria
 
 ---------------Custom Sort Instructions---------------
+
+Custom sort can be configured in game by clicking the settings button in the top right on the party screen
+
 Custom sort will ignore the flags for CavalryAboveFootmen and MeleeAboveArchers as they're part of 
 
 Available Sort Fields are:
