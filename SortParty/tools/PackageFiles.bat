@@ -7,6 +7,7 @@ copy "Modules\PartyManager\bin\Win64_Shipping_Client\SubModule.xml" "Modules\Par
 del /S "Modules\PartyManager\bin\Win64_Shipping_Client\SubModule.xml"  /F /Q
 del /S "Modules\PartyManager\bin\Win64_Shipping_Client\*.pdb" /F /Q
 del /S "Modules\*vortex*" /F /Q
+del /S "Modules\PartyManager\bin\Win64_Shipping_Client\*TaleWorlds*" /F /Q
 Powershell Compress-Archive "Modules" "PartyManager.zip"
 
 PAUSE
