@@ -111,41 +111,68 @@ namespace PartyManager.ViewModels
 
         public string getUnitComposition(PartyBase troops)
         {
-            var ret = "";
+            try
+            {
+                var ret = "";
 
-            var totalTroops = troops.NumberOfAllMembers;
-            var mounted = troops.NumberOfMenWithHorse;
-            var mountedPercent = mounted * 100f / totalTroops;
-            var onFoot = troops.NumberOfMenWithoutHorse;
-            var onFootPercent = onFoot * 100f / totalTroops;
+                var totalTroops = troops.NumberOfAllMembers;
+                var mounted = troops.NumberOfMenWithHorse;
+                var mountedPercent = mounted * 100f / totalTroops;
+                var onFoot = troops.NumberOfMenWithoutHorse;
+                var onFootPercent = onFoot * 100f / totalTroops;
             
-            var footArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && !x.Character.IsMounted).Sum(x => x.Number);
-            var footArcherPercent = footArchers * 100f / totalTroops;
-            var horseArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
-            var horseArcherPercent = horseArchers * 100f / totalTroops;
+                var footArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && !x.Character.IsMounted).Sum(x => x.Number);
+                var footArcherPercent = footArchers * 100f / totalTroops;
+                var horseArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
+                var horseArcherPercent = horseArchers * 100f / totalTroops;
 
-            var footMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && !x.Character.IsMounted).Sum(x => x.Number);
-            var footMeleePercent = footMelee * 100f / totalTroops;
-            var horseMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
-            var horseMeleePercent = horseMelee * 100f / totalTroops;
-
-
-            var sb = new StringBuilder();
-            sb.Append($"{troops.Name.ToString()}\n");
-            sb.Append($"{totalTroops} Troops\n");
-            sb.Append($"- {mounted} Mounted ({mountedPercent.ToString("n2")}%)\n");
-            sb.Append($"--- {horseMelee} Melee ({horseMeleePercent.ToString("n2")}%)\n");
-            sb.Append($"--- {horseArchers} Ranged ({horseArcherPercent.ToString("n2")}%)\n");
-            sb.Append($"- {onFoot} On Foot ({onFootPercent.ToString("n2")}%)\n");
-            sb.Append($"--- {footMelee} Melee ({footMeleePercent.ToString("n2")}%)\n");
-            sb.Append($"--- {footArchers} Ranged ({footArcherPercent.ToString("n2")}%)\n");
+                var footMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && !x.Character.IsMounted).Sum(x => x.Number);
+                var footMeleePercent = footMelee * 100f / totalTroops;
+                var horseMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
+                var horseMeleePercent = horseMelee * 100f / totalTroops;
 
 
 
+                var sb = new StringBuilder();
+                sb.Append($"{troops.Name.ToString()}\n");
+                sb.Append($"{totalTroops}/{_partyScreenLogic.RightOwnerParty.PartySizeLimit} Troops\n");
+                sb.Append($"-{mounted} Mounted ({mountedPercent.ToString("n2")}%)\n");
+                sb.Append($"--{horseMelee} Melee ({horseMeleePercent.ToString("n2")}%)\n");
+                sb.Append($"--{horseArchers} Ranged ({horseArcherPercent.ToString("n2")}%)\n");
+                sb.Append($"-{onFoot} On Foot ({onFootPercent.ToString("n2")}%)\n");
+                sb.Append($"--{footMelee} Melee ({footMeleePercent.ToString("n2")}%)\n");
+                sb.Append($"--{footArchers} Ranged ({footArcherPercent.ToString("n2")}%)\n");
+                
+                return sb.ToString();
+            }
+            catch (Exception e)
+            {
+                GenericHelpers.LogException("getUnitComposition", e);
+            }
 
-
-            return sb.ToString();
+            return "";
         }
+
+        public string getIndentedTroopString(int indentLevel, int count, string label, float percent)
+        {
+
+            var indentSpaces = 2; //assuming no one is going to have more than 9999 troops
+            var labelLength = 15;
+
+            var result = "";
+            var countstring = count.ToString();
+            var percentstring =$"{percent.ToString("n2")}%";
+            int startingIndent = indentLevel * indentSpaces + 4;
+
+            result += countstring.PadLeft(startingIndent);
+            result = result.PadRight(5);
+            result += label;
+            result = result.PadRight(5);
+            result += percentstring.PadLeft(4)+"\n";
+            return result;
+        }
+
+
 
 
         public PartyManagerVM(
@@ -160,8 +187,8 @@ namespace PartyManager.ViewModels
             _sortController = new SortUnitsVM(partyScreenLogic, partyVM);
             _recruitController = new RecruitVM(partyScreenLogic, partyVM);
             _openSettingsTooltip = new HintViewModel("Open Party Manager Settings","openSettingsTooltipUniqueEnoughYet?");
-
         }
+
 
 
         public void OpenSettings()

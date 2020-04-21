@@ -111,6 +111,11 @@ namespace PartyManager.ViewModel.Settings
 
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableCustomUpgradePaths, "Disable Custom Upgrade Paths", "Custom Upgrade Paths will not be used when the upgrade button is clicked",
                 b => { _settings.DisableCustomUpgradePaths = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableUpdatedTroopLabel, "Disable Updated Wounded Troop Label", "Change the wounded troop label from from (250 + 5w [255]/275) back to  (250 + 5w / 275)",
+                b => { _settings.DisableUpdatedTroopLabel = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+
+
+
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.Debug, "Enable Debug Mode", "Enable Debug Mode, probably want to leave this off",
                 b => { _settings.Debug = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
 

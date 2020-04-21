@@ -207,6 +207,7 @@
     <Compile Include="Helpers\GenericHelpers.cs" />
     <Compile Include="PartyController.cs" />
     <Compile Include="Patches\Party\PartyCharacterVMUpgradePathPatch.cs" />
+    <Compile Include="Patches\Party\PartyVMRefreshPartyInformationPatch.cs" />
     <Compile Include="Patches\Party\PartyVMRefreshValuesPatch.cs" />
     <Compile Include="Patches\TestPatch.cs" />
     <Compile Include="Patches\ScreenBaseAddLayerPatch.cs" />

@@ -14,7 +14,7 @@ namespace PartyManager
     public class PartyManagerSettings
     {
         const string filePath = "..\\..\\Modules\\PartyManager\\ModuleData\\PartyManager.xml";
-        const int version = 4;
+        const int version = 5;
 
         public int? Version { get; set; }
         public bool EnableHotkey { get; set; }
@@ -26,6 +26,10 @@ namespace PartyManager
         public bool SortAfterRecruitAllUpgradeAllClick { get; set; }
         public bool HideUIWidgets { get; set; }
         public bool DisableCustomUpgradePaths { get; set; }
+        public bool DisableUpdatedTroopLabel { get; set; }
+        public bool DisablePartyComposition { get; set; }
+
+
 
         public bool Debug { get; set; }
 
