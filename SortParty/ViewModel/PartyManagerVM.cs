@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
+using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
@@ -89,61 +91,186 @@ namespace PartyManager.ViewModels
 
 
         [DataSourceProperty]
-        public HintViewModel TroopOverviewTooltip
+        public HintViewModel RightTroopOverviewTooltip
         {
-            get => getTroopTooltip();
-            set
-            {
-                _openSettingsTooltip = value;
-                this.OnPropertyChanged(nameof(OpenSettingsTooltip));
-            }
+            get => getTroopTooltip(false);
         }
 
-        public HintViewModel getTroopTooltip()
+        [DataSourceProperty]
+        public bool LeftTroopOverviewHidden
         {
+            get => PartyManagerSettings.Settings.DisablePartyCompositionIcon ||
+                   _partyScreenLogic?.LeftOwnerParty == null;
+        }
 
-            var composition = getUnitComposition(PartyScreenLogic.RightOwnerParty);
+        [DataSourceProperty]
+        public bool RightTroopOverviewHidden
+        {
+            get => PartyManagerSettings.Settings.DisablePartyCompositionIcon ||
+                   _partyScreenLogic?.RightOwnerParty == null;
+        }
+
+        [DataSourceProperty]
+        public HintViewModel LeftTroopOverviewTooltip
+        {
+            get => getTroopTooltip(true);
+        }
+
+        public HintViewModel getTroopTooltip(bool leftParty)
+        {
+            var composition = "";
+
+            if (leftParty && _partyScreenLogic?.LeftOwnerParty != null)
+            {
+                composition = getUnitComposition(PartyScreenLogic.LeftOwnerParty, _partyScreenLogic.LeftOwnerParty.PartySizeLimit);
+            }
+            else if (!leftParty && _partyScreenLogic?.RightOwnerParty != null)
+            {
+                composition = getUnitComposition(PartyScreenLogic.RightOwnerParty, _partyScreenLogic.RightOwnerParty.PartySizeLimit);
+            }
+            else
+            {
+                composition = "";
+            }
 
             var model = new HintViewModel(composition);
-            
+
             return model;
         }
 
-        public string getUnitComposition(PartyBase troops)
+
+        public string getUnitComposition(PartyBase troops, int partySizeLimit)
         {
             try
             {
+                var start = DateTime.Now;
+                GenericHelpers.LogDebug($"getUnitComposition","getUnitCompositionStarted");
+                var totalTroops = troops.NumberOfAllMembers;
+                var advancedMeleeBreakdown = "";
+                var advancedRangedBreakdown = "";
+                var advancedCavalryMeleeBreakdown = "";
+                var advancedCavalryRangedBreakdown = "";
+
+                if (PartyManagerSettings.Settings.UseAdvancedPartyComposition)
+                {
+
+                    try
+                    {
+                        var advancedTroopInfo = troops.MemberRoster
+                            .GroupBy(x => new
+                            {
+                                x.Character.FirstBattleEquipment?.GetEquipmentFromSlot(EquipmentIndex.Weapon0).Item
+                                    ?.PrimaryWeapon?.WeaponClass,
+                                x.Character.IsMounted,
+                                x.Character.IsArcher,
+                                
+                            })
+                            .Select(group => 
+                                new { IsMounted = group.Key.IsMounted, 
+                                    WeaponClass = group.Key.WeaponClass, 
+                                    IsArcher = group.Key.IsArcher, 
+                                    Count = group.Sum(x=>x.Number) })
+                            .OrderByDescending(x => x.Count).ToList();
+
+                        foreach (var weaponClass in advancedTroopInfo.Where(x => x.IsMounted && !x.IsArcher))
+                        {
+                            advancedCavalryMeleeBreakdown += formatTroopInfo(1, weaponClass.Count, weaponClass.WeaponClass.ToString(), totalTroops);
+                        }
+
+                        foreach (var weaponClass in advancedTroopInfo.Where(x => x.IsMounted && x.IsArcher))
+                        {
+                            advancedCavalryRangedBreakdown += formatTroopInfo(1, weaponClass.Count, weaponClass.WeaponClass.ToString(), totalTroops);
+                        }
+
+                        foreach (var weaponClass in advancedTroopInfo.Where(x => !x.IsMounted && !x.IsArcher))
+                        {
+                            advancedMeleeBreakdown += formatTroopInfo(1, weaponClass.Count, weaponClass.WeaponClass.ToString(), totalTroops);
+                        }
+
+                        foreach (var weaponClass in advancedTroopInfo.Where(x => !x.IsMounted && x.IsArcher))
+                        {
+                            advancedRangedBreakdown += formatTroopInfo(1, weaponClass.Count, weaponClass.WeaponClass.ToString(), totalTroops);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        GenericHelpers.LogException("GetAdvancedPartyComposition", ex);
+                    }
+                }
+
                 var ret = "";
 
-                var totalTroops = troops.NumberOfAllMembers;
-                var mounted = troops.NumberOfMenWithHorse;
-                var mountedPercent = mounted * 100f / totalTroops;
-                var onFoot = troops.NumberOfMenWithoutHorse;
-                var onFootPercent = onFoot * 100f / totalTroops;
-            
-                var footArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && !x.Character.IsMounted).Sum(x => x.Number);
-                var footArcherPercent = footArchers * 100f / totalTroops;
-                var horseArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
-                var horseArcherPercent = horseArchers * 100f / totalTroops;
+                var advancedMode = PartyManagerSettings.Settings.UseAdvancedPartyComposition;
 
-                var footMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && !x.Character.IsMounted).Sum(x => x.Number);
-                var footMeleePercent = footMelee * 100f / totalTroops;
-                var horseMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
-                var horseMeleePercent = horseMelee * 100f / totalTroops;
-
+                var subgroupIndents = advancedMode ? 0 : 1;
 
 
                 var sb = new StringBuilder();
                 sb.Append($"{troops.Name.ToString()}\n");
-                sb.Append($"{totalTroops}/{_partyScreenLogic.RightOwnerParty.PartySizeLimit} Troops\n");
-                sb.Append($"-{mounted} Mounted ({mountedPercent.ToString("n2")}%)\n");
-                sb.Append($"--{horseMelee} Melee ({horseMeleePercent.ToString("n2")}%)\n");
-                sb.Append($"--{horseArchers} Ranged ({horseArcherPercent.ToString("n2")}%)\n");
-                sb.Append($"-{onFoot} On Foot ({onFootPercent.ToString("n2")}%)\n");
-                sb.Append($"--{footMelee} Melee ({footMeleePercent.ToString("n2")}%)\n");
-                sb.Append($"--{footArchers} Ranged ({footArcherPercent.ToString("n2")}%)\n");
-                
-                return sb.ToString();
+                sb.Append($"{totalTroops}/{partySizeLimit} Troops\n");
+
+                var mounted = troops.NumberOfMenWithHorse;
+                var horseArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
+                var horseMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
+
+                StringBuilder mountedSB = new StringBuilder();
+
+                if (mounted > 0)
+                {
+                    mountedSB.Append("\n".PadLeft(40, '-'));
+                    mountedSB.Append(formatTroopInfo(0, mounted, "Cavalry", totalTroops));
+                    mountedSB.Append("\n".PadLeft(40, '-'));
+                    mountedSB.Append(formatTroopInfo(subgroupIndents, horseMelee, "Melee", totalTroops));
+                    mountedSB.Append(advancedCavalryMeleeBreakdown);
+                    mountedSB.Append(formatTroopInfo(subgroupIndents, horseArchers, "Ranged", totalTroops));
+                    mountedSB.Append(advancedCavalryRangedBreakdown);
+                }
+
+
+                StringBuilder infantrySB = new StringBuilder();
+                var infantry = troops.NumberOfMenWithoutHorse;
+                if (infantry > 0)
+                {
+                    var footArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && !x.Character.IsMounted)
+                        .Sum(x => x.Number);
+                    var footMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && !x.Character.IsMounted)
+                        .Sum(x => x.Number);
+
+                    infantrySB.Append("\n".PadLeft(40, '-'));
+                    infantrySB.Append(formatTroopInfo(0, infantry, "Infantry", totalTroops));
+                    infantrySB.Append("\n".PadLeft(40, '-'));
+                    infantrySB.Append(formatTroopInfo(subgroupIndents, footMelee, "Melee", totalTroops));
+                    infantrySB.Append(advancedMeleeBreakdown);
+                    infantrySB.Append(formatTroopInfo(subgroupIndents, footArchers, "Ranged", totalTroops));
+                    infantrySB.Append(advancedRangedBreakdown);
+                }
+
+                bool drawDivider = true;
+                if (infantry == 0 || mounted == 0)
+                {
+                    drawDivider = false;
+                }
+
+                if (infantry > mounted)
+                {
+                    sb.Append(infantrySB);
+                    if(drawDivider)infantrySB.Append("\n".PadLeft(40, '-'));
+
+                    sb.Append(mountedSB);
+                }
+                else
+                {
+                    sb.Append(mountedSB);
+                    if (drawDivider) infantrySB.Append("\n".PadLeft(40, '-'));
+                    sb.Append(infantrySB);
+
+                }
+
+
+                var duration = DateTime.Now.Subtract(start);
+                GenericHelpers.LogDebug($"getUnitComposition", $"getUnitCompositionEnded Duration: {duration.Milliseconds}");
+
+                return sb.ToString().Trim('\n'); ;
             }
             catch (Exception e)
             {
@@ -153,27 +280,21 @@ namespace PartyManager.ViewModels
             return "";
         }
 
-        public string getIndentedTroopString(int indentLevel, int count, string label, float percent)
+        private string formatTroopInfo(int indentionCount, int count, string name, int totalTroops)
         {
+            if (count == 0)
+            {
+                return null;
+            }
+            var indents = (1 * indentionCount);
+            var percent = (count * 100 / totalTroops).ToString("n2");
 
-            var indentSpaces = 2; //assuming no one is going to have more than 9999 troops
-            var labelLength = 15;
+            var ret = $"{count} {name} ({percent}%)\n";
 
-            var result = "";
-            var countstring = count.ToString();
-            var percentstring =$"{percent.ToString("n2")}%";
-            int startingIndent = indentLevel * indentSpaces + 4;
+            ret = ret.PadLeft(ret.Length + indents, '-');
 
-            result += countstring.PadLeft(startingIndent);
-            result = result.PadRight(5);
-            result += label;
-            result = result.PadRight(5);
-            result += percentstring.PadLeft(4)+"\n";
-            return result;
+            return ret;
         }
-
-
-
 
         public PartyManagerVM(
             PartyVM partyVM,
@@ -186,7 +307,7 @@ namespace PartyManager.ViewModels
             _upgradeTroopsVM = new UpgradeTroopsVM(partyScreenLogic, partyVM);
             _sortController = new SortUnitsVM(partyScreenLogic, partyVM);
             _recruitController = new RecruitVM(partyScreenLogic, partyVM);
-            _openSettingsTooltip = new HintViewModel("Open Party Manager Settings","openSettingsTooltipUniqueEnoughYet?");
+            _openSettingsTooltip = new HintViewModel("Open Party Manager Settings", "openSettingsTooltipUniqueEnoughYet?");
         }
 
 

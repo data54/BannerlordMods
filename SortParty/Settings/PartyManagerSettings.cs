@@ -27,7 +27,8 @@ namespace PartyManager
         public bool HideUIWidgets { get; set; }
         public bool DisableCustomUpgradePaths { get; set; }
         public bool DisableUpdatedTroopLabel { get; set; }
-        public bool DisablePartyComposition { get; set; }
+        public bool DisablePartyCompositionIcon { get; set; }
+        public bool UseAdvancedPartyComposition { get; set; }
 
 
 

@@ -94,4 +94,23 @@
       </Style>
     </Styles>
   </Brush>
+  <Brush Name="PartyManager.PartyOverview">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SaveLoad\icon_party" VerticalFlip="false"  />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.5"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.9" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.0" />
+      </Style>
+    </Styles>
+  </Brush>
 </Brushes>

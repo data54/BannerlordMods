@@ -1,12 +1,17 @@
 ﻿<Prefab>
   <Constants>
-    <Constant Name="ButtonGroup.SuggestedWidth" Value="500" />
+
+    <Constant Name="MainWidget.SuggestedWidth" Value="1700" />
+
+    <Constant Name="ButtonGroup.SuggestedWidth" Value="640" />
     <Constant Name="ButtonGroup.SuggestedHeight" Value="70" />
     <Constant Name="ButtonGroup.RightMargin" Value="0" />
     <Constant Name="ButtonGroup.TopMargin" Value="18" />
+    <Constant Name="LeftButtonGroup.RightMargin" Value="0" />
+    <Constant Name="LeftButtonGroup.SuggestedWidth" Value="640" />
 
 
-    <Constant Name="Buttons.Margin" Value="5" />
+    <Constant Name="Buttons.Margin" Value="3" />
     <Constant Name="Buttons.Width" Value="40" />
     <Constant Name="Buttons.Size" Value="35" />
     <Constant Name="Buttons.Height" Value="40" />
@@ -35,84 +40,122 @@
     </VisualDefinition>
   </VisualDefinitions>
   <Window>
-    <Widget Id="PartyManagerMod" VisualDefinition="UpgradeRecruitMenu" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
-                SuggestedWidth="!ButtonGroup.SuggestedWidth" SuggestedHeight="!ButtonGroup.SuggestedHeight" HorizontalAlignment="Right" VerticalAlignment="Top"
-            MarginTop="!ButtonGroup.TopMargin" MarginRight="!ButtonGroup.RightMargin"
+    <Widget Id="PartyManagerMod" VisualDefinition="UpgradeRecruitMenu" WidthSizePolicy="StretchToParent"  HeightSizePolicy="CoverChildren"
+                SuggestedHeight="!ButtonGroup.SuggestedHeight"   HorizontalAlignment="Right" VerticalAlignment="Top"
+            MarginTop="!ButtonGroup.TopMargin"
                 DoNotAcceptEvents="true">
       <Children>
-        <ButtonWidget  DataSource="{UpgradeTroopsController}" Id="PartyManagerModUpgradeAllTroopsButton"
-				                        DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
-				                        HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
-				                        SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
-				                        VerticalAlignment="Center"
-										MarginRight="!UpgradeAllTroopsButtonRightMargin" MarginLeft="!Buttons.Margin"
-				                        MarginTop="!Buttons.TopMargin" Brush="PartyManager.UpgradeAll" Command.Click="Click" Command.AlternateClick="AltClick"	>
+        <Widget Id="PMOwnerPartyWidget"  WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                SuggestedWidth="!ButtonGroup.SuggestedWidth"   HorizontalAlignment="Right" VerticalAlignment="Top" SuggestedHeight="!ButtonGroup.SuggestedHeight"
+            MarginRight="!ButtonGroup.RightMargin"
+                DoNotAcceptEvents="true">
           <Children>
-            <HintWidget DataSource="{Tooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+            <ListPanel Id="OwnerPartyOverview" DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" MarginRight="10" MarginTop="4" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+              <Children>
+                <Widget Id="PartyManagerModTroopOverviewTooltip"
+                       DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                       HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+                       SuggestedHeight="!Buttons.Size" HorizontalAlignment="Left"
+                       VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
+                       MarginTop="!Buttons.TopMargin" Brush="PartyManager.PartyOverview" IsHidden="@RightTroopOverviewHidden"	>
+                  <Children>
+                    <HintWidget DataSource="{RightTroopOverviewTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
-          </Children>
-        </ButtonWidget>
-        <ButtonWidget  DataSource="{RecruitController}" Id="PartyManagerModRecruitAllPrisonersButton"
-                                    DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
-                                    HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
-                                    SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                        MarginRight="!RecruitAllButtonRightMargin" MarginLeft="!Buttons.Margin"
-                                    MarginTop="!Buttons.TopMargin" Brush="PartyManager.RecruitAll" Command.Click="Click" Command.AlternateClick="AltClick"	>
-          <Children>
-            <HintWidget DataSource="{Tooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
-                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
-          </Children>
-        </ButtonWidget>
-        <ButtonWidget  DataSource="{SortController}" Id="PartyManagerModSortUnitsButton"
-                                    DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
-                                    HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
-                                    SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                        MarginRight="!SortButtonRightMargin" MarginLeft="!Buttons.Margin"
-                                    MarginTop="!Buttons.TopMargin" Brush="PartyManager.SortUnits" Command.Click="SortClick" Command.AlternateClick="SortAltClick"	>
-          <Children>
-            <HintWidget DataSource="{SortTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
-                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
-          </Children>
-        </ButtonWidget>
-        <ButtonWidget  DataSource="{SortController}" Id="PartyManagerModCycleSortButton"
-                                    DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
-                                    HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
-                                    SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                        MarginRight="!CycleSortButtonRightMargin" MarginLeft="!Buttons.Margin"
-                                    MarginTop="!Buttons.TopMargin" Brush="PartyManager.CycleSort" Command.Click="CycleClick" Command.AlternateClick="CycleAltClick"	>
-          <Children>
-            <HintWidget DataSource="{CycleSortTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
-                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
-          </Children>
-        </ButtonWidget>
-        <ButtonWidget Id="PartyManagerModOpenSettingsButton"
+                  </Children>
+                </Widget>
+              </Children>
+            </ListPanel>
+            <ListPanel WidthSizePolicy="CoverChildren" DoNotAcceptEvents="true" HeightSizePolicy="StretchToParent"  HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="0" MarginTop="4" LayoutImp.LayoutMethod="HorizontalRightToLeft">
+              <Children>
+                <ButtonWidget Id="PartyManagerModOpenSettingsButton"
                                     DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                                     HeightSizePolicy="Fixed" SuggestedWidth="!OpenSettingsButton.Size"
                                     SuggestedHeight="!OpenSettingsButton.Size" HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                        MarginRight="!OpenSettingsButton.RightMargin" MarginLeft="!Buttons.Margin"
+                        MarginRight="!OpenSettingsButton.RightMargin" MarginLeft="0"
                                     MarginTop="!OpenSettingsButton.TopMargin" Brush="PartyManager.ReloadSettings"
                         Command.Click="OpenSettings"	>
-          <Children>
-            <HintWidget DataSource="{OpenSettingsTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                  <Children>
+                    <HintWidget DataSource="{OpenSettingsTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget  DataSource="{RecruitController}" Id="PartyManagerModRecruitAllPrisonersButton"
+                                    DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                                    HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+                                    SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+									MarginLeft="!Buttons.Margin"
+                                    MarginTop="!Buttons.TopMargin" Brush="PartyManager.RecruitAll" Command.Click="Click" Command.AlternateClick="AltClick"	>
+                  <Children>
+                    <HintWidget DataSource="{Tooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget  DataSource="{UpgradeTroopsController}" Id="PartyManagerModUpgradeAllTroopsButton"
+				                        DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+				                        HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+				                        SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+				                        VerticalAlignment="Center"
+										MarginLeft="!Buttons.Margin"
+				                        MarginTop="!Buttons.TopMargin" Brush="PartyManager.UpgradeAll" Command.Click="Click" Command.AlternateClick="AltClick"	>
+                  <Children>
+                    <HintWidget DataSource="{Tooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget  DataSource="{SortController}" Id="PartyManagerModCycleSortButton"
+                                    DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                                    HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+                                    SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+									MarginLeft="!Buttons.Margin"
+                                    MarginTop="!Buttons.TopMargin" Brush="PartyManager.CycleSort" Command.Click="CycleClick" Command.AlternateClick="CycleAltClick"	>
+                  <Children>
+                    <HintWidget DataSource="{CycleSortTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget  DataSource="{SortController}" Id="PartyManagerModSortUnitsButton"
+                                    DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                                    HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+                                    SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+									MarginLeft="!Buttons.Margin"
+                                    MarginTop="!Buttons.TopMargin" Brush="PartyManager.SortUnits" Command.Click="SortClick" Command.AlternateClick="SortAltClick"	>
+                  <Children>
+                    <HintWidget DataSource="{SortTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+              </Children>
+            </ListPanel>
           </Children>
-        </ButtonWidget>
-        <Widget Id="PartyManagerModTroopOverviewTooltip"
+        </Widget>
+
+        <Widget Id="PMOtherPartyWidget"  WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                SuggestedWidth="!LeftButtonGroup.SuggestedWidth"   HorizontalAlignment="Left" VerticalAlignment="Top" SuggestedHeight="!ButtonGroup.SuggestedHeight"
+				MarginLeft="!LeftButtonGroup.RightMargin"
+                DoNotAcceptEvents="true">
+          <Children>
+            <ListPanel Id="OtherPartyOverview" DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="10" MarginTop="4" LayoutImp.LayoutMethod="HorizontalRightToLeft">
+              <Children>
+                <Widget Id="PartyManagerModOtherTroopOverviewTooltip"
                        DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
                        HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
                        SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
-                       VerticalAlignment="Center"
-                       MarginRight="!PartyInfoIconRightMargin" MarginLeft="!Buttons.Margin"
-                       MarginTop="!Buttons.TopMargin" Brush="PartyManager.CycleSort"	>
-          <Children>
-            <HintWidget DataSource="{TroopOverviewTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                       VerticalAlignment="Center" MarginLeft="!Buttons.Margin"
+                       MarginTop="!Buttons.TopMargin" Brush="PartyManager.PartyOverview" IsHidden="@LeftTroopOverviewHidden"  >
+                  <Children>
+                    <HintWidget DataSource="{LeftTroopOverviewTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </Widget>
+              </Children>
+            </ListPanel>
           </Children>
         </Widget>
+
       </Children>
     </Widget>
   </Window>
