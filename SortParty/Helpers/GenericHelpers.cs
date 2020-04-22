@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
@@ -18,6 +19,34 @@ namespace PartyManager
         public static MethodInfo GetPrivateMethod<T>(string methodName, T reflectionObject)
         {
             return GetMethod(methodName, reflectionObject, BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+
+        static List<WeaponClass> rangedWeaponClasses = new List<WeaponClass>() { WeaponClass.Crossbow, WeaponClass.Bow, WeaponClass.Javelin };
+
+        public static string GetCharacterWeaponClass(CharacterObject character)
+        {
+
+
+            var ret = "";
+            var weaponClass = character.FirstBattleEquipment?.GetEquipmentFromSlot(EquipmentIndex.Weapon0).Item
+                ?.PrimaryWeapon?.WeaponClass;
+
+            if (weaponClass != null && character.IsArcher && !rangedWeaponClasses.Contains(weaponClass.Value))
+            {
+                if (character.IsHero)
+                {
+                    return $"Hero({weaponClass})";
+                }
+                else
+                {
+                    weaponClass = character.FirstBattleEquipment?.GetEquipmentFromSlot(EquipmentIndex.Weapon2).Item
+                        ?.PrimaryWeapon?.WeaponClass;
+                }
+            }
+
+            ret = weaponClass?.ToString();
+
+            return ret;
         }
 
         public static MethodInfo GetMethod<T>(string methodName, T reflectionObject, BindingFlags bindingFlags)
@@ -56,7 +85,7 @@ namespace PartyManager
 
         public static void LogException(string method, Exception ex)
         {
-            InformationManager.DisplayMessage(new InformationMessage($"PartyManager {method} exception: {ex.Message}",Color.ConvertStringToColor("#b51705FF")));
+            InformationManager.DisplayMessage(new InformationMessage($"PartyManager {method} exception: {ex.Message}", Color.ConvertStringToColor("#b51705FF")));
         }
 
         public static void LogDebug(string method, string message)

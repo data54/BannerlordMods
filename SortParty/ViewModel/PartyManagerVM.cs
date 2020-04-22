@@ -138,13 +138,12 @@ namespace PartyManager.ViewModels
             return model;
         }
 
-
         public string getUnitComposition(PartyBase troops, int partySizeLimit)
         {
             try
             {
                 var start = DateTime.Now;
-                GenericHelpers.LogDebug($"getUnitComposition","getUnitCompositionStarted");
+                GenericHelpers.LogDebug($"getUnitComposition", "getUnitCompositionStarted");
                 var totalTroops = troops.NumberOfAllMembers;
                 var advancedMeleeBreakdown = "";
                 var advancedRangedBreakdown = "";
@@ -156,20 +155,22 @@ namespace PartyManager.ViewModels
 
                     try
                     {
-                        var advancedTroopInfo = troops.MemberRoster
+                        var advancedTroopInfo = troops.MemberRoster.Where(x => !x.Character.IsHero)
                             .GroupBy(x => new
                             {
-                                x.Character.FirstBattleEquipment?.GetEquipmentFromSlot(EquipmentIndex.Weapon0).Item
-                                    ?.PrimaryWeapon?.WeaponClass,
+                                WeaponClass = GenericHelpers.GetCharacterWeaponClass(x.Character),
                                 x.Character.IsMounted,
                                 x.Character.IsArcher,
-                                
+
                             })
-                            .Select(group => 
-                                new { IsMounted = group.Key.IsMounted, 
-                                    WeaponClass = group.Key.WeaponClass, 
-                                    IsArcher = group.Key.IsArcher, 
-                                    Count = group.Sum(x=>x.Number) })
+                            .Select(group =>
+                                new
+                                {
+                                    IsMounted = group.Key.IsMounted,
+                                    WeaponClass = group.Key.WeaponClass,
+                                    IsArcher = group.Key.IsArcher,
+                                    Count = group.Sum(x => x.Number)
+                                })
                             .OrderByDescending(x => x.Count).ToList();
 
                         foreach (var weaponClass in advancedTroopInfo.Where(x => x.IsMounted && !x.IsArcher))
@@ -209,9 +210,16 @@ namespace PartyManager.ViewModels
                 sb.Append($"{troops.Name.ToString()}\n");
                 sb.Append($"{totalTroops}/{partySizeLimit} Troops\n");
 
-                var mounted = troops.NumberOfMenWithHorse;
-                var horseArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
-                var horseMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
+                var heroes = troops.MemberRoster.Count(x => x.Character.IsHero);
+
+                var mounted = troops.MemberRoster.Where(x => !x.Character.IsHero && x.Character.IsMounted).Sum(x=>x.Number);
+                var horseArchers = troops.MemberRoster.Where(x => !x.Character.IsHero && x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
+                var horseMelee = troops.MemberRoster.Where(x => !x.Character.IsHero && !x.Character.IsArcher && x.Character.IsMounted).Sum(x => x.Number);
+
+
+                sb.Append("\n".PadLeft(40, '-'));
+                sb.Append(formatTroopInfo(0, heroes, "Heroes", totalTroops));
+
 
                 StringBuilder mountedSB = new StringBuilder();
 
@@ -228,12 +236,12 @@ namespace PartyManager.ViewModels
 
 
                 StringBuilder infantrySB = new StringBuilder();
-                var infantry = troops.NumberOfMenWithoutHorse;
+                var infantry = troops.MemberRoster.Where(x => !x.Character.IsHero && !x.Character.IsMounted).Sum(x => x.Number);
                 if (infantry > 0)
                 {
-                    var footArchers = troops.MemberRoster.Where(x => x.Character.IsArcher && !x.Character.IsMounted)
+                    var footArchers = troops.MemberRoster.Where(x => !x.Character.IsHero && x.Character.IsArcher && !x.Character.IsMounted)
                         .Sum(x => x.Number);
-                    var footMelee = troops.MemberRoster.Where(x => !x.Character.IsArcher && !x.Character.IsMounted)
+                    var footMelee = troops.MemberRoster.Where(x => !x.Character.IsHero && !x.Character.IsArcher && !x.Character.IsMounted)
                         .Sum(x => x.Number);
 
                     infantrySB.Append("\n".PadLeft(40, '-'));
@@ -245,26 +253,13 @@ namespace PartyManager.ViewModels
                     infantrySB.Append(advancedRangedBreakdown);
                 }
 
-                bool drawDivider = true;
-                if (infantry == 0 || mounted == 0)
-                {
-                    drawDivider = false;
-                }
 
-                if (infantry > mounted)
-                {
-                    sb.Append(infantrySB);
-                    if(drawDivider)infantrySB.Append("\n".PadLeft(40, '-'));
 
-                    sb.Append(mountedSB);
-                }
-                else
-                {
-                    sb.Append(mountedSB);
-                    if (drawDivider) infantrySB.Append("\n".PadLeft(40, '-'));
-                    sb.Append(infantrySB);
-
-                }
+                bool drawDivider = !(infantry == 0 || mounted == 0);
+                
+                sb.Append(infantrySB);
+                if (drawDivider) infantrySB.Append("\n".PadLeft(40, '-'));
+                sb.Append(mountedSB);
 
 
                 var duration = DateTime.Now.Subtract(start);
@@ -287,7 +282,7 @@ namespace PartyManager.ViewModels
                 return null;
             }
             var indents = (1 * indentionCount);
-            var percent = (count * 100 / totalTroops).ToString("n2");
+            var percent = (count * 100f / totalTroops).ToString("n2");
 
             var ret = $"{count} {name} ({percent}%)\n";
 

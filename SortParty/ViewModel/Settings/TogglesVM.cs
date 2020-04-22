@@ -87,7 +87,7 @@ namespace PartyManager.ViewModel.Settings
 
             _options = new MBBindingList<IPMOptions>();
             _name = "Toggles";
-            _titleText = "test";
+            _titleText = "Toggles";
 
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableAutoSort,"Enable Autosort", "Enable Auto Sort on opening the party screen",
                 b => { _settings.EnableAutoSort = b;}, CampaignOptionItemVM.OptionTypes.Boolean));
