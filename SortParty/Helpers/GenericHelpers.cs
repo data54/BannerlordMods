@@ -21,7 +21,8 @@ namespace PartyManager
             return GetMethod(methodName, reflectionObject, BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
-        static List<WeaponClass> rangedWeaponClasses = new List<WeaponClass>() { WeaponClass.Crossbow, WeaponClass.Bow, WeaponClass.Javelin };
+        static List<WeaponClass> rangedWeaponClasses = new List<WeaponClass>() { WeaponClass.Crossbow, WeaponClass.Bow, WeaponClass.Javelin, WeaponClass.Stone };
+        static List<WeaponClass> nonWeaponClasses = new List<WeaponClass>() { WeaponClass.Arrow, WeaponClass.Banner, WeaponClass.Bolt, WeaponClass.LargeShield, WeaponClass.SmallShield };
 
         public static string GetCharacterWeaponClass(CharacterObject character)
         {
@@ -31,7 +32,7 @@ namespace PartyManager
             var weaponClass = character.FirstBattleEquipment?.GetEquipmentFromSlot(EquipmentIndex.Weapon0).Item
                 ?.PrimaryWeapon?.WeaponClass;
 
-            if (weaponClass != null && character.IsArcher && !rangedWeaponClasses.Contains(weaponClass.Value))
+            if (weaponClass != null && ((character.IsArcher && !rangedWeaponClasses.Contains(weaponClass.Value)) || (!character.IsArcher && rangedWeaponClasses.Contains(weaponClass.Value))))
             {
                 if (character.IsHero)
                 {
@@ -39,8 +40,24 @@ namespace PartyManager
                 }
                 else
                 {
-                    weaponClass = character.FirstBattleEquipment?.GetEquipmentFromSlot(EquipmentIndex.Weapon2).Item
+                    var newWeaponClass = character.FirstBattleEquipment?.GetEquipmentFromSlot(EquipmentIndex.Weapon2).Item
                         ?.PrimaryWeapon?.WeaponClass;
+
+                    //try to get the second weapon set's slot, otherwise try for the other hand's slot
+                    if (newWeaponClass != null && !nonWeaponClasses.Contains(newWeaponClass.Value))
+                    {
+                        weaponClass = newWeaponClass;
+                    }
+                    else
+                    {
+                        newWeaponClass = character.FirstBattleEquipment?.GetEquipmentFromSlot(EquipmentIndex.Weapon1).Item
+                            ?.PrimaryWeapon?.WeaponClass;
+                        if (newWeaponClass != null && !nonWeaponClasses.Contains(newWeaponClass.Value))
+                        {
+                            weaponClass = newWeaponClass;
+                        }
+                    }
+
                 }
             }
 
