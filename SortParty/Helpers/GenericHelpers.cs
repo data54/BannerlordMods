@@ -16,6 +16,23 @@ namespace PartyManager
 {
     public static class GenericHelpers
     {
+        public static MethodInfo GetMethod(string methodName, Type type)
+        {
+            return type.GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic);
+        }
+
+        public static object CallMethod(string methodName, Type type, params object[] args)
+        {
+            var method = type.GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic);
+            return method.Invoke(null, args);
+        }
+
+        public static object CallInstanceMethod<T>(string methodName, T reflectionObject, params object[] args)
+        {
+            var method = GetPrivateMethod<T>(methodName, reflectionObject);
+            return method.Invoke(reflectionObject, args);
+        }
+
         public static MethodInfo GetPrivateMethod<T>(string methodName, T reflectionObject)
         {
             return GetMethod(methodName, reflectionObject, BindingFlags.Instance | BindingFlags.NonPublic);
@@ -80,7 +97,6 @@ namespace PartyManager
             return null;
         }
 
-
         public static T GetPrivateField<T, R>(R reflectionObject, string fieldName) where T : class
         {
             return GetField<T, R>(reflectionObject, fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
@@ -118,15 +134,18 @@ namespace PartyManager
             InformationManager.DisplayMessage(new InformationMessage(message, Color.ConvertStringToColor(color)));
         }
 
-
         public static GauntletView CreateGauntletView(GauntletMovie gauntletMovie, GauntletView parent, Widget target)
         {
             try
             {
                 var flags = BindingFlags.NonPublic | BindingFlags.Instance;
                 var contructor = typeof(GauntletView).GetConstructors(flags)?.First();
-                var view = contructor?.Invoke(new object[] { gauntletMovie, parent, target }) as GauntletView;
-
+                var view = contructor?.Invoke(new object[]
+                {
+                    gauntletMovie,
+                    parent,
+                    target
+                }) as GauntletView;
 
                 return view;
             }
@@ -141,15 +160,13 @@ namespace PartyManager
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
 
-            using (StringWriter sr = new StringWriter())
+            using(StringWriter sr = new StringWriter())
             {
                 serializer.Serialize(sr, obj);
                 return sr.ToString();
             }
             return null;
         }
-
-
 
         public static void RecursiveCompareObjects<T>(T object1, T object2)
         {
@@ -182,11 +199,8 @@ namespace PartyManager
 
             }
 
-
             return results;
         }
-
-
 
     }
 }
