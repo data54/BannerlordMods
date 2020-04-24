@@ -88,39 +88,15 @@ namespace PartyManager.ViewModel.Settings
             _options = new MBBindingList<IPMOptions>();
             _name = "Toggles";
             _titleText = "Toggles";
-
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableAutoSort,"Enable Autosort", "Enable Auto Sort on opening the party screen",
-                b => { _settings.EnableAutoSort = b;}, CampaignOptionItemVM.OptionTypes.Boolean));
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.SortAfterRecruitAllUpgradeAllClick, "Sort After Recruit/Upgrade All Click", "Sort units after clicking the Recruit/Upgrade All buttons are clicked",
-                b => { _settings.SortAfterRecruitAllUpgradeAllClick = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.UseAdvancedPartyComposition, "Show Advanced Party Composition Information", "Party Composition will attempt to show unit weapon type breakdown",
                 b => { _settings.UseAdvancedPartyComposition = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
-
-
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.CavalryAboveFootmen, "Sort Mounted Units Above Footmen", "Turn off if you want the default sorts to not have mounted units above footmen",
-                b => { _settings.CavalryAboveFootmen = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.MeleeAboveArchers, "Sort Melee Units Above Archers", "Turn off if you want the default sorts to not have melee units above ranged",
-                b => { _settings.MeleeAboveArchers = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
-            
-            
-            
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableHotkey, "Enable Sort Hotkey", "Enable Sort Hotkey of CTRL+SHIFT+S",
-                b => { _settings.EnableHotkey = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableRecruitUpgradeSortHotkey, "Enable Recruit/Upgrade Sort Hotkey", "Enable Recruit/Upgrade Sort of CTRL+SHIFT+R",
-                b => { _settings.EnableRecruitUpgradeSortHotkey = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableSortTypeCycleHotkey, "Enable Cycle Sort Type Hotkey", "Enable Cycle Sort Type Hotkey of CTRL+SHIFT+(MINUS)",
-                b => { _settings.EnableSortTypeCycleHotkey = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
-
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableCustomUpgradePaths, "Disable Custom Upgrade Paths", "Custom Upgrade Paths will not be used when the upgrade button is clicked",
                 b => { _settings.DisableCustomUpgradePaths = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableUpdatedTroopLabel, "Disable Updated Wounded Troop Label", "Change the wounded troop label format from from (250 + 5w [255]/275) back to  (250 + 5w / 275)",
                 b => { _settings.DisableUpdatedTroopLabel = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisablePartyCompositionIcon, "Hide Party Composition Icon", "Hide the party composition icon",
                 b => { _settings.DisablePartyCompositionIcon = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
-
-
-
-
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.Debug, "Enable Debug Mode", "Enable Debug Mode, probably want to leave this off",
                 b => { _settings.Debug = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
 
