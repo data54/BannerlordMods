@@ -2,7 +2,7 @@
 <Module>
 	<Name value="PartyManager"/>
 	<Id value="PartyManager"/>
-	<Version value="v1.10.0"/>
+	<Version value="v1.11.0"/>
 	<SingleplayerModule value="true"/>
 	<MultiplayerModule value="false"/>
     <Official value="false" />

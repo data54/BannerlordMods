@@ -120,7 +120,7 @@ namespace PartyManager.ViewModel
                 b => { _settings.CustomSortOrderField5 = b; }, CampaignOptionItemVM.OptionTypes.Selection));
 
             options.Add(new PMNumericOptionData(_settings.StickySlots, "Sticky Slots", "The number of slots directly below your heroes to ignore when executing sorts on your party's troops.",
-                val => { _settings.StickySlots = (int)val; }, CampaignOptionItemVM.OptionTypes.Numeric, 0, 20, true));
+                val => { _settings.StickySlots = (int)val; }, CampaignOptionItemVM.OptionTypes.Numeric, 0, 50, true));
 
 
             options.Add(new PMGenericOptionDataVM<bool>(_settings.EnableAutoSort, "Enable Autosort", "Enable Auto Sort on opening the party screen",
