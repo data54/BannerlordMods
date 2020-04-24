@@ -77,14 +77,9 @@ namespace PartyManager.ViewModel.Settings
                 this.OnPropertyChanged(nameof(OptionsVm));
             }
         }
-
-
-        private PartyManagerSettings _settings;
-
-        public PMGenericOptionVM(PartyManagerSettings settings, string name, string titleText, MBBindingList<IPMOptions> options)
+        
+        public PMGenericOptionVM(string name, string titleText, MBBindingList<IPMOptions> options)
         {
-            _settings = settings;
-
             _options = options;
             _name = name;
             _titleText = titleText;

@@ -29,6 +29,7 @@ namespace PartyManager
         public bool DisableUpdatedTroopLabel { get; set; }
         public bool DisablePartyCompositionIcon { get; set; }
         public bool UseAdvancedPartyComposition { get; set; }
+        public int StickySlots { get; set; }
 
 
 

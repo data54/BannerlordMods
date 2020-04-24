@@ -216,6 +216,7 @@
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\Settings\OptionVMS\PMGenericOptionDataVM.cs" />
+    <Compile Include="ViewModel\Settings\OptionVMS\PMNumericOptionData.cs" />
     <Compile Include="ViewModel\Settings\OptionVMS\PMStringOptionDataVM.cs" />
     <Compile Include="ViewModel\Settings\PartyManagerSettingsVM.cs" />
     <Compile Include="ViewModel\PartyManagerVM.cs" />

@@ -170,7 +170,7 @@ namespace PartyManager.ViewModel.Settings.OptionVMS
             }
         }
 
-        public void UpdateValue()
+        public virtual void UpdateValue()
         {
             _updateCall.Invoke(Value);
         }

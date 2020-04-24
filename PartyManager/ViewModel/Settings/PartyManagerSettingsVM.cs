@@ -7,7 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using PartyManager.ViewModel;
 using PartyManager.ViewModel.Settings;
+using PartyManager.ViewModel.Settings.OptionVMS;
 using TaleWorlds.CampaignSystem.SandBox.Issues;
+using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Engine.GauntletUI;
@@ -25,7 +27,7 @@ namespace PartyManager.ViewModel
     public class PartyManagerSettingsVM :TaleWorlds.Library.ViewModel
     {
         private TogglesVM _togglesController;
-        private CustomSortVM _customSortVM;
+        private PMGenericOptionVM _customSortVM;
 
 
         [DataSourceProperty] 
@@ -49,7 +51,7 @@ namespace PartyManager.ViewModel
         }
 
         [DataSourceProperty]
-        public CustomSortVM CustomSortController
+        public PMGenericOptionVM CustomSortController
         {
             get => _customSortVM;
             set
@@ -60,11 +62,7 @@ namespace PartyManager.ViewModel
                 this.OnPropertyChanged(nameof(CustomSortController));
             }
         }
-
-        public OptionsVM OptionsVm { get; set; }
-
-
-
+        
         private PartyManagerSettings _settings;
         [DataSourceProperty]
         public PartyManagerSettings Settings
@@ -89,7 +87,7 @@ namespace PartyManager.ViewModel
             //TabToggleWidget
             _settings = PartyManagerSettings.Settings.Clone();
             _togglesController=new TogglesVM(_settings);
-            _customSortVM= new CustomSortVM(_settings);
+            _customSortVM= CreateSortOptions();
             OptionsLbl = "Party Manager Settings";
             CancelLbl = "Cancel";
             DoneLbl = "Done";
@@ -98,6 +96,35 @@ namespace PartyManager.ViewModel
             this.RefreshValues();
             _isInitialized = true;
 
+
+        }
+
+        public PMGenericOptionVM CreateSortOptions()
+        {
+            var sortOptions = PartyManagerSettings.GetSelectableSortOrderStrings();
+            var options = new MBBindingList<IPMOptions>();
+            options.Add(new PMStringOptionDataType<CustomSortOrder>(_settings.CustomSortOrderField1, "Custom Sort Field 1",
+                "The first sort option to be applied in your custom sort", sortOptions,
+                b => { _settings.CustomSortOrderField1 = b; }, CampaignOptionItemVM.OptionTypes.Selection));
+            options.Add(new PMStringOptionDataType<CustomSortOrder>(_settings.CustomSortOrderField2, "Custom Sort Field 2",
+                "The second sort option to be applied in your custom sort", sortOptions,
+                b => { _settings.CustomSortOrderField2 = b; }, CampaignOptionItemVM.OptionTypes.Selection));
+            options.Add(new PMStringOptionDataType<CustomSortOrder>(_settings.CustomSortOrderField3, "Custom Sort Field 3",
+                "The third sort option to be applied in your custom sort", sortOptions,
+                b => { _settings.CustomSortOrderField3 = b; }, CampaignOptionItemVM.OptionTypes.Selection));
+            options.Add(new PMStringOptionDataType<CustomSortOrder>(_settings.CustomSortOrderField4, "Custom Sort Field 4",
+                "The fourth sort option to be applied in your custom sort", sortOptions,
+                b => { _settings.CustomSortOrderField4 = b; }, CampaignOptionItemVM.OptionTypes.Selection));
+            options.Add(new PMStringOptionDataType<CustomSortOrder>(_settings.CustomSortOrderField5, "Custom Sort Field 5",
+                "The fifth sort option to be applied in your custom sort", sortOptions,
+                b => { _settings.CustomSortOrderField5 = b; }, CampaignOptionItemVM.OptionTypes.Selection));
+
+            options.Add(new PMNumericOptionData(_settings.StickySlots, "Sticky Slots", "The number of slots directly below your heroes to ignore when executing sorts.",
+                val => { _settings.StickySlots = (int)val; }, CampaignOptionItemVM.OptionTypes.Numeric, 0, 20, true));
+
+            var sortTab = new PMGenericOptionVM("Custom Sort", "Custom Sort", options);
+            return sortTab;
+            //NumericOptionDataVM
         }
 
         public void ExecuteCancel()
