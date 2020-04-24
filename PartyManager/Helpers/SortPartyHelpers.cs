@@ -20,24 +20,33 @@ namespace PartyManager
             if (leftTroops) SortPartyHelpers.SortUnits(PartyScreenLogic.MemberRosters[left], sortType, PartyVM?.OtherPartyTroops);
             if (leftPrisoners) SortUnits(PartyScreenLogic.PrisonerRosters[left], sortType, PartyVM?.OtherPartyPrisoners);
             //Right Side
-            if (rightTroops) SortUnits(PartyScreenLogic.MemberRosters[right], sortType, PartyVM?.MainPartyTroops);
+            if (rightTroops) SortUnits(PartyScreenLogic.MemberRosters[right], sortType, PartyVM?.MainPartyTroops, true);
             if (rightPrisoners) SortPartyHelpers.SortUnits(PartyScreenLogic.PrisonerRosters[right], sortType, PartyVM?.MainPartyPrisoners);
         }
 
-        public static void SortUnits(TroopRoster input, SortType sortType, MBBindingList<PartyCharacterVM> partyVmUnits = null)
+        public static void SortUnits(TroopRoster input, SortType sortType, MBBindingList<PartyCharacterVM> partyVmUnits = null, bool useStickySlots=false)
         {
             if (input == null || input.Count == 0)
             {
                 return;
             }
+
+            int sticky = 0;
+            if (useStickySlots)
+            {
+                sticky = PartyManagerSettings.Settings.StickySlots;
+            }
+
+            var stickyUnits = input.Where(x => !x.Character.IsHero).Select(x => x.Character.Name.ToString()).Take(sticky).ToList();
             
             var inputList = input.ToList();
 
             var flattenedOrder = CreateFlattenedRoster(input, sortType, partyVmUnits);
-
+            flattenedOrder = flattenedOrder.Where(x => !stickyUnits.Contains(x.Troop.Name.ToString())).ToList();
+            
             for (int i = 0; i < inputList.Count; i++)
             {
-                if (!inputList[i].Character.IsHero)
+                if (!inputList[i].Character.IsHero && !stickyUnits.Contains(inputList[i].Character.Name.ToString()))
                 {
                     input.RemoveTroop(inputList[i].Character, inputList[i].Number);
                 }

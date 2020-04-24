@@ -119,7 +119,7 @@ namespace PartyManager.ViewModel
                 "The fifth sort option to be applied in your custom sort", sortOptions,
                 b => { _settings.CustomSortOrderField5 = b; }, CampaignOptionItemVM.OptionTypes.Selection));
 
-            options.Add(new PMNumericOptionData(_settings.StickySlots, "Sticky Slots", "The number of slots directly below your heroes to ignore when executing sorts.",
+            options.Add(new PMNumericOptionData(_settings.StickySlots, "Sticky Slots", "The number of slots directly below your heroes to ignore when executing sorts on your party's troops.",
                 val => { _settings.StickySlots = (int)val; }, CampaignOptionItemVM.OptionTypes.Numeric, 0, 20, true));
 
 

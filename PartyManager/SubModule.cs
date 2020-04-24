@@ -74,10 +74,10 @@ namespace PartyManager
                 string key = "";
                 try
                 {
-                    if (InputKey.LeftControl.IsDown()&& InputKey.P.IsDown())
-                    {
-                        PartyController.OpenSettings();
-                    }
+                    //if (InputKey.LeftControl.IsDown()&& InputKey.P.IsDown())
+                    //{
+                    //    PartyController.OpenSettings();
+                    //}
 
                     if (Campaign.Current == null || !Campaign.Current.GameStarted || (!(ScreenManager.TopScreen is GauntletPartyScreen) || (!InputKey.LeftShift.IsDown()) && !InputKey.LeftControl.IsDown() && !InputKey.Minus.IsDown()))
                     {
