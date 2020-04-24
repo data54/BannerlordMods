@@ -63,6 +63,18 @@
                         Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
                   </Children>
                 </Widget>
+                <ButtonWidget  DataSource="{FormationController}" Id="PartyManagerModFormationButton"
+                                    DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                                    HeightSizePolicy="Fixed" SuggestedWidth="!Buttons.Size"
+                                    SuggestedHeight="!Buttons.Size" HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+									MarginLeft="!Buttons.Margin"
+                                    MarginTop="!Buttons.TopMargin" Brush="PartyManager.Formation" Command.Click="Click" Command.AlternateClick="AltClick"	>
+                  <Children>
+                    <HintWidget DataSource="{Tooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
               </Children>
             </ListPanel>
             <ListPanel WidthSizePolicy="CoverChildren" DoNotAcceptEvents="true" HeightSizePolicy="StretchToParent"  HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="0" MarginTop="4" LayoutImp.LayoutMethod="HorizontalRightToLeft">

@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using PartyManager.Settings;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 
@@ -41,7 +42,25 @@ namespace PartyManager
         public CustomSortOrder CustomSortOrderField4 { get; set; }
         public CustomSortOrder CustomSortOrderField5 { get; set; }
 
+        private List<SavedFormation> _formationSettings;
 
+        public List<SavedFormation> FormationSettingsList
+        {
+            get => _savedFormations.Values.ToList();
+            set => _formationSettings = value;
+        }
+
+
+
+        private Dictionary<string, SavedFormation> _savedFormations;
+        [XmlIgnore]
+        public Dictionary<string, SavedFormation> SavedFormations
+        {
+            get => _savedFormations;
+            set => _savedFormations = value;
+        }
+        
+        
         private List<SavedTroopUpgradePath> _savedTroopUpgradePaths;
 
         public List<SavedTroopUpgradePath> SavedTroopUpgradePaths
@@ -187,6 +206,7 @@ namespace PartyManager
                     try
                     {
                         settings = Serializer.Deserialize(fs) as PartyManagerSettings;
+                        settings?.LoadFormationDictionary();
                     }
                     catch (Exception ex)
                     {
@@ -309,6 +329,16 @@ namespace PartyManager
             }
 
             return sortTypes;
+        }
+
+        public void LoadFormationDictionary()
+        {
+            _savedFormations = new Dictionary<string,SavedFormation>();
+
+            foreach (var formationSetting in FormationSettingsList)
+            {
+                _savedFormations[formationSetting.TroopName] = formationSetting;
+            }
         }
     }
 
