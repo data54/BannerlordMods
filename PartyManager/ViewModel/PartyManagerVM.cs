@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.SqlServer.Server;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -26,6 +27,7 @@ namespace PartyManager.ViewModels
         private UpgradeTroopsVM _upgradeTroopsVM;
         private RecruitVM _recruitController;
         private SortUnitsVM _sortController;
+        private FormationVM _formationVm;
 
         [DataSourceProperty]
         public PartyScreenLogic PartyScreenLogic
@@ -59,6 +61,19 @@ namespace PartyManager.ViewModels
                     return;
                 this._recruitController = value;
                 this.OnPropertyChanged(nameof(RecruitController));
+            }
+        }
+
+        [DataSourceProperty]
+        public FormationVM FormationController
+        {
+            get => _formationVm;
+            set
+            {
+                if (value == this._formationVm)
+                    return;
+                this._formationVm = value;
+                this.OnPropertyChanged(nameof(FormationController));
             }
         }
 
