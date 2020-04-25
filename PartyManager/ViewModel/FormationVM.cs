@@ -74,6 +74,7 @@ namespace PartyManager.ViewModels
                     }
                 }
                 PartyManagerSettings.Settings.SaveSettings();
+                GenericHelpers.LogMessage("Formation Settings Updated");
             }
             catch (Exception e)
             {

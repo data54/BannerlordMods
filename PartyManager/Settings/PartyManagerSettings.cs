@@ -48,11 +48,11 @@ namespace PartyManager
         {
             get
             {
-                if (_savedFormations==null)
+                if (_formationSettings == null)
                 {
-                    return new List<SavedFormation>();
+                    _formationSettings = new List<SavedFormation>();
                 }
-                return _savedFormations.Values.ToList();
+                return _formationSettings;
             }
             set => _formationSettings = value;
         }
@@ -66,8 +66,8 @@ namespace PartyManager
             get => _savedFormations;
             set => _savedFormations = value;
         }
-        
-        
+
+
         private List<SavedTroopUpgradePath> _savedTroopUpgradePaths;
 
         public List<SavedTroopUpgradePath> SavedTroopUpgradePaths
@@ -194,6 +194,7 @@ namespace PartyManager
 
         public void SaveSettings()
         {
+            FormationSettingsList = SavedFormations.Values.ToList();
             CreateUpdateFile(this);
             GenericHelpers.LogDebug("PartyManagerSettings", "Settings Saved");
         }
@@ -340,7 +341,7 @@ namespace PartyManager
 
         public void LoadFormationDictionary()
         {
-            _savedFormations = new Dictionary<string,SavedFormation>();
+            _savedFormations = new Dictionary<string, SavedFormation>();
 
             foreach (var formationSetting in FormationSettingsList)
             {
