@@ -134,6 +134,10 @@ namespace PartyManager
                         .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField4, partyVmUnits), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField4))
                         .ThenBy(x => GetSortFieldValue(x, PartyManagerSettings.Settings.CustomSortOrderField5, partyVmUnits), new CustomComparer(PartyManagerSettings.Settings.CustomSortOrderField5))
                         .ToList();
+                case SortType.Formation:
+                    return flattenedRoster.OrderBy(
+                        x => GetSortFieldValue(x, CustomSortOrder.FormationAsc, partyVmUnits),
+                        new CustomComparer(CustomSortOrder.FormationAsc)).ToList();
                 case SortType.CustomUpgrades:
                     var unitNames = PartyManagerSettings.Settings.SavedTroopUpgradePaths.Select(x=>x.UnitName);
                     return flattenedRoster.OrderByDescending(x => unitNames.Contains(x.Troop.Name.ToString()))
@@ -175,10 +179,65 @@ namespace PartyManager
                         return "1";
                     }
                     return "0";
+                case CustomSortOrder.FormationAsc:
+                case CustomSortOrder.FormationDesc:
+                    var formation =  element.Troop?.CurrentFormationClass;
+                    if (formation != null)
+                    {
+                        return ((int) formation).ToString();
+                    }
+                    return null;
                 default:
                     return "";
             }
         }
 
+    }
+    public enum SortType
+    {
+        CustomUpgrades = -3,
+        RecruitUpgrade = -2,
+        Default = -1,
+        TierDesc = 0,
+        TierAsc = 1,
+        TierDescType = 2,
+        TierAscType = 3,
+        MountRangeTierDesc = 4,
+        MountRangeTierAsc = 5,
+        CultureTierDesc = 6,
+        CultureTierAsc = 7,
+        RangeMountTierDesc = 8,
+        RangeMountTierAsc = 9,
+        Formation = 10,
+        Custom = 11
+    }
+
+    public enum CustomSortOrder
+    {
+        None,
+
+        TierAsc,
+        TierDesc,
+
+        MountedAsc,
+        MountedDesc,
+
+        MeleeAsc,
+        MeleeDesc,
+
+        CultureAsc,
+        CultureDesc,
+
+        UnitNameAsc,
+        UnitNameDesc,
+
+        UnitCountAsc,
+        UnitCountDesc,
+        
+        FormationAsc,
+        FormationDesc,
+
+        CustomUpgradesPathAsc,
+        CustomUpgradesPathDesc
     }
 }

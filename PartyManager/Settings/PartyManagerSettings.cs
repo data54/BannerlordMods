@@ -350,48 +350,5 @@ namespace PartyManager
         }
     }
 
-    public enum SortType
-    {
-        CustomUpgrades = -3,
-        RecruitUpgrade = -2,
-        Default = -1,
-        TierDesc = 0,
-        TierAsc = 1,
-        TierDescType = 2,
-        TierAscType = 3,
-        MountRangeTierDesc = 4,
-        MountRangeTierAsc = 5,
-        CultureTierDesc = 6,
-        CultureTierAsc = 7,
-        RangeMountTierDesc = 8,
-        RangeMountTierAsc = 9,
-        Custom = 10
-    }
-
-    public enum CustomSortOrder
-    {
-        None,
-
-        TierAsc,
-        TierDesc,
-
-        MountedAsc,
-        MountedDesc,
-
-        MeleeAsc,
-        MeleeDesc,
-
-        CultureAsc,
-        CultureDesc,
-
-        UnitNameAsc,
-        UnitNameDesc,
-
-        UnitCountAsc,
-        UnitCountDesc,
-
-        CustomUpgradesPathAsc,
-        CustomUpgradesPathDesc
-    }
 }
 
