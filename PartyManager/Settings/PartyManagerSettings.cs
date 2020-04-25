@@ -46,7 +46,14 @@ namespace PartyManager
 
         public List<SavedFormation> FormationSettingsList
         {
-            get => _savedFormations.Values.ToList();
+            get
+            {
+                if (_savedFormations==null)
+                {
+                    return new List<SavedFormation>();
+                }
+                return _savedFormations.Values.ToList();
+            }
             set => _formationSettings = value;
         }
 

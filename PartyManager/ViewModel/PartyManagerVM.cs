@@ -317,6 +317,7 @@ namespace PartyManager.ViewModels
             _upgradeTroopsVM = new UpgradeTroopsVM(partyScreenLogic, partyVM);
             _sortController = new SortUnitsVM(partyScreenLogic, partyVM);
             _recruitController = new RecruitVM(partyScreenLogic, partyVM);
+            _formationVm = new FormationVM(partyScreenLogic, partyVM);
             _openSettingsTooltip = new HintViewModel("Open Party Manager Settings", "openSettingsTooltipUniqueEnoughYet?");
         }
 
