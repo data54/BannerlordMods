@@ -63,7 +63,15 @@ namespace PartyManager
         [XmlIgnore]
         public Dictionary<string, SavedFormation> SavedFormations
         {
-            get => _savedFormations;
+            get
+            {
+                if (_savedFormations == null)
+                {
+                    _savedFormations= new Dictionary<string, SavedFormation>();
+                }
+
+                return _savedFormations;
+            }
             set => _savedFormations = value;
         }
 
