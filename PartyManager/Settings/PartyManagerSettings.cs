@@ -92,6 +92,24 @@ namespace PartyManager
         public bool TransferPrisonersUseWhitelist { get; set; }
 
 
+        private List<string> _transferTroopsBlackWhiteList;
+        public List<string> TransferTroopsBlackWhiteList
+        {
+            get
+            {
+                if (_transferTroopsBlackWhiteList == null)
+                {
+                    _transferTroopsBlackWhiteList = new List<string>();
+                }
+
+                return _transferTroopsBlackWhiteList;
+            }
+            set => _transferTroopsBlackWhiteList = value;
+        }
+
+        public bool TransferTroopsUseWhitelist { get; set; }
+
+
         private List<string> _recruitPrisonerBlackWhiteList;
         public List<string> RecruitPrisonerBlackWhiteList
         {

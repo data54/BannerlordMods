@@ -94,6 +94,8 @@ namespace PartyManager.ViewModel.Settings
 
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.UpgradeTroopsUseWhitelist, "Upgrade Troops Whitelist", "Use a whitelist instead of blacklist for the upgrade troops filter",
                 b => { _settings.UpgradeTroopsUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.TransferTroopsUseWhitelist, "Transfer Troops Whitelist", "Use a whitelist instead of blacklist for the transfer troops filter",
+                b => { _settings.TransferTroopsUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.RecruitPrisonersUseWhitelist, "Recruit Prisoners Whitelist", "Use a whitelist instead of blacklist for the recruit prisoners filter",
                 b => { _settings.RecruitPrisonersUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.TransferPrisonersUseWhitelist, "Transfer Prisoners Whitelist", "Use a whitelist instead of blacklist for the transfer prisoners filter",

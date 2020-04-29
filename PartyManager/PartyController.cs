@@ -427,15 +427,20 @@ namespace PartyManager
                 var unitName = character.Name;
                 var listName = "";
 
-                if (listType==BlackWhiteListType.PrisonerTransfer && character.IsPrisoner && PartyScreenLogic.PrisonerTransferState==PartyScreenLogic.TransferState.TransferableWithTrade)
+                if (listType==BlackWhiteListType.Transfer && character.IsPrisoner && PartyScreenLogic.PrisonerTransferState==PartyScreenLogic.TransferState.TransferableWithTrade)
                 {
                     targetList = PartyManagerSettings.Settings.RansomPrisonerBlackWhiteList;
                     listName = "sell prisoners";
                 }
-                else if (listType == BlackWhiteListType.PrisonerTransfer && character.IsPrisoner && PartyScreenLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable)
+                else if (listType == BlackWhiteListType.Transfer && character.IsPrisoner && PartyScreenLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable)
                 {
                     targetList = PartyManagerSettings.Settings.TransferPrisonerBlackWhiteList;
                     listName = "transfer prisoners";
+                }
+                else if (listType == BlackWhiteListType.Transfer && !character.IsPrisoner)
+                {
+                    targetList = PartyManagerSettings.Settings.TransferTroopsBlackWhiteList;
+                    listName = "transfer troops";
                 }
                 else if (listType == BlackWhiteListType.Recruit)
                 {
@@ -555,7 +560,7 @@ namespace PartyManager
 
     public enum BlackWhiteListType
     {
-        PrisonerTransfer,
+        Transfer,
         Recruit,
         Upgrade
     }

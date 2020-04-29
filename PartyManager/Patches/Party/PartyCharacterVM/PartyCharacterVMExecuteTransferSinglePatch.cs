@@ -13,7 +13,7 @@ namespace PartyManager.Patches.Party.PartyCharacterVM
             {
                 if (topScreen.DebugInput.IsAltDown())
                 {
-                    PartyController.CurrentInstance.UpdateBlackWhiteList(__instance, BlackWhiteListType.PrisonerTransfer);
+                    PartyController.CurrentInstance.UpdateBlackWhiteList(__instance, BlackWhiteListType.Transfer);
                     return false;
                 }
                 return true;
