@@ -57,21 +57,21 @@ namespace PartyManager
             set => _formationSettings = value;
         }
 
-        private List<string> _sellPrisonerBlackWhiteList;
-        public List<string> SellPrisonerBlackWhiteList
+        private List<string> _ransomPrisonerBlackWhiteList;
+        public List<string> RansomPrisonerBlackWhiteList
         {
             get
             {
-                if (_sellPrisonerBlackWhiteList == null)
+                if (_ransomPrisonerBlackWhiteList == null)
                 {
-                    _sellPrisonerBlackWhiteList= new List<string>();
+                    _ransomPrisonerBlackWhiteList= new List<string>();
                 }
 
-                return _sellPrisonerBlackWhiteList;
+                return _ransomPrisonerBlackWhiteList;
             }
-            set => _sellPrisonerBlackWhiteList = value;
+            set => _ransomPrisonerBlackWhiteList = value;
         }
-        public bool SellPrisonersUseWhitelist { get; set; }
+        public bool RansomPrisonersUseWhitelist { get; set; }
         
 
         private List<string> _transferPrisonerBlackWhiteList;

@@ -88,7 +88,16 @@ namespace PartyManager.ViewModel.Settings
             _options = new MBBindingList<IPMOptions>();
             _name = "Toggles";
             _titleText = "Toggles";
-            
+
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.UpgradeTroopsUseWhitelist, "Upgrade Troops Whitelist", "Use a whitelist instead of blacklist for the upgrade troops filter",
+                b => { _settings.UpgradeTroopsUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.RecruitPrisonersUseWhitelist, "Recruit Prisoners Whitelist", "Use a whitelist instead of blacklist for the recruit prisoners filter",
+                b => { _settings.RecruitPrisonersUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.TransferPrisonersUseWhitelist, "Transfer Prisoners Whitelist", "Use a whitelist instead of blacklist for the transfer prisoners filter",
+                b => { _settings.TransferPrisonersUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.RansomPrisonersUseWhitelist, "Ransom Prisoners Whitelist", "Use a whitelist instead of blacklist for the ransom prisoners filter",
+                b => { _settings.RansomPrisonersUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.UseAdvancedPartyComposition, "Show Advanced Party Composition Information", "Party Composition will attempt to show unit weapon type breakdown",
                 b => { _settings.UseAdvancedPartyComposition = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableCustomUpgradePaths, "Disable Custom Upgrade Paths", "Custom Upgrade Paths will not be used when the upgrade button is clicked",

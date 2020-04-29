@@ -281,6 +281,18 @@ namespace PartyManager
                     //single upgrade units
                     var singleUpgrades = upgrades.Where(x => !(x.IsUpgrade1Exists && x.IsUpgrade2Exists)).ToList();
 
+                    if (PartyManagerSettings.Settings.UpgradeTroopsUseWhitelist)
+                    {
+                        singleUpgrades = singleUpgrades.Where(x =>
+                            PartyManagerSettings.Settings.UpgradeTroopsBlackWhiteList.Contains(x.Name)).ToList();
+                    }
+                    else
+                    {
+                        singleUpgrades = singleUpgrades.Where(x =>
+                            !PartyManagerSettings.Settings.UpgradeTroopsBlackWhiteList.Contains(x.Name)).ToList();
+
+                    }
+
 
                     foreach (var troop in singleUpgrades)
                     {
@@ -345,6 +357,18 @@ namespace PartyManager
                     .Where(x => !x.IsHero
                                 && x.IsRecruitablePrisoner && x.NumOfRecruitablePrisoners > 0).ToList();
 
+
+                if (PartyManagerSettings.Settings.RecruitPrisonersUseWhitelist)
+                {
+                    recruits = recruits.Where(x =>
+                        PartyManagerSettings.Settings.RecruitPrisonerBlackWhiteList.Contains(x.Name)).ToList();
+                }
+                else
+                {
+                    recruits = recruits.Where(x =>
+                        !PartyManagerSettings.Settings.RecruitPrisonerBlackWhiteList.Contains(x.Name)).ToList();
+                }
+
                 if (recruits?.Count > 0)
                 {
                     var freeUnitSlots = PartyScreenLogic.RightOwnerParty.PartySizeLimit - PartyScreenLogic.RightOwnerParty.NumberOfAllMembers;
@@ -405,7 +429,7 @@ namespace PartyManager
 
                 if (listType==BlackWhiteListType.PrisonerTransfer && character.IsPrisoner && PartyScreenLogic.PrisonerTransferState==PartyScreenLogic.TransferState.TransferableWithTrade)
                 {
-                    targetList = PartyManagerSettings.Settings.SellPrisonerBlackWhiteList;
+                    targetList = PartyManagerSettings.Settings.RansomPrisonerBlackWhiteList;
                     listName = "sell prisoners";
                 }
                 else if (listType == BlackWhiteListType.PrisonerTransfer && character.IsPrisoner && PartyScreenLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable)
