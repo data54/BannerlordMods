@@ -4,8 +4,8 @@ using TaleWorlds.Engine.Screens;
 
 namespace PartyManager.Patches.Party.PartyCharacterVM
 {
-    [HarmonyPatch(typeof(TaleWorlds.CampaignSystem.ViewModelCollection.PartyCharacterVM), "ExecuteTransferSingle")]
-    public class PartyCharacterVMExecuteTransferSinglePatch
+    [HarmonyPatch(typeof(TaleWorlds.CampaignSystem.ViewModelCollection.PartyCharacterVM), "ExecuteRecruitTroop")]
+    public class PartyCharacterVMExecuteRecruitTroopPatch
     {
         public static bool Prefix(ref TaleWorlds.CampaignSystem.ViewModelCollection.PartyCharacterVM __instance)
         {
@@ -13,7 +13,7 @@ namespace PartyManager.Patches.Party.PartyCharacterVM
             {
                 if (topScreen.DebugInput.IsShiftDown())
                 {
-                    PartyController.CurrentInstance.UpdateBlackWhiteList(__instance, BlackWhiteListType.PrisonerTransfer);
+                    PartyController.CurrentInstance.UpdateBlackWhiteList(__instance, BlackWhiteListType.Recruit);
                     return false;
                 }
                 return true;

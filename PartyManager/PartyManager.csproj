@@ -206,6 +206,7 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Helpers\GenericHelpers.cs" />
     <Compile Include="PartyController.cs" />
+    <Compile Include="Patches\Party\PartyCharacterVM\PartyCharacterVMExecuteRecruitTroopPatch.cs" />
     <Compile Include="Patches\Party\PartyCharacterVM\PartyCharacterVMExecuteTransferSinglePatch.cs" />
     <Compile Include="Patches\Party\PartyCharacterVM\PartyCharacterVMUpgradePathPatch.cs" />
     <Compile Include="Patches\Party\PartyVMRefreshPartyInformationPatch.cs" />

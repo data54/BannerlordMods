@@ -9,16 +9,21 @@ namespace PartyManager.Patches.Party.PartyCharacterVM
     {
         public static bool Prefix(int upgradeIndex, ref TaleWorlds.CampaignSystem.ViewModelCollection.PartyCharacterVM __instance)
         {
-            if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths && (ScreenManager.TopScreen is GauntletPartyScreen topScreen))
+            if (ScreenManager.TopScreen is GauntletPartyScreen topScreen)
             {
-                if (topScreen.DebugInput.IsControlDown() && topScreen.DebugInput.IsShiftDown())
+                if (PartyManagerSettings.Settings.DisableCustomUpgradePaths && topScreen.DebugInput.IsControlDown() && topScreen.DebugInput.IsShiftDown())
                 {
-                    PartyController.ToggleUpgradePath(__instance, upgradeIndex,true);
+                    PartyController.ToggleUpgradePath(__instance, upgradeIndex, true);
                     return false;
                 }
-                else if (topScreen.DebugInput.IsControlDown())
+                else if (PartyManagerSettings.Settings.DisableCustomUpgradePaths && topScreen.DebugInput.IsControlDown())
                 {
                     PartyController.ToggleUpgradePath(__instance, upgradeIndex, false);
+                    return false;
+                }
+                else if (topScreen.DebugInput.IsShiftDown())
+                {
+                    PartyController.CurrentInstance.UpdateBlackWhiteList(__instance, BlackWhiteListType.Upgrade);
                     return false;
                 }
                 return true;
