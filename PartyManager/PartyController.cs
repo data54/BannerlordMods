@@ -395,6 +395,59 @@ namespace PartyManager
             RefreshPartyInformationMethod.Invoke(PartyVM, new object[0] { });
         }
 
+        public void UpdateBlackWhiteList(PartyCharacterVM character, BlackWhiteListType listType)
+        {
+            try
+            {
+                List<string> targetList = null;
+                var unitName = character.Name;
+                var listName = "";
+
+                if (listType==BlackWhiteListType.PrisonerTransfer && character.IsPrisoner && PartyScreenLogic.PrisonerTransferState==PartyScreenLogic.TransferState.TransferableWithTrade)
+                {
+                    targetList = PartyManagerSettings.Settings.SellPrisonerBlackWhiteList;
+                    listName = "sell prisoners";
+                }
+                else if (listType == BlackWhiteListType.PrisonerTransfer && character.IsPrisoner && PartyScreenLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable)
+                {
+                    targetList = PartyManagerSettings.Settings.TransferPrisonerBlackWhiteList;
+                    listName = "transfer prisoners";
+                }
+                else if (listType == BlackWhiteListType.Recruit)
+                {
+                    targetList = PartyManagerSettings.Settings.RecruitPrisonerBlackWhiteList;
+                    listName = "recruit prisoners";
+                }
+                else if (listType == BlackWhiteListType.Upgrade)
+                {
+                    targetList = PartyManagerSettings.Settings.UpgradeTroopsBlackWhiteList;
+                    listName = "upgrade troops";
+                }
+
+                if (targetList == null)
+                {
+                    return;
+                }
+
+                if (targetList.Contains(unitName))
+                {
+                    GenericHelpers.LogMessage($"Removed {unitName} from {listName} filter list");
+                    targetList.Remove(unitName);
+                }
+                else
+                {
+                    GenericHelpers.LogMessage($"Added {unitName} to {listName} filter list");
+                    targetList.Add(unitName);
+                }
+
+                PartyManagerSettings.Settings.SaveSettings();
+            }
+            catch (Exception e)
+            {
+                GenericHelpers.LogException("UpdateBlackWhiteList", e);
+            }
+        }
+
         public static void ToggleUpgradePath(PartyCharacterVM vm, int upgradeIndex, bool split = false)
         {
             try
@@ -451,7 +504,7 @@ namespace PartyManager
                 GenericHelpers.LogException("UpgradeAllTroops", e);
             }
         }
-        
+
         private static GauntletLayer settingsLayer;
         public static void OpenSettings()
         {
@@ -459,7 +512,7 @@ namespace PartyManager
             {
                 if (settingsLayer == null || !settingsLayer.IsActive)
                 {
-                
+
                     var screen = ScreenManager.TopScreen;
                     settingsLayer = new GauntletLayer(10000, "GauntletLayer");
                     settingsLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
@@ -474,5 +527,12 @@ namespace PartyManager
             }
         }
 
+    }
+
+    public enum BlackWhiteListType
+    {
+        PrisonerTransfer,
+        Recruit,
+        Upgrade
     }
 }

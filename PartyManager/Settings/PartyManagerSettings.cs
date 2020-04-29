@@ -57,7 +57,73 @@ namespace PartyManager
             set => _formationSettings = value;
         }
 
+        private List<string> _sellPrisonerBlackWhiteList;
+        public List<string> SellPrisonerBlackWhiteList
+        {
+            get
+            {
+                if (_sellPrisonerBlackWhiteList == null)
+                {
+                    _sellPrisonerBlackWhiteList= new List<string>();
+                }
 
+                return _sellPrisonerBlackWhiteList;
+            }
+            set => _sellPrisonerBlackWhiteList = value;
+        }
+        public bool SellPrisonersUseWhitelist { get; set; }
+        
+
+        private List<string> _transferPrisonerBlackWhiteList;
+        public List<string> TransferPrisonerBlackWhiteList
+        {
+            get
+            {
+                if (_transferPrisonerBlackWhiteList == null)
+                {
+                    _transferPrisonerBlackWhiteList = new List<string>();
+                }
+
+                return _transferPrisonerBlackWhiteList;
+            }
+            set => _transferPrisonerBlackWhiteList = value;
+        }
+
+        public bool TransferPrisonersUseWhitelist { get; set; }
+
+
+        private List<string> _recruitPrisonerBlackWhiteList;
+        public List<string> RecruitPrisonerBlackWhiteList
+        {
+            get
+            {
+                if (_recruitPrisonerBlackWhiteList == null)
+                {
+                    _recruitPrisonerBlackWhiteList = new List<string>();
+                }
+
+                return _recruitPrisonerBlackWhiteList;
+            }
+            set => _recruitPrisonerBlackWhiteList = value;
+        }
+        public bool RecruitPrisonersUseWhitelist { get; set; }
+
+
+        private List<string> _upgradeTroopsBlackWhiteList;
+        public List<string> UpgradeTroopsBlackWhiteList
+        {
+            get
+            {
+                if (_upgradeTroopsBlackWhiteList == null)
+                {
+                    _upgradeTroopsBlackWhiteList = new List<string>();
+                }
+
+                return _upgradeTroopsBlackWhiteList;
+            }
+            set => _upgradeTroopsBlackWhiteList = value;
+        }
+        public bool UpgradeTroopsUseWhitelist { get; set; }
 
         private Dictionary<string, SavedFormation> _savedFormations;
         [XmlIgnore]
@@ -153,6 +219,7 @@ namespace PartyManager
         }
 
         private int? sortModulus;
+
         public SortType GetCycledSortType(bool backward = false)
         {
 
