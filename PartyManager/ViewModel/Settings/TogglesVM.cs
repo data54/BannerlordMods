@@ -89,6 +89,9 @@ namespace PartyManager.ViewModel.Settings
             _name = "Toggles";
             _titleText = "Toggles";
 
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.UseAdvancedPartyComposition, "Show Advanced Party Composition Information", "Party Composition will attempt to show unit weapon type breakdown",
+                b => { _settings.UseAdvancedPartyComposition = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.UpgradeTroopsUseWhitelist, "Upgrade Troops Whitelist", "Use a whitelist instead of blacklist for the upgrade troops filter",
                 b => { _settings.UpgradeTroopsUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.RecruitPrisonersUseWhitelist, "Recruit Prisoners Whitelist", "Use a whitelist instead of blacklist for the recruit prisoners filter",
@@ -98,8 +101,6 @@ namespace PartyManager.ViewModel.Settings
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.RansomPrisonersUseWhitelist, "Ransom Prisoners Whitelist", "Use a whitelist instead of blacklist for the ransom prisoners filter",
                 b => { _settings.RansomPrisonersUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
 
-            _options.Add(new PMGenericOptionDataVM<bool>(_settings.UseAdvancedPartyComposition, "Show Advanced Party Composition Information", "Party Composition will attempt to show unit weapon type breakdown",
-                b => { _settings.UseAdvancedPartyComposition = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableCustomUpgradePaths, "Disable Custom Upgrade Paths", "Custom Upgrade Paths will not be used when the upgrade button is clicked",
                 b => { _settings.DisableCustomUpgradePaths = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableUpdatedTroopLabel, "Disable Updated Wounded Troop Label", "Change the wounded troop label format from from (250 + 5w [255]/275) back to  (250 + 5w / 275)",
