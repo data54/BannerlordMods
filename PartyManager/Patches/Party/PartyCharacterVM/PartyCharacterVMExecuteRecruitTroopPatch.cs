@@ -11,7 +11,7 @@ namespace PartyManager.Patches.Party.PartyCharacterVM
         {
             if (ScreenManager.TopScreen is GauntletPartyScreen topScreen)
             {
-                if (topScreen.DebugInput.IsShiftDown())
+                if (topScreen.DebugInput.IsAltDown())
                 {
                     PartyController.CurrentInstance.UpdateBlackWhiteList(__instance, BlackWhiteListType.Recruit);
                     return false;

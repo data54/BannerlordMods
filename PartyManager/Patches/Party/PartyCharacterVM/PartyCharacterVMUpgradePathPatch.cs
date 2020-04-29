@@ -21,7 +21,7 @@ namespace PartyManager.Patches.Party.PartyCharacterVM
                     PartyController.ToggleUpgradePath(__instance, upgradeIndex, false);
                     return false;
                 }
-                else if (topScreen.DebugInput.IsShiftDown())
+                else if (topScreen.DebugInput.IsAltDown())
                 {
                     PartyController.CurrentInstance.UpdateBlackWhiteList(__instance, BlackWhiteListType.Upgrade);
                     return false;
