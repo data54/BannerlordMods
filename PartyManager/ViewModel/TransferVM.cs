@@ -26,18 +26,52 @@ namespace PartyManager.ViewModels
         [DataSourceProperty]
         public HintViewModel RightPrisonerTransferTooltip { get; set; }
 
+        [DataSourceProperty]
+        public bool LeftTroopTransferHidden { get; set; }
+        [DataSourceProperty]
+        public bool LeftPrisonerTransferHidden { get; set; }
+        [DataSourceProperty]
+        public bool RightTroopTransferHidden { get; set; }
+        [DataSourceProperty]
+        public bool RightPrisonerTransferHidden { get; set; }
+
+
 
         public TransferVM(PartyScreenLogic partyLogic, PartyVM partyVm)
         {
             this._partyLogic = partyLogic;
             this._partyVM = partyVm;
 
+            LeftTroopTransferHidden = true;
+            LeftPrisonerTransferHidden = true;
+            RightTroopTransferHidden = true;
+            RightPrisonerTransferHidden = true;
 
             LeftTroopTransferTooltip = new HintViewModel("Transfer Troops to Party Limit");
-            RightTroopTransferTooltip = new HintViewModel("Transfer Troops to Party Limit");
             LeftPrisonerTransferTooltip = new HintViewModel("Transfer Prisoners to Prisoner Limit");
+            RightTroopTransferTooltip = new HintViewModel("Transfer Troops to Party Limit");
             RightPrisonerTransferTooltip = new HintViewModel("Transfer Prisoners to Prisoner Limit");
 
+            if (partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.TransferableWithTrade)
+            {
+                LeftPrisonerTransferHidden = false;
+                LeftPrisonerTransferTooltip = new HintViewModel("Ransom black/white listed prisoners");
+            }
+            else if (partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable &&
+                     partyLogic.MemberTransferState == PartyScreenLogic.TransferState.Transferable)
+            {
+                RightPrisonerTransferHidden = false;
+                RightTroopTransferHidden = false;
+            }
+            else if (partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable)
+            {
+                RightPrisonerTransferHidden = false;
+
+            }
+            else if (partyLogic.MemberTransferState == PartyScreenLogic.TransferState.Transferable)
+            {
+                RightTroopTransferHidden = false;
+            }
         }
 
         public void TransferTroopsLeft()
