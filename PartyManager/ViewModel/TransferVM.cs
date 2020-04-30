@@ -99,7 +99,7 @@ namespace PartyManager.ViewModels
                 {
                     TransferPrisoner(prisoner, false);
                 }
-
+                _partyVM.ExecuteRemoveZeroCounts();
                 PartyController.CurrentInstance.InitializeTroopLists();
             }
             catch (Exception e)
