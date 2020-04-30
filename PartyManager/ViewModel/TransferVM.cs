@@ -80,8 +80,61 @@ namespace PartyManager.ViewModels
         }
         public void TransferPrisonersLeft()
         {
+            try
+            {
+                var rightPrisoners = _partyVM.MainPartyPrisoners.ToList();
 
+                if (PartyManagerSettings.Settings.RansomPrisonersUseWhitelist)
+                {
+                    rightPrisoners = rightPrisoners.Where(x => PartyManagerSettings.Settings.RansomPrisonerBlackWhiteList
+                        .Contains(x.Character.Name.ToString())).ToList();
+                }
+                else
+                {
+                    rightPrisoners = rightPrisoners.Where(x => !PartyManagerSettings.Settings.RansomPrisonerBlackWhiteList
+                        .Contains(x.Character.Name.ToString())).ToList();
+                }
+
+                foreach (var prisoner in rightPrisoners)
+                {
+                    TransferPrisoner(prisoner, false);
+                }
+
+                PartyController.CurrentInstance.InitializeTroopLists();
+            }
+            catch (Exception e)
+            {
+                GenericHelpers.LogException("TransferPrisonersLeft", e);
+            }
         }
+
+        public void TransferPrisoner(PartyCharacterVM troop, bool left)
+        {
+            var index= _partyVM.OtherPartyPrisoners.Count;
+            PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
+            //command.FillForTransferPartyLeaderTroop(left ? PartyScreenLogic.PartyRosterSide.Left : PartyScreenLogic.PartyRosterSide.Right,
+            //    PartyScreenLogic.TroopType.Prisoner,
+            //    troop.Character,
+            //    troop.Number
+            //);
+
+            //command.FillForTransferTroopToLeaderSlot(left ? PartyScreenLogic.PartyRosterSide.Left : PartyScreenLogic.PartyRosterSide.Right,
+            //    PartyScreenLogic.TroopType.Prisoner,
+            //    troop.Character,
+            //    troop.Number,
+            //    troop.WoundedCount,
+            //    0
+            //);
+            command.FillForTransferTroop(left ? PartyScreenLogic.PartyRosterSide.Left : PartyScreenLogic.PartyRosterSide.Right,
+                PartyScreenLogic.TroopType.Prisoner,
+                troop.Character,
+                troop.Number,
+                troop.WoundedCount,
+                0
+                );
+            _partyLogic.AddCommand(command);
+        }
+
         public void TransferTroopsRight()
         {
 
