@@ -6,7 +6,7 @@
     <Constant Name="ButtonGroup.SuggestedWidth" Value="640" />
     <Constant Name="ButtonGroup.SuggestedHeight" Value="70" />
     <Constant Name="ButtonGroup.RightMargin" Value="0" />
-    <Constant Name="ButtonGroup.TopMargin" Value="18" />
+    <Constant Name="ButtonGroup.TopMargin" Value="30" />
     <Constant Name="LeftButtonGroup.RightMargin" Value="0" />
     <Constant Name="LeftButtonGroup.SuggestedWidth" Value="640" />
 
@@ -17,6 +17,14 @@
     <Constant Name="Buttons.Height" Value="40" />
     <Constant Name="Buttons.TopMargin" Value="0" />
 
+
+    <Constant Name="TransferButtons.LeftMargin" Value="40" />
+    <Constant Name="TransferButtons.TopMargin" Value="10" />
+    <Constant Name="TransferButtons.Width" Value="30" />
+    <Constant Name="TransferButtons.Height" Value="20" />
+
+    <Constant Name="TransferButtonsGroup.Height" Value="80" />
+    <Constant Name="TransferButtonsGroup.Width" Value="400" />
 
 
 
@@ -36,17 +44,16 @@
   </Variables>
   <VisualDefinitions>
     <VisualDefinition Name="UpgradeRecruitMenu" DelayOnBegin="0.2" TransitionDuration="0.4">
-      <VisualState PositionYOffset="12" State="Default" />
+      <VisualState PositionYOffset="0" State="Default" />
     </VisualDefinition>
   </VisualDefinitions>
   <Window>
     <Widget Id="PartyManagerMod" VisualDefinition="UpgradeRecruitMenu" WidthSizePolicy="StretchToParent"  HeightSizePolicy="CoverChildren"
                 SuggestedHeight="!ButtonGroup.SuggestedHeight"   HorizontalAlignment="Right" VerticalAlignment="Top"
-            MarginTop="!ButtonGroup.TopMargin"
                 DoNotAcceptEvents="true">
       <Children>
         <Widget Id="PMOwnerPartyWidget"  WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
-                SuggestedWidth="!ButtonGroup.SuggestedWidth"   HorizontalAlignment="Right" VerticalAlignment="Top" SuggestedHeight="!ButtonGroup.SuggestedHeight"
+                SuggestedWidth="!ButtonGroup.SuggestedWidth"   HorizontalAlignment="Right" VerticalAlignment="Top" MarginTop="!ButtonGroup.TopMargin" SuggestedHeight="!ButtonGroup.SuggestedHeight"
             MarginRight="!ButtonGroup.RightMargin"
                 DoNotAcceptEvents="true">
           <Children>
@@ -145,8 +152,68 @@
           </Children>
         </Widget>
 
+        <Widget Id="PMTransferButtons"  WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                SuggestedWidth="!TransferButtonsGroup.Width"   HorizontalAlignment="Center" VerticalAlignment="Top" SuggestedHeight="!TransferButtonsGroup.Height"
+				MarginLeft="0"
+                DoNotAcceptEvents="true" MarginTop="5">
+          <Children>
+            <ListPanel Id="PMLeftTransfer" DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" LayoutImp.LayoutMethod="VerticalBottomToTop">
+              <Children>
+                <ButtonWidget Id="PartyManagerModOtherTroopOverviewTooltip"
+                       DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                       HeightSizePolicy="Fixed" SuggestedWidth="!TransferButtons.Width"
+                       SuggestedHeight="!TransferButtons.Height" HorizontalAlignment="Right"
+                       VerticalAlignment="Center" MarginLeft="0"
+                       MarginTop="0" Brush="PartyManager.TransferLeft" Command.Click="TransferTroopsLeft" >
+                  <Children>
+                    <HintWidget DataSource="{LeftTroopTransferTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget Id="PartyManagerModOtherTroopOverviewTooltip"
+                       DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                       HeightSizePolicy="Fixed" SuggestedWidth="!TransferButtons.Width"
+                       SuggestedHeight="!TransferButtons.Height" HorizontalAlignment="Right"
+                       VerticalAlignment="Center" MarginLeft="0"
+                       MarginTop="!TransferButtons.TopMargin" Brush="PartyManager.TransferLeft" Command.Click="TransferPrisonersLeft" >
+                  <Children>
+                    <HintWidget DataSource="{LeftPrisonerTransferTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+              </Children>
+            </ListPanel>
+            <ListPanel Id="PMRightTransfer" DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" VerticalAlignment="Center" LayoutImp.LayoutMethod="VerticalBottomToTop">
+              <Children>
+                <ButtonWidget Id="PartyManagerModOtherTroopOverviewTooltip"
+                       DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                       HeightSizePolicy="Fixed" SuggestedWidth="!TransferButtons.Width"
+                       SuggestedHeight="!TransferButtons.Height" HorizontalAlignment="Right"
+                       VerticalAlignment="Center" MarginLeft="0"
+                       MarginTop="0" Brush="PartyManager.TransferRight" Command.Click="TransferTroopsRight" >
+                  <Children>
+                    <HintWidget DataSource="{RightTroopTransferTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+                <ButtonWidget Id="PartyManagerModOtherTroopOverviewTooltip"
+                       DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed"
+                       HeightSizePolicy="Fixed" SuggestedWidth="!TransferButtons.Width"
+                       SuggestedHeight="!TransferButtons.Height" HorizontalAlignment="Right"
+                       VerticalAlignment="Center" MarginLeft="0"
+                       MarginTop="!TransferButtons.TopMargin" Brush="PartyManager.TransferRight" Command.Click="TransferPrisonersRight" >
+                  <Children>
+                    <HintWidget DataSource="{RightPrisonerTransferTooltip}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                        Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+              </Children>
+            </ListPanel>
+          </Children>
+        </Widget>
+
         <Widget Id="PMOtherPartyWidget"  WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
-                SuggestedWidth="!LeftButtonGroup.SuggestedWidth"   HorizontalAlignment="Left" VerticalAlignment="Top" SuggestedHeight="!ButtonGroup.SuggestedHeight"
+                SuggestedWidth="!LeftButtonGroup.SuggestedWidth"   HorizontalAlignment="Left" MarginTop="!ButtonGroup.TopMargin" VerticalAlignment="Top" SuggestedHeight="!ButtonGroup.SuggestedHeight"
 				MarginLeft="!LeftButtonGroup.RightMargin"
                 DoNotAcceptEvents="true">
           <Children>
