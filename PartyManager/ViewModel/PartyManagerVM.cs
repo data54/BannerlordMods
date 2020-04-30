@@ -92,6 +92,7 @@ namespace PartyManager.ViewModels
 
 
         private HintViewModel _openSettingsTooltip;
+        private TransferVM _transferController;
 
         [DataSourceProperty]
         public HintViewModel OpenSettingsTooltip
@@ -130,6 +131,14 @@ namespace PartyManager.ViewModels
         {
             get => getTroopTooltip(true);
         }
+
+        [DataSourceProperty]
+        public TransferVM TransferController
+        {
+            get => _transferController;
+            set => _transferController = value;
+        }
+
 
         public HintViewModel getTroopTooltip(bool leftParty)
         {
@@ -314,6 +323,7 @@ namespace PartyManager.ViewModels
             this._partyVM = partyVM;
             this._partyScreenLogic = partyScreenLogic;
             this._parentScreen = parentScreen;
+            _transferController= new TransferVM(partyScreenLogic, partyVM);
             _upgradeTroopsVM = new UpgradeTroopsVM(partyScreenLogic, partyVM);
             _sortController = new SortUnitsVM(partyScreenLogic, partyVM);
             _recruitController = new RecruitVM(partyScreenLogic, partyVM);

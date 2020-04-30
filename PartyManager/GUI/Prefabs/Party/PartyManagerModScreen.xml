@@ -155,7 +155,7 @@
         <Widget Id="PMTransferButtons"  WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
                 SuggestedWidth="!TransferButtonsGroup.Width"   HorizontalAlignment="Center" VerticalAlignment="Top" SuggestedHeight="!TransferButtonsGroup.Height"
 				MarginLeft="0"
-                DoNotAcceptEvents="true" MarginTop="5">
+                DoNotAcceptEvents="true" MarginTop="5" DataSource="{TransferController}" >
           <Children>
             <ListPanel Id="PMLeftTransfer" DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" LayoutImp.LayoutMethod="VerticalBottomToTop">
               <Children>
