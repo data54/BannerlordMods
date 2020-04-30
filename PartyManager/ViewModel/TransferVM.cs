@@ -80,38 +80,63 @@ namespace PartyManager.ViewModels
         }
         public void TransferPrisonersLeft()
         {
+            TransferPrisoners(false);
+        }
+
+        public void TransferPrisoners(bool fromLeft)
+        {
             try
             {
-                var rightPrisoners = _partyVM.MainPartyPrisoners.ToList();
+                List<PartyCharacterVM> prisoners;
 
-                if (PartyManagerSettings.Settings.RansomPrisonersUseWhitelist)
+                if (fromLeft)
                 {
-                    rightPrisoners = rightPrisoners.Where(x => PartyManagerSettings.Settings.RansomPrisonerBlackWhiteList
+                    prisoners = _partyVM.OtherPartyPrisoners.ToList();
+                }
+                else
+                {
+                    prisoners = _partyVM.MainPartyPrisoners.ToList();
+                }
+
+                if (_partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.TransferableWithTrade && PartyManagerSettings.Settings.RansomPrisonersUseWhitelist)
+                {
+                    prisoners = prisoners.Where(x => PartyManagerSettings.Settings.RansomPrisonerBlackWhiteList
+                        .Contains(x.Character.Name.ToString())).ToList();
+                }
+                else if (_partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.TransferableWithTrade)
+                {
+                    prisoners = prisoners.Where(x => !PartyManagerSettings.Settings.RansomPrisonerBlackWhiteList
+                        .Contains(x.Character.Name.ToString())).ToList();
+                }
+                else if (PartyManagerSettings.Settings.TransferPrisonersUseWhitelist)
+                {
+                    prisoners = prisoners.Where(x => PartyManagerSettings.Settings.TransferPrisonerBlackWhiteList
                         .Contains(x.Character.Name.ToString())).ToList();
                 }
                 else
                 {
-                    rightPrisoners = rightPrisoners.Where(x => !PartyManagerSettings.Settings.RansomPrisonerBlackWhiteList
+                    prisoners = prisoners.Where(x => !PartyManagerSettings.Settings.TransferPrisonerBlackWhiteList
                         .Contains(x.Character.Name.ToString())).ToList();
                 }
 
-                foreach (var prisoner in rightPrisoners)
+
+                foreach (var prisoner in prisoners)
                 {
-                    TransferPrisoner(prisoner, false);
+                    TransferUnit(prisoner, fromLeft);
                 }
                 _partyVM.ExecuteRemoveZeroCounts();
-                PartyController.CurrentInstance.InitializeTroopLists();
             }
             catch (Exception e)
             {
                 GenericHelpers.LogException("TransferPrisonersLeft", e);
             }
+
         }
 
-        public void TransferPrisoner(PartyCharacterVM troop, bool left)
+        public void TransferUnit(PartyCharacterVM troop, bool fromLeft)
         {
             troop.OnTransfer(troop, -1, troop.Number,
-                left ? PartyScreenLogic.PartyRosterSide.Left : PartyScreenLogic.PartyRosterSide.Right);
+                fromLeft ? PartyScreenLogic.PartyRosterSide.Left : PartyScreenLogic.PartyRosterSide.Right);
         }
 
         public void TransferTroopsRight()
