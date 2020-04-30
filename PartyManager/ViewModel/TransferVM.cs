@@ -110,29 +110,8 @@ namespace PartyManager.ViewModels
 
         public void TransferPrisoner(PartyCharacterVM troop, bool left)
         {
-            var index= _partyVM.OtherPartyPrisoners.Count;
-            PartyScreenLogic.PartyCommand command = new PartyScreenLogic.PartyCommand();
-            //command.FillForTransferPartyLeaderTroop(left ? PartyScreenLogic.PartyRosterSide.Left : PartyScreenLogic.PartyRosterSide.Right,
-            //    PartyScreenLogic.TroopType.Prisoner,
-            //    troop.Character,
-            //    troop.Number
-            //);
-
-            //command.FillForTransferTroopToLeaderSlot(left ? PartyScreenLogic.PartyRosterSide.Left : PartyScreenLogic.PartyRosterSide.Right,
-            //    PartyScreenLogic.TroopType.Prisoner,
-            //    troop.Character,
-            //    troop.Number,
-            //    troop.WoundedCount,
-            //    0
-            //);
-            command.FillForTransferTroop(left ? PartyScreenLogic.PartyRosterSide.Left : PartyScreenLogic.PartyRosterSide.Right,
-                PartyScreenLogic.TroopType.Prisoner,
-                troop.Character,
-                troop.Number,
-                troop.WoundedCount,
-                0
-                );
-            _partyLogic.AddCommand(command);
+            troop.OnTransfer(troop, -1, troop.Number,
+                left ? PartyScreenLogic.PartyRosterSide.Left : PartyScreenLogic.PartyRosterSide.Right);
         }
 
         public void TransferTroopsRight()
