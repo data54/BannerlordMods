@@ -57,21 +57,21 @@ namespace PartyManager.ViewModels
                 LeftPrisonerTransferHidden = false;
                 LeftPrisonerTransferTooltip = new HintViewModel("Ransom black/white listed prisoners");
             }
-            else if (partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable &&
-                     partyLogic.MemberTransferState == PartyScreenLogic.TransferState.Transferable)
-            {
-                RightPrisonerTransferHidden = false;
-                RightTroopTransferHidden = false;
-            }
-            else if (partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable)
-            {
-                RightPrisonerTransferHidden = false;
+            //else if (partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable &&
+            //         partyLogic.MemberTransferState == PartyScreenLogic.TransferState.Transferable)
+            //{
+            //    RightPrisonerTransferHidden = false;
+            //    RightTroopTransferHidden = false;
+            //}
+            //else if (partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable)
+            //{
+            //    RightPrisonerTransferHidden = false;
 
-            }
-            else if (partyLogic.MemberTransferState == PartyScreenLogic.TransferState.Transferable)
-            {
-                RightTroopTransferHidden = false;
-            }
+            //}
+            //else if (partyLogic.MemberTransferState == PartyScreenLogic.TransferState.Transferable)
+            //{
+            //    RightTroopTransferHidden = false;
+            //}
         }
 
         public void TransferTroopsLeft()
