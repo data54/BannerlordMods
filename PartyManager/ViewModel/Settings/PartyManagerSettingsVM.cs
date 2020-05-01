@@ -114,7 +114,7 @@ namespace PartyManager.ViewModel
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableCustomShiftTransfer, "Disable Custom SHIFT Transfer", "Disable the ability to transfer custom unit count units by clicking with SHIFT held down",
                 b => { _settings.DisableCustomShiftTransfer = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
             _options.Add(new PMNumericOptionData(_settings.CustomShiftTransferCount, "Custom SHIFT Transfer Unit Count", "Number of units to transfer when the button is clicked with SHIFT held down",
-                b => { _settings.CustomShiftTransferCount = (int)b; }, CampaignOptionItemVM.OptionTypes.Numeric, 0, 500, true));
+                b => { _settings.CustomShiftTransferCount = (int)b; }, CampaignOptionItemVM.OptionTypes.Numeric, 1, 500, true));
 
             _options.Add(new PMGenericOptionDataVM<bool>(_settings.UpgradeTroopsUseWhitelist, "Upgrade Troops Whitelist", "Use a whitelist instead of blacklist for the upgrade troops filter",
                 b => { _settings.UpgradeTroopsUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
