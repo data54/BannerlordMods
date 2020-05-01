@@ -13,9 +13,31 @@ namespace PartyManager.Patches.Party.PartyCharacterVM
             {
                 if (topScreen.DebugInput.IsAltDown())
                 {
-                    PartyController.CurrentInstance.UpdateBlackWhiteList(__instance, BlackWhiteListType.Transfer);
-                    return false;
+                    return PartyController.CurrentInstance.UpdateBlackWhiteList(__instance, BlackWhiteListType.Transfer);
                 }
+                else if (topScreen.DebugInput.IsShiftDown() && topScreen.DebugInput.IsControlDown())
+                {
+                    if (!PartyManagerSettings.Settings.DisableCtrlShiftTransfer)
+                    {
+                        return PartyController.CurrentInstance.TransferUnits(__instance, PMTransferType.Half);
+                    }
+                }
+                else if (topScreen.DebugInput.IsControlDown())
+                {
+                    if (!PartyManagerSettings.Settings.DisableCtrlTransfer)
+                    {
+                        return PartyController.CurrentInstance.TransferUnits(__instance, PMTransferType.All);
+                    }
+                }
+                else if (topScreen.DebugInput.IsShiftDown())
+                {
+                    if (!PartyManagerSettings.Settings.DisableCustomShiftTransfer)
+                    {
+                        return PartyController.CurrentInstance.TransferUnits(__instance, PMTransferType.Custom);
+                    }
+                }
+
+
                 return true;
             }
 

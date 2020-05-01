@@ -26,7 +26,7 @@ namespace PartyManager.ViewModel
 {
     public class PartyManagerSettingsVM :TaleWorlds.Library.ViewModel
     {
-        private TogglesVM _togglesController;
+        private PMGenericOptionVM _miscController;
         private PMGenericOptionVM _customSortVM;
 
 
@@ -38,14 +38,14 @@ namespace PartyManager.ViewModel
         public String DoneLbl { get; set; }
 
         [DataSourceProperty]
-        public TogglesVM TogglesController
+        public PMGenericOptionVM TogglesController
         {
-            get => _togglesController;
+            get => _miscController;
             set
             {
-                if (value == this._togglesController)
+                if (value == this._miscController)
                     return;
-                this._togglesController = value;
+                this._miscController = value;
                 this.OnPropertyChanged(nameof(TogglesController));
             }
         }
@@ -86,8 +86,8 @@ namespace PartyManager.ViewModel
             //TaleWorlds.GauntletUI.ExtraWidgets.
             //TabToggleWidget
             _settings = PartyManagerSettings.Settings.Clone();
-            _togglesController=new TogglesVM(_settings);
             _customSortVM= CreateSortOptions();
+            _miscController= CreateMiscOptions();
             OptionsLbl = "Party Manager Settings";
             CancelLbl = "Cancel";
             DoneLbl = "Done";
@@ -97,6 +97,48 @@ namespace PartyManager.ViewModel
             _isInitialized = true;
 
 
+        }
+
+        public PMGenericOptionVM CreateMiscOptions()
+        {
+            var _options = new MBBindingList<IPMOptions>();
+
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.UseAdvancedPartyComposition, "Show Advanced Party Composition Information", "Party Composition will attempt to show unit weapon type breakdown",
+                b => { _settings.UseAdvancedPartyComposition = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+
+
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableCtrlTransfer, "Disable CTRL Transfer", "Disable the ability to transfer all units by clicking with CTRL held down",
+                b => { _settings.DisableCtrlTransfer = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableCtrlShiftTransfer, "Disable CTRL+SHIFT Transfer", "Disable the ability to transfer half of units by clicking with CTRL+SHIFT held down",
+                b => { _settings.DisableCtrlShiftTransfer = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableCustomShiftTransfer, "Disable Custom SHIFT Transfer", "Disable the ability to transfer custom unit count units by clicking with SHIFT held down",
+                b => { _settings.DisableCustomShiftTransfer = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMNumericOptionData(_settings.CustomShiftTransferCount, "Disable Custom SHIFT Transfer", "Disable the ability to transfer custom unit count units by clicking with SHIFT held down",
+                b => { _settings.CustomShiftTransferCount = (int)b; }, CampaignOptionItemVM.OptionTypes.Numeric, 0, 500, true));
+
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.UpgradeTroopsUseWhitelist, "Upgrade Troops Whitelist", "Use a whitelist instead of blacklist for the upgrade troops filter",
+                b => { _settings.UpgradeTroopsUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.TransferTroopsUseWhitelist, "Transfer Troops Whitelist", "Use a whitelist instead of blacklist for the transfer troops filter",
+                b => { _settings.TransferTroopsUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.RecruitPrisonersUseWhitelist, "Recruit Prisoners Whitelist", "Use a whitelist instead of blacklist for the recruit prisoners filter",
+                b => { _settings.RecruitPrisonersUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.TransferPrisonersUseWhitelist, "Transfer Prisoners Whitelist", "Use a whitelist instead of blacklist for the transfer prisoners filter",
+                b => { _settings.TransferPrisonersUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.RansomPrisonersUseWhitelist, "Ransom Prisoners Whitelist", "Use a whitelist instead of blacklist for the ransom prisoners filter",
+                b => { _settings.RansomPrisonersUseWhitelist = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableCustomUpgradePaths, "Disable Custom Upgrade Paths", "Custom Upgrade Paths will not be used when the upgrade button is clicked",
+                b => { _settings.DisableCustomUpgradePaths = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisableUpdatedTroopLabel, "Disable Updated Wounded Troop Label", "Change the wounded troop label format from from (250 + 5w [255]/275) back to  (250 + 5w / 275)",
+                b => { _settings.DisableUpdatedTroopLabel = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.DisablePartyCompositionIcon, "Hide Party Composition Icon", "Hide the party composition icon",
+                b => { _settings.DisablePartyCompositionIcon = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+            _options.Add(new PMGenericOptionDataVM<bool>(_settings.Debug, "Enable Debug Mode", "Enable Debug Mode, probably want to leave this off",
+                b => { _settings.Debug = b; }, CampaignOptionItemVM.OptionTypes.Boolean));
+
+
+            var miscOptions = new PMGenericOptionVM("Misc", "Misc", _options);
+            return miscOptions;
         }
 
         public PMGenericOptionVM CreateSortOptions()

@@ -15,9 +15,9 @@ namespace PartyManager
     public class PartyManagerSettings
     {
         const string filePath = "..\\..\\Modules\\PartyManager\\ModuleData\\PartyManager.xml";
-        const int version = 5;
+        const int version = 6;
 
-        public int? Version { get; set; }
+        public int Version { get; set; }
         public bool EnableHotkey { get; set; }
         public bool EnableRecruitUpgradeSortHotkey { get; set; }
         public bool EnableSortTypeCycleHotkey { get; set; }
@@ -108,6 +108,12 @@ namespace PartyManager
         }
 
         public bool TransferTroopsUseWhitelist { get; set; }
+
+        public bool DisableCtrlShiftTransfer { get; set; }
+        public bool DisableCtrlTransfer { get; set; }
+        public bool DisableCustomShiftTransfer { get; set; }
+        public int CustomShiftTransferCount { get; set; }
+
 
 
         private List<string> _recruitPrisonerBlackWhiteList;
@@ -277,6 +283,7 @@ namespace PartyManager
             MeleeAboveArchers = true;
             Version = version;
             SortOrder = SortType.TierDesc;
+            CustomShiftTransferCount = 5;
         }
 
         public static void ReloadSettings()
@@ -336,7 +343,7 @@ namespace PartyManager
                 }
                 else
                 {
-                    for (int i = settings.Version.Value; i < version; i++)
+                    for (int i = settings.Version; i < version; i++)
                     {
                         switch (i)
                         {
@@ -351,6 +358,9 @@ namespace PartyManager
                             case 3:
                                 settings.CavalryAboveFootmen = true;
                                 settings.MeleeAboveArchers = true;
+                                break;
+                            case 5:
+                                settings.CustomShiftTransferCount = 5;
                                 break;
                         }
                     }

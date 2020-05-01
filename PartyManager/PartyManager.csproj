@@ -226,9 +226,7 @@
     <Compile Include="ViewModel\Settings\PartyManagerSettingsVM.cs" />
     <Compile Include="ViewModel\PartyManagerVM.cs" />
     <Compile Include="ViewModel\RecruitVM.cs" />
-    <Compile Include="ViewModel\Settings\CustomSortVM.cs" />
     <Compile Include="ViewModel\Settings\PMGenericOptionVM.cs" />
-    <Compile Include="ViewModel\Settings\TogglesVM.cs" />
     <Compile Include="ViewModel\FormationVM.cs" />
     <Compile Include="ViewModel\SortUnitsVM.cs" />
     <Compile Include="ViewModel\UpgradeTroopsVM.cs" />

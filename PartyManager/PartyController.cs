@@ -419,7 +419,7 @@ namespace PartyManager
             RefreshPartyInformationMethod.Invoke(PartyVM, new object[0] { });
         }
 
-        public void UpdateBlackWhiteList(PartyCharacterVM character, BlackWhiteListType listType)
+        public bool UpdateBlackWhiteList(PartyCharacterVM character, BlackWhiteListType listType)
         {
             try
             {
@@ -439,8 +439,8 @@ namespace PartyManager
                 }
                 else if (listType == BlackWhiteListType.Transfer && !character.IsPrisoner)
                 {
-                    targetList = PartyManagerSettings.Settings.TransferTroopsBlackWhiteList;
-                    listName = "transfer troops";
+                    //targetList = PartyManagerSettings.Settings.TransferTroopsBlackWhiteList;
+                    //listName = "transfer troops";
                 }
                 else if (listType == BlackWhiteListType.Recruit)
                 {
@@ -455,7 +455,7 @@ namespace PartyManager
 
                 if (targetList == null)
                 {
-                    return;
+                    return true;
                 }
 
                 if (targetList.Contains(unitName))
@@ -470,11 +470,14 @@ namespace PartyManager
                 }
 
                 PartyManagerSettings.Settings.SaveSettings();
+                return false;
             }
             catch (Exception e)
             {
                 GenericHelpers.LogException("UpdateBlackWhiteList", e);
             }
+
+            return true;
         }
 
         public static void ToggleUpgradePath(PartyCharacterVM vm, int upgradeIndex, bool split = false)
@@ -552,10 +555,51 @@ namespace PartyManager
             }
             catch (Exception e)
             {
-                GenericHelpers.LogException("UpgradeAllTroops", e);
+                GenericHelpers.LogException("OpenSettings", e);
             }
         }
 
+        public bool TransferUnits(PartyCharacterVM troop, PMTransferType transferType)
+        {
+            try
+            {
+                if (troop == null || troop.Number == 0)
+                {
+                    return true;
+                }
+
+                int unitCount = 0;
+
+                switch (transferType)
+                {
+                    case PMTransferType.All:
+                        unitCount = troop.Number;
+                        break;
+                    case PMTransferType.Half:
+                        unitCount = (int) Math.Round(troop.Number / 2f, MidpointRounding.AwayFromZero);
+                        break;
+                    case PMTransferType.Custom:
+                        unitCount = Math.Min(troop.Number, PartyManagerSettings.Settings.CustomShiftTransferCount);
+                        break;
+                }
+
+                if (unitCount == 0 || unitCount<0)
+                {
+                    return true;
+                }
+
+                troop.OnTransfer(troop, -1, unitCount,  troop.Side);
+                PartyVM.ExecuteRemoveZeroCounts();
+                return false;
+            }
+            catch (Exception e)
+            {
+                GenericHelpers.LogException("TransferUnits", e);
+            }
+
+
+            return true;
+        }
     }
 
     public enum BlackWhiteListType
@@ -563,5 +607,13 @@ namespace PartyManager
         Transfer,
         Recruit,
         Upgrade
+    }
+
+
+    public enum PMTransferType
+    {
+        All,
+        Half,
+        Custom
     }
 }
