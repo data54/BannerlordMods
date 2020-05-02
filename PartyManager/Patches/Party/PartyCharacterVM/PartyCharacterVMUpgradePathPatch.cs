@@ -11,12 +11,12 @@ namespace PartyManager.Patches.Party.PartyCharacterVM
         {
             if (ScreenManager.TopScreen is GauntletPartyScreen topScreen)
             {
-                if (PartyManagerSettings.Settings.DisableCustomUpgradePaths && topScreen.DebugInput.IsControlDown() && topScreen.DebugInput.IsShiftDown())
+                if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths && topScreen.DebugInput.IsControlDown() && topScreen.DebugInput.IsShiftDown())
                 {
                     PartyController.ToggleUpgradePath(__instance, upgradeIndex, true);
                     return false;
                 }
-                else if (PartyManagerSettings.Settings.DisableCustomUpgradePaths && topScreen.DebugInput.IsControlDown())
+                else if (!PartyManagerSettings.Settings.DisableCustomUpgradePaths && topScreen.DebugInput.IsControlDown())
                 {
                     PartyController.ToggleUpgradePath(__instance, upgradeIndex, false);
                     return false;
