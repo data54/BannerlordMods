@@ -109,14 +109,18 @@ namespace PartyManager.ViewModels
         [DataSourceProperty]
         public HintViewModel RightTroopOverviewTooltip
         {
-            get => getTroopTooltip(false);
+            get
+            {
+                updateTroopOverviewTooltip(false);
+                return _rightTroopOverviewTooltip;
+            }
         }
 
         [DataSourceProperty]
         public bool LeftTroopOverviewHidden
         {
             get => PartyManagerSettings.Settings.DisablePartyCompositionIcon ||
-                   _partyScreenLogic?.LeftOwnerParty == null;
+                   _partyScreenLogic?.LeftOwnerParty == null || string.IsNullOrEmpty(_partyScreenLogic?.LeftPartyName?.ToString());
         }
 
         [DataSourceProperty]
@@ -126,10 +130,17 @@ namespace PartyManager.ViewModels
                    _partyScreenLogic?.RightOwnerParty == null;
         }
 
+
+        [DataSourceProperty]
+        private HintViewModel _leftTroopOverviewTooltip, _rightTroopOverviewTooltip;
         [DataSourceProperty]
         public HintViewModel LeftTroopOverviewTooltip
         {
-            get => getTroopTooltip(true);
+            get
+            {
+                updateTroopOverviewTooltip(true);
+                return _leftTroopOverviewTooltip;
+            }
         }
 
         [DataSourceProperty]
@@ -140,12 +151,36 @@ namespace PartyManager.ViewModels
         }
 
 
-        public HintViewModel getTroopTooltip(bool leftParty)
+        public void updateTroopOverviewTooltip(bool leftParty)
         {
-            var composition = "";
+            var newText = getTroopTooltip(leftParty);
+
+            if (leftParty && _leftTroopOverviewTooltip == null)
+            {
+                _leftTroopOverviewTooltip = new HintViewModel(newText);;
+            }
+            else if(leftParty && _leftTroopOverviewTooltip!=null && _leftTroopOverviewTooltip.HintText!=newText)
+            {
+                _leftTroopOverviewTooltip.HintText = newText;
+                _leftTroopOverviewTooltip.RefreshValues();
+            }
+            else if (!leftParty && _rightTroopOverviewTooltip == null)
+            {
+                _rightTroopOverviewTooltip = new HintViewModel(newText); ;
+            }
+            else if (!leftParty && _rightTroopOverviewTooltip != null && _rightTroopOverviewTooltip.HintText != newText)
+            {
+                _rightTroopOverviewTooltip.HintText = newText;
+                _rightTroopOverviewTooltip.RefreshValues();
+            }
+        }
+
+        public string getTroopTooltip(bool leftParty)
+        {
+            var composition = "Failed to get troop overview";
             try
             {
-                if (leftParty && _partyScreenLogic.LeftPartyLeader!=null && _partyScreenLogic?.LeftOwnerParty != null)
+                if (leftParty && !string.IsNullOrEmpty(_partyScreenLogic.LeftPartyName.ToString()) && _partyScreenLogic.LeftPartyLeader!=null && _partyScreenLogic?.LeftOwnerParty != null)
                 {
                     composition = getUnitComposition(PartyScreenLogic.LeftOwnerParty,
                         _partyScreenLogic.LeftOwnerParty.PartySizeLimit);
@@ -155,19 +190,13 @@ namespace PartyManager.ViewModels
                     composition = getUnitComposition(PartyScreenLogic.RightOwnerParty,
                         _partyScreenLogic.RightOwnerParty.PartySizeLimit);
                 }
-                else
-                {
-                    composition = "";
-                }
             }
             catch (Exception e)
             {
                 GenericHelpers.LogException("getTroopTooltip", e);
             }
-
-            var model = new HintViewModel(composition);
-
-            return model;
+            
+            return composition;
         }
 
         public string getUnitComposition(PartyBase troops, int partySizeLimit)

@@ -26,12 +26,12 @@ namespace PartyManager.Patches
                         return;
                     }
 
-                    if (__instance.MainPartyTroops != null && logic?.RightOwnerParty?.PartySizeLimit != null)
+                    if (__instance.MainPartyTroops != null  && logic?.RightOwnerParty?.PartySizeLimit != null)
                     {
                         __instance.MainPartyTroopsLbl = GetPMPartyListLabel(__instance.MainPartyTroopsLbl, __instance.MainPartyTroops, logic.RightOwnerParty.PartySizeLimit);
                     }
 
-                    if (__instance.OtherPartyTroops != null && logic?.LeftPartyLeader!=null && logic?.LeftOwnerParty?.PartySizeLimit != null)
+                    if (__instance.OtherPartyTroops != null && !string.IsNullOrEmpty(logic?.LeftPartyName.ToString()) && logic?.LeftPartyLeader!=null && logic?.LeftOwnerParty?.PartySizeLimit != null)
                     {
                         __instance.OtherPartyTroopsLbl = GetPMPartyListLabel(__instance.OtherPartyTroopsLbl, __instance.OtherPartyTroops, logic.LeftOwnerParty.PartySizeLimit);
                     }
