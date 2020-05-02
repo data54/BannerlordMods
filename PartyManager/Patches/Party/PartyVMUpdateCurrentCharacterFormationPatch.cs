@@ -14,7 +14,7 @@ namespace PartyManager.Patches
         {
             try
             {
-                if (s.SelectedIndex != (int)__instance.CurrentCharacter.Character.CurrentFormationClass)
+                if (!__instance.CurrentCharacter.IsPrisoner && s.SelectedIndex != (int)__instance.CurrentCharacter.Character.CurrentFormationClass)
                 {
                     var newFormation = (FormationClass)s.SelectedIndex;
                     var name = __instance.CurrentCharacter.Character.Name.ToString();

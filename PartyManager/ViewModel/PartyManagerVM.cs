@@ -143,18 +143,26 @@ namespace PartyManager.ViewModels
         public HintViewModel getTroopTooltip(bool leftParty)
         {
             var composition = "";
-
-            if (leftParty && _partyScreenLogic?.LeftOwnerParty != null)
+            try
             {
-                composition = getUnitComposition(PartyScreenLogic.LeftOwnerParty, _partyScreenLogic.LeftOwnerParty.PartySizeLimit);
+                if (leftParty && _partyScreenLogic.LeftPartyLeader!=null && _partyScreenLogic?.LeftOwnerParty != null)
+                {
+                    composition = getUnitComposition(PartyScreenLogic.LeftOwnerParty,
+                        _partyScreenLogic.LeftOwnerParty.PartySizeLimit);
+                }
+                else if (!leftParty && _partyScreenLogic.RightPartyLeader != null && _partyScreenLogic?.RightOwnerParty != null)
+                {
+                    composition = getUnitComposition(PartyScreenLogic.RightOwnerParty,
+                        _partyScreenLogic.RightOwnerParty.PartySizeLimit);
+                }
+                else
+                {
+                    composition = "";
+                }
             }
-            else if (!leftParty && _partyScreenLogic?.RightOwnerParty != null)
+            catch (Exception e)
             {
-                composition = getUnitComposition(PartyScreenLogic.RightOwnerParty, _partyScreenLogic.RightOwnerParty.PartySizeLimit);
-            }
-            else
-            {
-                composition = "";
+                GenericHelpers.LogException("getTroopTooltip", e);
             }
 
             var model = new HintViewModel(composition);
