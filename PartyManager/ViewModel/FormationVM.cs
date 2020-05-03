@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PartyManager.Helpers;
 using PartyManager.Settings;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
@@ -40,7 +41,7 @@ namespace PartyManager.ViewModels
             this._mainPartyList = this._partyVM.MainPartyTroops;
 
 
-            this._tooltip = new HintViewModel("Left Click to apply saved formation settings to troops\nCTRL+Left Click to save current unit formations.");
+            this._tooltip = new HintViewModel(TextHelper.GetText("FormationTooltip", "Left Click to apply saved formation settings to troops\nCTRL+Left Click to save current unit formations."));
 
         }
 

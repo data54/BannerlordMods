@@ -205,6 +205,7 @@
     <Compile Include="CustomComparer.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Helpers\GenericHelpers.cs" />
+    <Compile Include="Helpers\TextHelper.cs" />
     <Compile Include="PartyController.cs" />
     <Compile Include="Patches\Party\PartyCharacterVM\PartyCharacterVMExecuteRecruitTroopPatch.cs" />
     <Compile Include="Patches\Party\PartyCharacterVM\PartyCharacterVMExecuteTransferSinglePatch.cs" />
@@ -249,6 +250,7 @@
     <Content Include="GUI\Brushes\PartyManagerModBrush.xml" />
     <Content Include="GUI\Prefabs\Party\PartyManagerModScreen.xml" />
     <Content Include="GUI\Prefabs\Party\Settings\PartyManagerSettings.xml" />
+    <Content Include="ModuleData\Languages\CNs\module_strings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

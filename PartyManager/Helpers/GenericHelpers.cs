@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using PartyManager.Helpers;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.GauntletUI;
@@ -26,8 +27,6 @@ namespace PartyManager
 
         public static string GetCharacterWeaponClass(CharacterObject character)
         {
-
-
             var ret = "";
             var weaponClass = character.FirstBattleEquipment?.GetEquipmentFromSlot(EquipmentIndex.Weapon0).Item
                 ?.PrimaryWeapon?.WeaponClass;
@@ -36,7 +35,8 @@ namespace PartyManager
             {
                 if (character.IsHero)
                 {
-                    return $"Hero({weaponClass})";
+                    ret = TextHelper.GetText(weaponClass.ToString());
+                    return $"Hero({ret})";
                 }
                 else
                 {
@@ -57,11 +57,10 @@ namespace PartyManager
                             weaponClass = newWeaponClass;
                         }
                     }
-
                 }
             }
 
-            ret = weaponClass?.ToString();
+            ret = TextHelper.GetText(weaponClass.ToString());
 
             return ret;
         }

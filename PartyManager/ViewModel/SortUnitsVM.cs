@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PartyManager.Helpers;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -91,8 +92,9 @@ namespace PartyManager.ViewModels
 
         private string getCycleTooltip()
         {
-            return
-                $"Cycle Sort Order\nRight click to cycle backwards\nNext:\n{PartyManagerSettings.Settings.NextSortOrderString}\nPrevious:\n{PartyManagerSettings.Settings.PreviousSortOrderString}\nCurrent:\n{PartyManagerSettings.Settings.SortOrderString}";
+            return TextHelper.GetText("CycleSortTooltip",
+                $"Cycle Sort Order\nRight click to cycle backwards\nNext:\n{{0}}\nPrevious:\n{{1}}\nCurrent:\n{{2}}",
+            new string[] { PartyManagerSettings.Settings.NextSortOrderString , PartyManagerSettings.Settings.PreviousSortOrderString, PartyManagerSettings.Settings.SortOrderString });
         }
 
 

@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SqlServer.Server;
+using PartyManager.Helpers;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -269,7 +270,7 @@ namespace PartyManager.ViewModels
 
                 var sb = new StringBuilder();
                 sb.Append($"{troops.Name.ToString()}\n");
-                sb.Append($"{totalTroops}/{partySizeLimit} Troops\n");
+                sb.Append($"{totalTroops}/{partySizeLimit} {TextHelper.GetText("Troops")}\n");
 
                 var heroes = troops.MemberRoster.Count(x => x.Character.IsHero);
 
@@ -279,7 +280,7 @@ namespace PartyManager.ViewModels
 
 
                 sb.Append("\n".PadLeft(40, '-'));
-                sb.Append(formatTroopInfo(0, heroes, "Heroes", totalTroops));
+                sb.Append(formatTroopInfo(0, heroes, TextHelper.GetText("Heroes"), totalTroops));
 
 
                 StringBuilder mountedSB = new StringBuilder();
@@ -287,11 +288,11 @@ namespace PartyManager.ViewModels
                 if (mounted > 0)
                 {
                     mountedSB.Append("\n".PadLeft(40, '-'));
-                    mountedSB.Append(formatTroopInfo(0, mounted, "Cavalry", totalTroops));
+                    mountedSB.Append(formatTroopInfo(0, mounted, TextHelper.GetText("Cavalry"), totalTroops));
                     mountedSB.Append("\n".PadLeft(40, '-'));
-                    mountedSB.Append(formatTroopInfo(subgroupIndents, horseMelee, "Melee", totalTroops));
+                    mountedSB.Append(formatTroopInfo(subgroupIndents, horseMelee, TextHelper.GetText("Melee"), totalTroops));
                     mountedSB.Append(advancedCavalryMeleeBreakdown);
-                    mountedSB.Append(formatTroopInfo(subgroupIndents, horseArchers, "Ranged", totalTroops));
+                    mountedSB.Append(formatTroopInfo(subgroupIndents, horseArchers, TextHelper.GetText("Ranged"), totalTroops));
                     mountedSB.Append(advancedCavalryRangedBreakdown);
                 }
 
@@ -306,11 +307,11 @@ namespace PartyManager.ViewModels
                         .Sum(x => x.Number);
 
                     infantrySB.Append("\n".PadLeft(40, '-'));
-                    infantrySB.Append(formatTroopInfo(0, infantry, "Infantry", totalTroops));
+                    infantrySB.Append(formatTroopInfo(0, infantry, TextHelper.GetText("Infantry"), totalTroops));
                     infantrySB.Append("\n".PadLeft(40, '-'));
-                    infantrySB.Append(formatTroopInfo(subgroupIndents, footMelee, "Melee", totalTroops));
+                    infantrySB.Append(formatTroopInfo(subgroupIndents, footMelee, TextHelper.GetText("Melee"), totalTroops));
                     infantrySB.Append(advancedMeleeBreakdown);
-                    infantrySB.Append(formatTroopInfo(subgroupIndents, footArchers, "Ranged", totalTroops));
+                    infantrySB.Append(formatTroopInfo(subgroupIndents, footArchers, TextHelper.GetText("Ranged"), totalTroops));
                     infantrySB.Append(advancedRangedBreakdown);
                 }
 
@@ -365,7 +366,7 @@ namespace PartyManager.ViewModels
             _sortController = new SortUnitsVM(partyScreenLogic, partyVM);
             _recruitController = new RecruitVM(partyScreenLogic, partyVM);
             _formationVm = new FormationVM(partyScreenLogic, partyVM);
-            _openSettingsTooltip = new HintViewModel("Open Party Manager Settings", "openSettingsTooltipUniqueEnoughYet?");
+            _openSettingsTooltip = new HintViewModel(TextHelper.GetText("OpenSettingsTooltip", "Open Party Manager Settings"), "openSettingsTooltipUniqueEnoughYet?");
         }
 
 

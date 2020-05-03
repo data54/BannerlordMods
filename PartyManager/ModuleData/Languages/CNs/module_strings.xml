@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" type="string">
+  <tags>
+    <tag language="简体中文" />
+  </tags>
+  <strings>
+    <!-- Units -->
+    <string id="Mounted" text="On a horse" />
+    <string id="Infantry" text="Not on a horse" />
+    <string id="Archer" text="Shooter" />
+    <string id="Ranged" text="Wizard" />
+    <string id="Melee" text="Face hugger" />
+
+    <string id="Heroes" text="HeRoES" />
+    <string id="Cavalry" text="CaVALry" />
+    <string id="Heroes" text="HeRoES" />
+    <string id="Troops" text="troops" />
+
+
+    <!--Tooltips-->
+    <string id="OpenSettingsTooltip" text="Open Party Manager Settings" />
+    <string id="FormationTooltip" text="Left Click to apply saved formation settings to troops\nCTRL+Left Click to save current unit formations." />
+    <string id="RecruitTooltip" text="Recruit All Prisoners\nRight click to recruit past party limit" />
+    <string id="CycleSortTooltip" text="Cycle Sort Order\nRight click to cycle backwards\nNext:\n{{0}}\nPrevious:\n{{1}}\nCurrent:\n{{2}}" />
+    
+
+    <!-- Weapon Classes -->
+    <string id="OneHandedSword" text="one handed pokey stick" />
+    <string id="TwoHandedSword" text="big stick" />
+    <string id="OneHandedAxe" text="chopper" />
+    <string id="TwoHandedAxe" text="big chopper" />
+    <string id="Mace" text="billy club" />
+    <string id="Pick" text="test" />
+    <string id="TwoHandedMace" text="big club" />
+    <string id="OneHandedPolearm" text="walking stick" />
+    <string id="TwoHandedPolearm" text="test" />
+    <string id="LowGripPolearm" text="test" />
+    <string id="Arrow" text="pew" />
+    <string id="Bolt" text="pew pew" />
+    <string id="Cartridge" text="bullet" />
+    <string id="Bow" text="shooty stick" />
+    <string id="Crossbow" text="test" />
+    <string id="Stone" text="stoners" />
+    <string id="Boulder" text="test" />
+    <string id="ThrowingAxe" text="test" />
+    <string id="ThrowingKnife" text="test" />
+    <string id="Javelin" text="test" />
+    <string id="Pistol" text="test" />
+    <string id="Musket" text="test" />
+    <string id="SmallShield" text="test" />
+    <string id="LargeShield" text="test" />
+    <string id="Banner" text="test" />
+    <string id="NumClasses" text="test" />
+    <!--Misc-->
+  </strings>
+</base>

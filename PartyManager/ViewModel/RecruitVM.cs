@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PartyManager.Helpers;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -42,7 +43,7 @@ namespace PartyManager.ViewModels
 
 
             this.
-                _tooltip = new HintViewModel("Recruit All Prisoners\nRight click to recruit past party limit");
+                _tooltip = new HintViewModel(TextHelper.GetText("RecruitTooltip","Recruit All Prisoners\nRight click to recruit past party limit"));
 
         }
 
