@@ -25,9 +25,69 @@
     <string id="SortUnitsTooltip" text="Sort All Units\nRight click to sort all recruits/upgrades to the top" />
     <string id="UpgradeTroopsTooltip" text="Upgrade All Troops\nRight Click to only upgrade custom paths\nCTRL+Right Click to sort custom path units to the top\nCTRL+Left Click unit upgrades to set/unset custom paths\nCTRL+SHIFT+Left Click to even split the upgrade" />
     <string id="RansomPrisonersTooltip" text="Ransom black/white listed prisoners" />
-    
-    
-    
+
+    <!--Settings-->
+    <string id="SettingsHeader" text="Party Manager Settings" />
+
+    <!-- Sort Settings-->
+    <string id="SortOptionsHeader" text="Sort Options" />
+
+    <string id="CustomSortOrderField1o" text="Custom Sort Field 1" />
+    <string id="CustomSortOrderField1d" text="The first sort option to be applied in your custom sort" />
+    <string id="CustomSortOrderField2o" text="Custom Sort Field 2" />
+    <string id="CustomSortOrderField2d" text="The second sort option to be applied in your custom sort" />
+    <string id="CustomSortOrderField3o" text="Custom Sort Field 3" />
+    <string id="CustomSortOrderField3d" text="The third sort option to be applied in your custom sort" />
+    <string id="CustomSortOrderField4o" text="Custom Sort Field 4" />
+    <string id="CustomSortOrderField4d" text="The fourth sort option to be applied in your custom sort" />
+    <string id="CustomSortOrderField5o" text="Custom Sort Field 5" />
+    <string id="CustomSortOrderField5d" text="The fifth sort option to be applied in your custom sort" />
+    <string id="StickySlotso" text="Sticky Slots" />
+    <string id="StickySlotsd" text="The number of slots directly below your heroes to ignore when executing sorts on your party's troops." />
+    <string id="EnableAutoSorto" text="Enable Autosort" />
+    <string id="EnableAutoSortd" text="Enable Auto Sort on opening the party screen" />
+    <string id="SortAfterRecruitAllUpgradeAllClicko" text="" />
+    <string id="SortAfterRecruitAllUpgradeAllClickd" text="" />
+    <string id="CavalryAboveFootmeno" text="Sort Mounted Units Above Footmen" />
+    <string id="CavalryAboveFootmend" text="Turn off if you want the default sorts to not have mounted units above footmen" />
+    <string id="MeleeAboveArcherso" text="Sort Melee Units Above Archers" />
+    <string id="MeleeAboveArchersd" text="Turn off if you want the default sorts to not have melee units above ranged" />
+    <string id="EnableSortHotkeyo" text="Enable Sort Hotkey" />
+    <string id="EnableSortHotkeyd" text="Enable Sort Hotkey of CTRL+SHIFT+S" />
+    <string id="EnableRecruitUpgradeSortHotkeyo" text="Enable Recruit/Upgrade Sort Hotkey" />
+    <string id="EnableRecruitUpgradeSortHotkeyd" text="Enable Recruit/Upgrade Sort of CTRL+SHIFT+R" />
+    <string id="EnableSortTypeCycleHotkeyo" text="Enable Cycle Sort Type Hotkey" />
+    <string id="EnableSortTypeCycleHotkeyd" text="Enable Cycle Sort Type Hotkey of CTRL+SHIFT+(MINUS)" />
+
+    <!-- Misc Settings-->
+    <string id="MiscOptionsHeader" text="Misc" />
+
+    <string id="UseAdvancedPartyCompositionOp" text="Show Advanced Party Composition Information" />
+    <string id="UseAdvancedPartyCompositionDesc" text="Party Composition will attempt to show unit weapon type breakdown" />
+    <string id="DisableCtrlTransferOp" text="Disable CTRL Transfer" />
+    <string id="DisableCtrlTransferDesc" text="Disable the ability to transfer all units by clicking with CTRL held down" />
+    <string id="DisableCtrlShiftTransferOp" text="Disable CTRL+SHIFT Transfer" />
+    <string id="DisableCtrlShiftTransferDesc" text="Disable the ability to transfer half of units by clicking with CTRL+SHIFT held down" />
+    <string id="DisableCustomShiftTransferOp" text="Disable Custom SHIFT Transfer" />
+    <string id="DisableCustomShiftTransferDesc" text="Disable the ability to transfer custom unit count units by clicking with SHIFT held down" />
+    <string id="CustomShiftTransferCountOp" text="Custom SHIFT Transfer Unit Count" />
+    <string id="CustomShiftTransferCountDesc" text="Number of units to transfer when the button is clicked with SHIFT held down" />
+    <string id="UpgradeTroopsUseWhitelistOp" text="Upgrade Troops Whitelist" />
+    <string id="UpgradeTroopsUseWhitelistDesc" text="Use a whitelist instead of blacklist for the upgrade troops filter" />
+    <string id="RecruitPrisonersUseWhitelistOp" text="Recruit Prisoners Whitelist" />
+    <string id="RecruitPrisonersUseWhitelistDesc" text="Use a whitelist instead of blacklist for the recruit prisoners filter" />
+    <string id="RansomPrisonersUseWhitelistOp" text="Ransom Prisoners Whitelist" />
+    <string id="RansomPrisonersUseWhitelistDesc" text="Use a whitelist instead of blacklist for the ransom prisoners filter" />
+    <string id="DisableCustomUpgradePathsOp" text="Disable Custom Upgrade Paths" />
+    <string id="DisableCustomUpgradePathsDesc" text="Custom Upgrade Paths will not be used when the upgrade button is clicked" />
+    <string id="DisableUpdatedTroopLabelOp" text="Disable Updated Wounded Troop Label" />
+    <string id="DisableUpdatedTroopLabelDesc" text="Change the wounded troop label format from from (250 + 5w [255]/275) back to  (250 + 5w / 275)" />
+    <string id="DisablePartyCompositionIconOp" text="Hide Party Composition Icon" />
+    <string id="DisablePartyCompositionIconDesc" text="Hide the party composition icon" />
+    <string id="DebugOp" text="Enable Debug Mode" />
+    <string id="DebugDesc" text="Enable Debug Mode, probably want to leave this off" />
+
+
     <!-- Weapon Classes -->
     <string id="OneHandedSword" text="one handed pokey stick" />
     <string id="TwoHandedSword" text="big stick" />
@@ -55,6 +115,10 @@
     <string id="LargeShield" text="test" />
     <string id="Banner" text="test" />
     <string id="NumClasses" text="test" />
+
     <!--Misc-->
+    <string id="CancelButton" text="Cancel" />
+    <string id="DoneButton" text="Done" />
+
   </strings>
 </base>
