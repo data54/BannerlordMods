@@ -21,7 +21,7 @@
     <string id="OpenSettingsTooltip" text="Open Party Manager Settings" />
     <string id="FormationTooltip" text="Left Click to apply saved formation settings to troops\nCTRL+Left Click to save current unit formations." />
     <string id="RecruitTooltip" text="Recruit All Prisoners\nRight click to recruit past party limit" />
-    <string id="CycleSortTooltip" text="Cycle Sort Order\nRight click to cycle backwards\nNext:\n{{0}}\nPrevious:\n{{1}}\nCurrent:\n{{2}}" />
+    <string id="CycleSortTooltip" text="Cycle Sort Order\nRight click to cycle backwards\nNext:\n~[0]~\nPrevious:\n~[1]~\nCurrent:\n~[2]~" />
     
 
     <!-- Weapon Classes -->

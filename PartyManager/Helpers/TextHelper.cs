@@ -26,6 +26,8 @@ namespace PartyManager.Helpers
 
             var ret = textObject.ToString();
             ret=ret.Replace("\\n", "\n");
+            ret = ret.Replace("~[", "{");
+            ret = ret.Replace("]~", "}");
 
             if (args != null)
             {
