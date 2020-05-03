@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PartyManager.Helpers;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -55,7 +56,7 @@ namespace PartyManager.ViewModels
             if (partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.TransferableWithTrade)
             {
                 LeftPrisonerTransferHidden = false;
-                LeftPrisonerTransferTooltip = new HintViewModel("Ransom black/white listed prisoners");
+                LeftPrisonerTransferTooltip = new HintViewModel(TextHelper.GetText("RansomPrisonersTooltip", "Ransom black/white listed prisoners"));
             }
             //else if (partyLogic.PrisonerTransferState == PartyScreenLogic.TransferState.Transferable &&
             //         partyLogic.MemberTransferState == PartyScreenLogic.TransferState.Transferable)

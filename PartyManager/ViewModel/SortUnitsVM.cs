@@ -19,7 +19,7 @@ namespace PartyManager.ViewModels
         private readonly PartyScreenLogic _partyLogic;
         private readonly PartyVM _partyVM;
 
-        
+
         [DataSourceProperty]
         public HintViewModel CycleSortTooltip
         {
@@ -46,7 +46,7 @@ namespace PartyManager.ViewModels
             this._mainPartyList = this._partyVM.MainPartyTroops;
 
 
-            this._sorttoolTip = new HintViewModel("Sort All Units\nRight click to sort all recruits/upgrades to the top");
+            this._sorttoolTip = new HintViewModel(TextHelper.GetText("SortUnitsTooltip", "Sort All Units\nRight click to sort all recruits/upgrades to the top"));
 
         }
 
@@ -94,7 +94,7 @@ namespace PartyManager.ViewModels
         {
             return TextHelper.GetText("CycleSortTooltip",
                 $"Cycle Sort Order\nRight click to cycle backwards\nNext:\n{{0}}\nPrevious:\n{{1}}\nCurrent:\n{{2}}",
-            new string[] { PartyManagerSettings.Settings.NextSortOrderString , PartyManagerSettings.Settings.PreviousSortOrderString, PartyManagerSettings.Settings.SortOrderString });
+            new string[] { PartyManagerSettings.Settings.NextSortOrderString, PartyManagerSettings.Settings.PreviousSortOrderString, PartyManagerSettings.Settings.SortOrderString });
         }
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PartyManager.Helpers;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -43,12 +44,8 @@ namespace PartyManager.ViewModels
 
 
             this.
-                _tooltip = new HintViewModel(
-                "Upgrade All Troops" +
-                "\nRight Click to only upgrade custom paths" +
-                "\nCTRL+Right Click to sort custom path units to the top"+
-                "\nCTRL+Left Click unit upgrades to set/unset custom paths" +
-                "\nCTRL+SHIFT+Left Click to even split the upgrade" );
+                _tooltip = new HintViewModel(TextHelper.GetText("UpgradeTroopsTooltip",
+                "Upgrade All Troops\nRight Click to only upgrade custom paths\nCTRL+Right Click to sort custom path units to the top\nCTRL+Left Click unit upgrades to set/unset custom paths\nCTRL+SHIFT+Left Click to even split the upgrade" ));
             this.OnFinalize();
 
         }

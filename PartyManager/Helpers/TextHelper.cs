@@ -19,21 +19,31 @@ namespace PartyManager.Helpers
         {
             return GetText(id, text, null);
         }
-        
+
         public static string GetText(string id, string text, string[] args)
         {
-            var textObject = new TextObject($"{{={id}}} {text}");
-
-            var ret = textObject.ToString();
-            ret=ret.Replace("\\n", "\n");
-            ret = ret.Replace("~[", "{");
-            ret = ret.Replace("]~", "}");
-
-            if (args != null)
+            try
             {
-                return string.Format(ret, args);
+                var textObject = new TextObject($"{{={id}}} {text}");
+
+                var ret = textObject.ToString();
+                ret = ret.Replace("\\n", "\n");
+                ret = ret.Replace("~[", "{");
+                ret = ret.Replace("]~", "}");
+
+                if (args != null)
+                {
+                    return string.Format(ret, args);
+                }
+                return ret;
+
             }
-            return ret;
+            catch (Exception e)
+            {
+                GenericHelpers.LogException($"GetText({id})", e);
+            }
+
+            return text;
         }
 
 

@@ -22,8 +22,12 @@
     <string id="FormationTooltip" text="Left Click to apply saved formation settings to troops\nCTRL+Left Click to save current unit formations." />
     <string id="RecruitTooltip" text="Recruit All Prisoners\nRight click to recruit past party limit" />
     <string id="CycleSortTooltip" text="Cycle Sort Order\nRight click to cycle backwards\nNext:\n~[0]~\nPrevious:\n~[1]~\nCurrent:\n~[2]~" />
+    <string id="SortUnitsTooltip" text="Sort All Units\nRight click to sort all recruits/upgrades to the top" />
+    <string id="UpgradeTroopsTooltip" text="Upgrade All Troops\nRight Click to only upgrade custom paths\nCTRL+Right Click to sort custom path units to the top\nCTRL+Left Click unit upgrades to set/unset custom paths\nCTRL+SHIFT+Left Click to even split the upgrade" />
+    <string id="RansomPrisonersTooltip" text="Ransom black/white listed prisoners" />
     
-
+    
+    
     <!-- Weapon Classes -->
     <string id="OneHandedSword" text="one handed pokey stick" />
     <string id="TwoHandedSword" text="big stick" />
